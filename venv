@@ -1,1 +1,2 @@
-venv\Scripts\activate
+pip install Flask
+pip show Flask
