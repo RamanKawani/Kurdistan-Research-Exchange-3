@@ -1,5 +1,3 @@
 Flask
 Flask-SQLAlchemy
 SQLAlchemy==1.4.46
-pip install -r requirements.txt
-pip show Flask
