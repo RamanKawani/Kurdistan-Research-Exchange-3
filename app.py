@@ -10,13 +10,14 @@ st.set_page_config(
     layout="wide",
 )
 
-# Sidebar
+# Sidebar with logo handling
 logo_path = "assets/logo.png"
 if os.path.exists(logo_path):
-    st.sidebar.image(logo_path, use_column_width=True)
+    st.sidebar.image(logo_path, use_container_width=True)
 else:
-    st.sidebar.write("🌍 Kurdistan Research Exchange")
+    st.sidebar.write("🌍 **Kurdistan Research Exchange**")
 
+# Sidebar navigation
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to:", ["Home", "Upload Research", "Explore Research"])
 
@@ -27,7 +28,7 @@ if page == "Home":
     This platform enables researchers and institutions in Kurdistan to share and access academic research. 
     Upload your research or explore contributions by others to advance knowledge across various fields.
     """)
-    st.image("https://via.placeholder.com/800x400", use_column_width=True)
+    st.image("https://via.placeholder.com/800x400", use_container_width=True)
 
 elif page == "Upload Research":
     st.title("📤 Upload Your Research Paper")
@@ -37,7 +38,6 @@ elif page == "Upload Research":
     uploaded_file = st.file_uploader("Upload Your Research Paper (PDF)", type=["pdf"])
     if uploaded_file:
         st.success("File uploaded successfully!")
-        # You can add GitHub integration here to save the file to a repository
         st.write("File Name:", uploaded_file.name)
     
     # Metadata form
@@ -71,4 +71,5 @@ elif page == "Explore Research":
 
 # Footer
 st.markdown("---")
-st.markdown("Created with ❤️ by [Raman]. Powered by Streamlit.")
+st.markdown("Created with ❤️ by [Your Name]. Powered by Streamlit.")
+
