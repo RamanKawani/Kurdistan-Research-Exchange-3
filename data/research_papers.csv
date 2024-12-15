@@ -1,6 +1,6 @@
-Title,Author,University,Year,Category,Link
-"Understanding Kurdish Politics","John Doe","University of Erbil",2023,"Political Science","http://example.com/paper1"
-"Globalization and its Impact on the Middle East","Jane Smith","University of Kurdistan",2022,"International Relations","http://example.com/paper2"
-"Women in the Kurdish Liberation Movement","Ahmed Ali","University of Erbil",2021,"Gender Studies","http://example.com/paper3"
-"The Role of Technology in Modern Warfare","Sara Ahmed","University of Kurdistan",2024,"Military Science","http://example.com/paper4"
-"Kurdish Identity and Cultural Preservation","Rebaz Ameen","University of Erbil",2020,"Sociology","http://example.com/paper5"
+Title,Author,University,Year,Category,Link,PDF
+"Understanding Kurdish Politics","John Doe","University of Erbil",2023,"Political Science","http://example.com/paper1","http://example.com/paper1.pdf"
+"Globalization and its Impact on the Middle East","Jane Smith","University of Kurdistan",2022,"International Relations","http://example.com/paper2","http://example.com/paper2.pdf"
+"Women in the Kurdish Liberation Movement","Ahmed Ali","University of Erbil",2021,"Gender Studies","http://example.com/paper3","http://example.com/paper3.pdf"
+"The Role of Technology in Modern Warfare","Sara Ahmed","University of Kurdistan",2024,"Military Science","http://example.com/paper4","http://example.com/paper4.pdf"
+"Kurdish Identity and Cultural Preservation","Rebaz Ameen","University of Erbil",2020,"Sociology","http://example.com/paper5","http://example.com/paper5.pdf"
