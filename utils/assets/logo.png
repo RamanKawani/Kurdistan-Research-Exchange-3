@@ -1,0 +1,8 @@
+import os
+
+logo_path = "assets/logo.png"
+
+if os.path.exists(logo_path):
+    st.sidebar.image(logo_path, use_column_width=True)
+else:
+    st.sidebar.write("Welcome to Kurdistan Research Exchange!")
