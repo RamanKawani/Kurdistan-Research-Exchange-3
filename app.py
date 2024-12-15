@@ -24,30 +24,41 @@ def save_data(df):
 # Function to display papers
 def display_papers():
     global df
-    st.title("Kurdistan Research Exchange")
-    st.write("Welcome to the platform where you can publish and explore social science research papers related to the Kurdistan Region.")
-    
-    # Search functionality
-    st.subheader("Search Research Papers")
-    search_query = st.text_input("Search by title, author, or university:")
-    if search_query:
-        filtered_df = df[df.apply(lambda row: row.astype(str).str.contains(search_query, case=False).any(), axis=1)]
-        st.dataframe(filtered_df)
-    else:
-        st.dataframe(df)
 
-    # Display PDF download links for each paper
-    for index, row in df.iterrows():
-        if row['pdf_file']:  # Check if there's a PDF file
-            pdf_path = os.path.join(PDF_DIR, row['pdf_file'])
-            if os.path.exists(pdf_path):
-                with open(pdf_path, "rb") as pdf_file:
-                    st.download_button(
-                        label=f"Download PDF: {row['title']}",
-                        data=pdf_file,
-                        file_name=row['pdf_file'],
-                        mime="application/pdf",
-                        key=f"download_button_{index}"  # Unique key using the index
+    st.title("Kurdistan Research Exchange")
+
+    # File upload section
+    uploaded_file = st.file_uploader("Upload a research paper (PDF only)", type="pdf")
+    if uploaded_file is not None:
+        pdf_data = uploaded_file.read()
+        st.write("File uploaded successfully!")
+
+    # Display papers
+    st.subheader("Research Papers")
+    
+    # Search bar with unique key
+    search_query = st.text_input("Search by title, author, or university:", key="search_input")
+    
+    if search_query:
+        df_filtered = df[df.apply(lambda row: row.astype(str).str.contains(search_query, case=False).any(), axis=1)]
+    else:
+        df_filtered = df
+
+    # Display filtered papers as a table
+    st.write(df_filtered)
+    # PDF download buttons for each paper
+    for index, row in df_filtered.iterrows():
+        paper_title = row["title"]
+        pdf_file = row["pdf_file"]
+        
+        # Add a unique key to avoid duplicate element IDs
+        st.download_button(
+            label=f"Download {paper_title}",
+            data=pdf_file,
+            file_name=f"{paper_title}.pdf",
+            mime="application/pdf",
+            key=f"download_button_{index}"  # Unique key for each button
+
                         
     st.subheader("Search Research Papers")
     search_query = st.text_input("Search by title, author, or university:")
