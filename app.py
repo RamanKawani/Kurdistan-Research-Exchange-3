@@ -1,70 +1,43 @@
 import streamlit as st
-import subprocess
-import sys
-import os
+import pandas as pd
 
-# Function to check installed package version
-def get_installed_version(package_name):
-    try:
-        result = subprocess.run([sys.executable, "-m", "pip", "show", package_name], capture_output=True, text=True)
-        for line in result.stdout.splitlines():
-            if line.startswith("Version:"):
-                return line.split(" ")[1]
-        return None
-    except Exception as e:
-        return None
+# Load CSV file containing research papers
+def load_data():
+    return pd.read_csv('data/research_papers.csv')
 
-# Function to modify requirements.txt based on version conflict
-def resolve_conflict():
-    # Get current versions of Streamlit and pandas
-    streamlit_version = get_installed_version('streamlit')
-    pandas_version = get_installed_version('pandas')
+# Function to display papers
+def display_papers():
+    data = load_data()
+    st.title("Kurdistan Research Exchange")
+    st.write("Welcome to the platform where you can publish and explore social science research papers related to the Kurdistan Region.")
+    
+    # Display the research papers
+    st.subheader("Published Research Papers")
+    st.dataframe(data)
 
-    # Display the current versions
-    st.write(f"Installed Streamlit version: {streamlit_version}")
-    st.write(f"Installed pandas version: {pandas_version}")
+# Function to allow users to upload research papers
+def upload_paper():
+    st.subheader("Upload Your Research Paper")
+    uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
+    
+    if uploaded_file is not None:
+        # Process the uploaded CSV and append to the main CSV
+        new_data = pd.read_csv(uploaded_file)
+        existing_data = load_data()
+        updated_data = existing_data.append(new_data, ignore_index=True)
+        updated_data.to_csv('data/research_papers.csv', index=False)
+        st.success("Your research paper has been successfully uploaded.")
 
-    if streamlit_version and pandas_version:
-        # If Streamlit 1.21.0 and pandas 2.x
-        if streamlit_version == '1.21.0' and pandas_version.startswith('2'):
-            st.warning("Conflict detected: Streamlit 1.21.0 is incompatible with pandas 2.x.")
-            st.info("Downgrading pandas to 1.5.3 (compatible with Streamlit 1.21.0).")
-            
-            # Modify requirements.txt to downgrade pandas
-            with open('requirements.txt', 'w') as f:
-                f.write('streamlit==1.21.0\n')
-                f.write('pandas==1.5.3\n')
-            
-            st.success("requirements.txt has been updated. Run `pip install -r requirements.txt` to resolve the conflict.")
-        
-        # If Streamlit is 2.x and pandas is compatible
-        elif streamlit_version.startswith('2') and pandas_version.startswith('2'):
-            st.success("Streamlit and pandas versions are compatible. No changes needed.")
-        
-        # If Streamlit 1.21.0 and pandas < 2
-        elif streamlit_version == '1.21.0' and not pandas_version.startswith('2'):
-            st.success("Streamlit 1.21.0 is compatible with pandas < 2.x. No changes needed.")
-        
-        # If Streamlit is 2.x and pandas < 2
-        elif streamlit_version.startswith('2') and not pandas_version.startswith('2'):
-            st.success("Streamlit version is compatible with pandas versions < 2 and >= 2.x. No changes needed.")
-        
-        else:
-            st.error("Could not detect appropriate versions. Please check manually.")
-    else:
-        st.error("Required packages (Streamlit or pandas) are not installed.")
+# Sidebar navigation
+def main():
+    st.sidebar.title("Navigation")
+    selection = st.sidebar.radio("Go to", ["Home", "Upload Paper"])
+    
+    if selection == "Home":
+        display_papers()
+    elif selection == "Upload Paper":
+        upload_paper()
 
-# Streamlit App Layout
-st.title('Streamlit Dependency Conflict Resolver')
-st.write(
-    """
-    This app helps resolve version conflicts between Streamlit and pandas.
-    It checks installed versions of Streamlit and pandas, and automatically updates 
-    the `requirements.txt` file if there is a conflict.
-    """
-)
-
-# Button to resolve dependency issues
-if st.button('Check & Resolve Dependency Conflicts'):
-    resolve_conflict()
+if __name__ == '__main__':
+    main()
 
