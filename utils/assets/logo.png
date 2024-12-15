@@ -1,2 +1,0 @@
-st.sidebar.image("full/path/to/logo.png", use_column_width=True)
-
