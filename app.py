@@ -1,5 +1,23 @@
 import streamlit as st
 from institutional_partnership import institutional_partnership_section  # Import the institutional partnership section
+from display import display_papers
+from upload import upload_papers
+from user_profile import create_user_profile, view_and_update_profiles
+from guidelines import display_guidelines
+from collaborative_project import collaborative_project_section  # Import the collaborative section
+
+# Function to load sample data (or you can replace with actual data loading code)
+def load_sample_data():
+    data = {
+        "Title": ["Paper 1", "Paper 2", "Paper 3"],
+        "Author": ["Author 1", "Author 2", "Author 3"],
+        "University": ["University A", "University B", "University C"],
+        "Year": [2020, 2021, 2022],
+        "Category": ["History", "Political Science", "International Relations"],
+        "Link": ["http://example.com/paper1", "http://example.com/paper2", "http://example.com/paper3"],
+        "PDF": ["http://example.com/paper1.pdf", "http://example.com/paper2.pdf", "http://example.com/paper3.pdf"]
+    }
+    return pd.DataFrame(data)
 
 # Main function to handle app navigation and sections
 def main():
