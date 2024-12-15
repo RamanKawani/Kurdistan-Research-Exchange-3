@@ -9,21 +9,25 @@ from collaborative_projects import collaborative_project_section  # Import the c
 def app_navigation():
     # Sidebar title and navigation options
     st.sidebar.title("Kurdistan Research Exchange")
+
+    # Define the navigation menu options
+    menu = ["Home", "Upload Paper", "View Papers", "User Profile", "Guidelines", "Collaborative Projects"]
     
-    # Sidebar menu options
-    menu = ["Home", "Upload Papers", "View Papers", "User Profile", "Guidelines", "Collaborative Projects"]
-    choice = st.sidebar.radio("Select a Section", menu)
-    
-    # Render the corresponding section based on the selected menu
+    # Add menu to sidebar
+    choice = st.sidebar.radio("Select an Option", menu)
+
+    # Display the appropriate section based on user's choice
     if choice == "Home":
-        home_section()  # Display home section content
-    elif choice == "Upload Papers":
-        upload_papers()  # Display upload papers section content
+        home_section()
+    elif choice == "Upload Paper":
+        upload_papers()
     elif choice == "View Papers":
-        display_papers()  # Display view papers section content
+        display_papers()
     elif choice == "User Profile":
-        user_profile_section()  # Display user profile section content
+        user_profile_section()
     elif choice == "Guidelines":
-        display_guidelines()  # Display guidelines section content
+        display_guidelines()
     elif choice == "Collaborative Projects":
-        collaborative_project_section()  # Display collaborative projects section content
+        collaborative_project_section()
+
+
