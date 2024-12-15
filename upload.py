@@ -12,7 +12,13 @@ def upload_papers(df):
         author = st.text_input("Author")
         university = st.text_input("University")
         year = st.number_input("Year", min_value=1900, max_value=2025)
-        category = st.text_input("Category")
+        
+        # Predefined categories dropdown
+        category = st.selectbox(
+            "Category",
+            ["History", "Political Science", "Sociology", "International Relations", "Philosophy"]
+        )
+        
         link = st.text_input("Link (Optional)")
         pdf_file = st.file_uploader("Upload PDF", type="pdf")
 
