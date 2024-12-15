@@ -1,16 +1,19 @@
-import pandas as pd
 import streamlit as st
 
-# Function to load the data
-def load_data():
-    try:
-        return pd.read_csv("database.csv")
-    except FileNotFoundError:
-        st.error("Error: database.csv file not found!")
-        return pd.DataFrame()  # Return an empty DataFrame in case of an error
-
-# Main application
 def main():
+    # Add logo to the sidebar
+    st.sidebar.image("logo.png", use_container_width=True)  # 'logo.png' should be in the same folder or provide the correct path
+
+    # The rest of your app code
+    st.title("Kurdistan Research Exchange")
+    st.write("Welcome to the research exchange platform.")
+    
+    # Your other components or content
+    # ...
+
+if __name__ == "__main__":
+    main()
+    
     # Load data
     data = load_data()
 
