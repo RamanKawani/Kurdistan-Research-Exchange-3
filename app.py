@@ -2,14 +2,17 @@ import os
 import pandas as pd
 import streamlit as st
 
+# Get the absolute path of the data folder
+DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+
 # Load CSV file containing research papers
 def load_data():
     # Check if the 'data' directory exists, if not, create it
-    if not os.path.exists('data'):
-        os.makedirs('data')
+    if not os.path.exists(DATA_DIR):
+        os.makedirs(DATA_DIR)
 
     # Check if the CSV file exists, if not, create it with default columns
-    file_path = 'data/research_papers.csv'
+    file_path = os.path.join(DATA_DIR, 'research_papers.csv')
     if not os.path.exists(file_path):
         columns = ['title', 'author', 'university', 'year', 'abstract']
         df = pd.DataFrame(columns=columns)
@@ -38,7 +41,7 @@ def upload_paper():
         new_data = pd.read_csv(uploaded_file)
         existing_data = load_data()
         updated_data = existing_data.append(new_data, ignore_index=True)
-        updated_data.to_csv('data/research_papers.csv', index=False)
+        updated_data.to_csv(os.path.join(DATA_DIR, 'research_papers.csv'), index=False)
         st.success("Your research paper has been successfully uploaded.")
 
 # Sidebar navigation
