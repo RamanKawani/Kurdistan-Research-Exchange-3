@@ -1,30 +1,38 @@
 import streamlit as st
+import pandas as pd
 
-def display_papers(df):
-    # Display papers
-    st.subheader("Research Papers")
+# Sample Data: Replace this with actual data or load from CSV/database
+papers = [
+    {"title": "Research on Kurdish Identity", "author": "Author 1", "university": "University A", "file": "file1.pdf"},
+    {"title": "Kurdistan Economy Trends", "author": "Author 2", "university": "University B", "file": "file2.pdf"},
+    # Add more papers here
+]
 
-    # Search bar with unique key
-    search_query = st.text_input("Search by title, author, or university:", key="search_input")
-    
-    if search_query:
-        df_filtered = df[df.apply(lambda row: row.astype(str).str.contains(search_query, case=False).any(), axis=1)]
-    else:
-        df_filtered = df
+# Display Papers
+def display_papers():
+    st.title("Research Papers")
 
-    # Display filtered papers as a table
-    st.write(df_filtered)
+    # Displaying research paper details in a table format
+    df = pd.DataFrame(papers)
+    st.write(df)
 
-    # PDF download buttons for each paper
-    for index, row in df_filtered.iterrows():
-        paper_title = row["title"]
-        pdf_file = row["pdf_file"]
+    # Display download button for each paper
+    for paper in papers:
+        st.subheader(paper["title"])
+        st.write(f"Author: {paper['author']}")
+        st.write(f"University: {paper['university']}")
         
-        # Add a unique key to avoid duplicate element IDs
-        st.download_button(
-            label=f"Download {paper_title}",
-            data=pdf_file,
-            file_name=f"{paper_title}.pdf",
-            mime="application/pdf",
-            key=f"download_button_{index}"  # Unique key for each button
-        )
+        # Check if the file exists and is accessible (replace this with the correct path to the PDF files)
+        file_path = f"files/{paper['file']}"
+        
+        try:
+            with open(file_path, "rb") as pdf_file:
+                st.download_button(
+                    label="Download PDF",
+                    data=pdf_file,
+                    file_name=paper["file"],
+                    mime="application/pdf",
+                    key=paper["file"]  # Unique key for each download button
+                )
+        except FileNotFoundError:
+            st.error(f"File {paper['file']} not found.")
