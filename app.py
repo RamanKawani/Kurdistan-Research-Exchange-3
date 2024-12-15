@@ -1,13 +1,22 @@
 import streamlit as st
 import pandas as pd
-from database import load_data, save_data
 from io import StringIO
+import os
 
-# Load the research papers from the CSV file
-df = load_data()
+# Load data from CSV (if file exists)
+def load_data():
+    if os.path.exists('research_papers.csv'):
+        return pd.read_csv('research_papers.csv')
+    else:
+        return pd.DataFrame(columns=['title', 'author', 'university', 'year', 'abstract'])
+
+# Save data to CSV
+def save_data(df):
+    df.to_csv('research_papers.csv', index=False)
 
 # Function to display papers
 def display_papers():
+    global df  # Declare global df here
     st.title("Kurdistan Research Exchange")
     st.write("Welcome to the platform where you can publish and explore social science research papers related to the Kurdistan Region.")
     
@@ -22,6 +31,7 @@ def display_papers():
 
 # Function to allow users to add a new research paper using a form
 def add_paper_form():
+    global df  # Declare global df here
     st.subheader("Add a New Research Paper")
 
     # Option 1: Upload CSV File
@@ -36,7 +46,6 @@ def add_paper_form():
         required_columns = ['title', 'author', 'university', 'year', 'abstract']
         if all(col in uploaded_df.columns for col in required_columns):
             # Append the new papers to the existing DataFrame and save it
-            global df
             df = pd.concat([df, uploaded_df], ignore_index=True)
             save_data(df)
             st.success("Your research papers have been successfully added!")
@@ -63,13 +72,13 @@ def add_paper_form():
             })
 
             # Append the new paper to the existing dataframe and save it
-            global df
             df = pd.concat([df, new_paper], ignore_index=True)
             save_data(df)
             st.success("Your research paper has been successfully added!")
 
 # Sidebar navigation
 def main():
+    global df  # Declare global df here
     st.sidebar.title("Navigation")
     selection = st.sidebar.radio("Go to", ["Home", "Add Paper"])
 
@@ -79,4 +88,7 @@ def main():
         add_paper_form()
 
 if __name__ == '__main__':
+    # Load the data
+    df = load_data()  # This loads the global df
     main()
+
