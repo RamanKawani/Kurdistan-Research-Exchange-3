@@ -1,11 +1,10 @@
 import streamlit as st
 
-def home():
+def home_section():
     st.title("Welcome to Kurdistan Research Exchange")
-    st.write("This is the home page. You can navigate to view papers or upload papers.")
+    st.write("This platform allows users to upload, view, and share research papers related to the Kurdistan Region.")
+    st.write("You can upload your papers under the **'Upload Papers'** section, and view papers in the **'View Papers'** section.")
     
-    # Add buttons for navigation
-    if st.button('View Papers'):
-        st.session_state.page = "view_papers"
-    elif st.button('Upload Papers'):
-        st.session_state.page = "upload_papers"
+    # Add more sections or information here if necessary
+    st.subheader("About")
+    st.write("Kurdistan Research Exchange is an open platform to share and access academic research papers related to the Kurdistan Region.")
