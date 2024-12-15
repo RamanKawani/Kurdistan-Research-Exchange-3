@@ -3,6 +3,7 @@ import pandas as pd
 from display import display_papers
 from upload import upload_papers
 from user_profile import create_user_profile, view_and_update_profiles
+from guidelines import display_guidelines  # Import the guidelines section
 
 # Function to load sample data (or you can replace with actual data loading code)
 def load_sample_data():
@@ -22,7 +23,7 @@ def main():
     st.sidebar.title("Kurdistan Research Exchange")
     
     # Sidebar navigation options
-    options = ["Home", "Upload Papers", "View Papers", "User Profile"]
+    options = ["Home", "Upload Papers", "View Papers", "User Profile", "Submission Guidelines"]
     choice = st.sidebar.selectbox("Select a section", options)
 
     # Load sample data for papers
@@ -37,6 +38,8 @@ def main():
         display_papers(df)
     elif choice == "User Profile":
         user_profile_section()
+    elif choice == "Submission Guidelines":
+        display_guidelines()  # Display the guidelines section
 
 # Function for the Home section
 def home_section():
@@ -61,4 +64,3 @@ def user_profile_section():
 # Run the main function
 if __name__ == "__main__":
     main()
-
