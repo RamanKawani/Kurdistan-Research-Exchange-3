@@ -1,19 +1,4 @@
-import streamlit as st
 import os
-import pandas as pd
-
-# Sample function to simulate loading paper data from a database or file
-def load_paper_data():
-    # For demonstration purposes, using a CSV file to store paper metadata
-    data = {
-        'Title': ['Research Paper 1', 'Research Paper 2', 'Research Paper 3'],
-        'Author': ['Author 1', 'Author 2', 'Author 3'],
-        'Institution': ['Institution 1', 'Institution 2', 'Institution 3'],
-        'Year': [2022, 2023, 2021],
-        'Abstract': ['Abstract of Paper 1', 'Abstract of Paper 2', 'Abstract of Paper 3'],
-        'Link': ['link1.pdf', 'link2.pdf', 'link3.pdf']
-    }
-    return pd.DataFrame(data)
 
 def display_papers():
     # Set the title for the page
@@ -55,13 +40,19 @@ def display_papers():
             st.markdown(f"**{row['Title']}** by {row['Author']} ({row['Year']})")
             st.write(f"**Institution**: {row['Institution']}")
             st.write(f"**Abstract**: {row['Abstract']}")
-            st.download_button(
-                label="Download Paper",
-                data=open(os.path.join('uploads', row['Link']), 'rb').read(),
-                file_name=row['Link'],
-                mime="application/pdf"
-            )
+
+            # Ensure correct file path handling
+            file_path = os.path.join('uploads', row['Link'])
+            if os.path.isfile(file_path):  # Check if it's a valid file
+                st.download_button(
+                    label="Download Paper",
+                    data=open(file_path, 'rb').read(),
+                    file_name=row['Link'],
+                    mime="application/pdf"
+                )
+            else:
+                st.warning(f"File for '{row['Title']}' not found or is not a valid file.")
+            
             st.markdown("---")
     else:
         st.warning("No papers found matching your criteria.")
-
