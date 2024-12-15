@@ -2,7 +2,10 @@ import streamlit as st
 
 def institutional_partnership_section():
     st.title("Institutional Partnerships")
-    st.write(
+    st.write("Welcome to the Institutional Partnerships section.")
+    st.write("Here universities and academic institutions can collaborate and partner on research projects related to the Kurdistan Region.")
+    st.write("This section provides an opportunity for institutions to engage in collaborative research efforts, share knowledge, and build academic partnerships.")
+
         "Welcome to the Institutional Partnerships section, where universities and academic institutions can collaborate."
     )
     
