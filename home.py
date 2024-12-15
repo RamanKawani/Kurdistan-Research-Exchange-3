@@ -5,11 +5,11 @@ def home():
 
     st.markdown(
         """
-        Welcome to the Kurdistan Research Exchange platform! Here, you can explore a wide range of academic papers and research from various fields such as History, Political Science, Sociology, and more.
+        Welcome to the Kurdistan Research Exchange platform! Here, you can explore a wide range of academic papers and research from various fields.
 
         Our goal is to provide access to research papers and allow users to upload and share their work for the betterment of the academic community. 
 
-        Feel free to explore the papers in different categories and sort them by author, year, or title.
+        Feel free to explore the papers, sorted by author, year, or title.
         """
     )
 
