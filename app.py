@@ -1,14 +1,9 @@
-import pandas as pd
 import streamlit as st
+import pandas as pd
+from database import load_data, save_data
 
-# Hardcoded data for research papers
-data = [
-    {'title': 'Sample Paper 1', 'author': 'Author A', 'university': 'University X', 'year': 2023, 'abstract': 'This is an abstract.'},
-    {'title': 'Sample Paper 2', 'author': 'Author B', 'university': 'University Y', 'year': 2022, 'abstract': 'Another abstract.'},
-]
-
-# Convert the hardcoded data into a pandas DataFrame
-df = pd.DataFrame(data)
+# Load the research papers from the CSV file
+df = load_data()
 
 # Function to display papers
 def display_papers():
@@ -29,6 +24,7 @@ def upload_paper():
         new_data = pd.read_csv(uploaded_file)
         global df
         df = pd.concat([df, new_data], ignore_index=True)
+        save_data(df)  # Save the updated data to the CSV
         st.success("Your research paper has been successfully uploaded.")
 
 # Sidebar navigation
@@ -43,3 +39,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
