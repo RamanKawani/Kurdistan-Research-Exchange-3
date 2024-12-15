@@ -1,9 +1,22 @@
-import streamlit as st
+import os
 import pandas as pd
+import streamlit as st
 
 # Load CSV file containing research papers
 def load_data():
-    return pd.read_csv('data/research_papers.csv')
+    # Check if the 'data' directory exists, if not, create it
+    if not os.path.exists('data'):
+        os.makedirs('data')
+
+    # Check if the CSV file exists, if not, create it with default columns
+    file_path = 'data/research_papers.csv'
+    if not os.path.exists(file_path):
+        columns = ['title', 'author', 'university', 'year', 'abstract']
+        df = pd.DataFrame(columns=columns)
+        df.to_csv(file_path, index=False)
+    
+    # Read and return the CSV data
+    return pd.read_csv(file_path)
 
 # Function to display papers
 def display_papers():
@@ -40,4 +53,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
