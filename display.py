@@ -1,87 +1,58 @@
-import pandas as pd
 import streamlit as st
+import pandas as pd
 
-# Function to display the research papers with an advanced UI
 def display_papers(df):
-    if df is not None:
-        # Sidebar for filters
-        st.sidebar.header("Filters")
-        
-        # Category filter
-        categories = df["Category"].unique().tolist()
-        selected_category = st.sidebar.selectbox("Category", ["All"] + categories)
+    st.title("View Papers")
+    
+    # Sidebar filters for categories and authors
+    st.sidebar.header("Filter Papers")
+    categories = df["Category"].unique()
+    selected_category = st.sidebar.selectbox("Select Category", options=["All"] + list(categories), index=0)
+    
+    authors = df["Author"].unique()
+    selected_author = st.sidebar.selectbox("Select Author", options=["All"] + list(authors), index=0)
 
-        # Author filter
-        authors = df["Author"].unique().tolist()
-        selected_author = st.sidebar.selectbox("Author", ["All"] + authors)
+    # Filter based on user selections
+    filtered_df = df.copy()
+    if selected_category != "All":
+        filtered_df = filtered_df[filtered_df["Category"] == selected_category]
+    if selected_author != "All":
+        filtered_df = filtered_df[filtered_df["Author"] == selected_author]
 
-        # University filter
-        universities = df["University"].unique().tolist()
-        selected_university = st.sidebar.selectbox("University", ["All"] + universities)
+    # Sorting options
+    sort_options = ["Title", "Author", "Category", "Year"]
+    sort_by = st.sidebar.selectbox("Sort By", options=sort_options, index=0)
+    sort_order = st.sidebar.radio("Sort Order", options=["Ascending", "Descending"], index=0)
+    filtered_df = filtered_df.sort_values(by=sort_by, ascending=(sort_order == "Ascending"))
 
-        # Year filter
-        years = df["Year"].unique().tolist()
-        selected_year = st.sidebar.selectbox("Year", ["All"] + sorted(years))
-
-        # Search bar
-        search_query = st.sidebar.text_input("Search by Title or Keywords")
-
-        # Filter logic
-        filtered_df = df.copy()
-        if selected_category != "All":
-            filtered_df = filtered_df[filtered_df["Category"] == selected_category]
-        if selected_author != "All":
-            filtered_df = filtered_df[filtered_df["Author"] == selected_author]
-        if selected_university != "All":
-            filtered_df = filtered_df[filtered_df["University"] == selected_university]
-        if selected_year != "All":
-            filtered_df = filtered_df[filtered_df["Year"] == selected_year]
-        if search_query:
-            filtered_df = filtered_df[
-                filtered_df["Title"].str.contains(search_query, case=False, na=False)
-            ]
-
-        # Display results
-        st.title("Kurdistan Research Papers")
-        if not filtered_df.empty:
-            # Grid display using AgGrid for better UI
-            gb = GridOptionsBuilder.from_dataframe(filtered_df)
-            gb.configure_pagination(paginationAutoPageSize=True)
-            gb.configure_default_column(wrapText=True, autoHeight=True)
-            gb.configure_column("PDF", header_name="Download PDF", cellRenderer=link_renderer)
-            grid_options = gb.build()
-
-            st.subheader("Filtered Papers")
-            AgGrid(filtered_df, gridOptions=grid_options, height=400, theme="balham")
-
-            # Expandable details section for individual papers
-            st.markdown("### Paper Details")
-            for idx, row in filtered_df.iterrows():
-                with st.expander(f"**{row['Title']}**", expanded=False):
-                    col1, col2 = st.columns([3, 1])
-                    with col1:
-                        st.markdown(f"**Author:** {row['Author']}")
-                        st.markdown(f"**University:** {row['University']}")
-                        st.markdown(f"**Year:** {row['Year']}")
-                        st.markdown(f"**Category:** {row['Category']}")
-                        if pd.notna(row['Link']):
-                            st.markdown(f"**Link:** [View Paper]({row['Link']})")
-                    with col2:
-                        pdf_link = row['PDF']
-                        if pd.notna(pdf_link):
-                            st.download_button(
-                                label="Download PDF",
-                                data=pdf_link,
-                                file_name=f"{row['Title']}.pdf",
-                                mime="application/pdf"
-                            )
-        else:
-            st.warning("No papers match the selected filters or search query.")
+    # Display filtered and sorted data in an elegant table
+    st.subheader("Filtered Papers")
+    if not filtered_df.empty:
+        for _, row in filtered_df.iterrows():
+            st.markdown(f"""
+                ### {row['Title']}
+                - **Author:** {row['Author']}
+                - **Category:** {row['Category']}
+                - **Year:** {row['Year']}
+            """)
+            st.download_button(
+                label="Download PDF",
+                data=row["PDF"],
+                file_name=f"{row['Title']}.pdf",
+                mime="application/pdf",
+            )
+            st.markdown("---")
     else:
-        st.error("No research papers available to display.")
+        st.warning("No papers match the selected filters.")
 
-# Helper function for rendering links in AgGrid
-def link_renderer(params):
-    if params.value:
-        return f"<a href='{params.value}' target='_blank'>Download PDF</a>"
-    return "N/A"
+# Example DataFrame for testing
+if __name__ == "__main__":
+    data = {
+        "Title": ["Paper A", "Paper B", "Paper C"],
+        "Author": ["Author 1", "Author 2", "Author 3"],
+        "Category": ["History", "Sociology", "Political Science"],
+        "Year": [2021, 2020, 2022],
+        "PDF": ["PDF content A", "PDF content B", "PDF content C"],  # Placeholder PDF content
+    }
+    df = pd.DataFrame(data)
+    display_papers(df)
