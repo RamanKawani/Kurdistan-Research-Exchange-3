@@ -4,12 +4,12 @@ import pandas as pd
 def display_papers(df):
     st.title("View Papers")
     
-    # Sidebar filter for categories
+    # Sidebar for category filter
     st.sidebar.header("Filter Papers")
     categories = df["Category"].unique()
     selected_category = st.sidebar.selectbox("Select Category", options=["All"] + list(categories), index=0)
 
-    # Filter based on selected category
+    # Filter papers by category
     filtered_df = df.copy()
     if selected_category != "All":
         filtered_df = filtered_df[filtered_df["Category"] == selected_category]
