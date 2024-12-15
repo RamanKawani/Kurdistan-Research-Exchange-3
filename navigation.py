@@ -1,6 +1,5 @@
-# navigation.py
 import streamlit as st
-from institutional_partnership import institutional_partnership_section  # Ensure correct import
+from home import home_section  # Make sure home_section is imported here
 
 def app_navigation():
     st.sidebar.title("Kurdistan Research Exchange")
@@ -9,22 +8,19 @@ def app_navigation():
     options = ["Home", "Upload Papers", "View Papers", "User Profile", "Submission Guidelines", "Collaborative Projects", "Institutional Partnerships"]
     choice = st.sidebar.selectbox("Select a section", options)
     
-    # Handling the navigation logic for each section
+    # Navigate based on user selection
     if choice == "Home":
-        home_section()
+        home_section()  # Ensure home_section is being called
     elif choice == "Upload Papers":
-        upload_papers()  # Ensure you have this function in your app
+        upload_papers()
     elif choice == "View Papers":
-        display_papers()  # Ensure you have this function in your app
+        display_papers()
     elif choice == "User Profile":
-        user_profile_section()  # Ensure you have this function in your app
+        user_profile_section()
     elif choice == "Submission Guidelines":
-        display_guidelines()  # Ensure you have this function in your app
+        display_guidelines()
     elif choice == "Collaborative Projects":
-        collaborative_project_section()  # Ensure you have this function in your app
+        collaborative_project_section()
     elif choice == "Institutional Partnerships":
-        institutional_partnership_section()  # Navigate to the institutional partnership section
+        institutional_partnership_section()
 
-def home_section():
-    st.title("Welcome to Kurdistan Research Exchange")
-    st.write("This platform allows users to upload, view, and share research papers related to the Kurdistan Region.")
