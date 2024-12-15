@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from database import load_data, save_data
+from io import StringIO
 
 # Load the research papers from the CSV file
 df = load_data()
@@ -23,7 +24,26 @@ def display_papers():
 def add_paper_form():
     st.subheader("Add a New Research Paper")
 
-    # Create form fields
+    # Option 1: Upload CSV File
+    uploaded_file = st.file_uploader("Upload a CSV file with research paper details", type="csv")
+
+    if uploaded_file is not None:
+        # Read the uploaded CSV file into a DataFrame
+        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+        uploaded_df = pd.read_csv(stringio)
+        
+        # Ensure the uploaded CSV has the correct columns
+        required_columns = ['title', 'author', 'university', 'year', 'abstract']
+        if all(col in uploaded_df.columns for col in required_columns):
+            # Append the new papers to the existing DataFrame and save it
+            global df
+            df = pd.concat([df, uploaded_df], ignore_index=True)
+            save_data(df)
+            st.success("Your research papers have been successfully added!")
+        else:
+            st.error("The uploaded CSV file must contain the following columns: title, author, university, year, abstract.")
+    
+    # Option 2: Manually Add Paper Details
     with st.form(key='paper_form'):
         title = st.text_input("Title")
         author = st.text_input("Author")
