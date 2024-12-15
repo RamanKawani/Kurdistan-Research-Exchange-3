@@ -2,8 +2,17 @@ import streamlit as st
 
 def collaborative_project_section():
     st.title("Collaborative Projects")
+
+    # Placeholder content for collaborative projects section
     st.write("""
-        This section will feature collaborative research projects and provide information on how researchers can join or start collaborative efforts. 
-        It aims to facilitate collaboration across institutions, researchers, and other stakeholders in the Kurdistan Region and beyond.
+        In this section, users can learn about ongoing or potential collaborative research projects.
+        This space is dedicated to fostering partnerships and collaborative efforts within the research community.
     """)
-    st.write("Here, you can explore opportunities, find partners, and contribute to ongoing projects in various fields of study.")
+
+    # Example of displaying sample collaborative projects
+    st.subheader("Sample Collaborative Projects")
+    st.write("1. Project Title 1: A collaboration between University X and Institution Y.")
+    st.write("2. Project Title 2: A collaboration between Research Institute Z and Organization A.")
+    st.write("3. Project Title 3: A collaborative study on Topic B.")
+
+    # Add more functionality as needed (e.g., fetching projects from a database, etc.)
