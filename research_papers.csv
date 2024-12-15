@@ -1,6 +1,11 @@
+import os
 import pandas as pd
 
-# Create a dictionary with sample data
+# Create the 'data' directory if it doesn't exist
+if not os.path.exists('data'):
+    os.makedirs('data')
+
+# Define the data for the CSV
 data = {
     'Title': [
         'Understanding Kurdish Politics', 
@@ -43,7 +48,7 @@ data = {
 # Convert the dictionary to a DataFrame
 df = pd.DataFrame(data)
 
-# Save the DataFrame to a CSV file with proper quoting
+# Save the DataFrame to a CSV file inside the 'data' folder
 df.to_csv('data/research_papers.csv', index=False, quotechar='"', quoting=1)
 
-print("CSV file created successfully!")
+print("CSV file created successfully in the 'data' directory!")
