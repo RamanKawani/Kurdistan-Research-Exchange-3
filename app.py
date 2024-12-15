@@ -35,7 +35,7 @@ def main():
     elif choice == "Upload Papers":
         upload_papers(df)
     elif choice == "View Papers":
-        creator_email = "creator@example.com"  # Change this to the actual creator email
+        creator_email = "RamanKhalid888@gmail.com"  # Change this to the actual creator email
         display_papers(df, creator_email)
     elif choice == "User Profile":
         user_profile_section()
