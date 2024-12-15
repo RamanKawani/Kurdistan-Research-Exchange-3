@@ -1,6 +1,5 @@
 import streamlit as st
 
-# Collaborative project section
 def collaborative_project_section(user_email="user@example.com"):
     st.title("Collaborative Research Projects")
 
@@ -21,28 +20,35 @@ def collaborative_project_section(user_email="user@example.com"):
     project_title = st.text_input("Enter Project Title")
     project_description = st.text_area("Enter Project Description")
     project_contact = st.text_input("Your Contact Information (Email)")
+    project_location = st.text_input("Enter Project Location")  # Added field for location
 
     if st.button("Submit Project Proposal"):
-        if project_title and project_description and project_contact:
+        if project_title and project_description and project_contact and project_location:
             st.success("Your project proposal has been submitted!")
-            # You can save these details into a database or file for further processing
-            # For demonstration, we just display the submitted details
             st.write(f"Project Title: {project_title}")
             st.write(f"Description: {project_description}")
             st.write(f"Contact Info: {project_contact}")
+            st.write(f"Location: {project_location}")  # Display location of the project
         else:
             st.error("Please fill out all the fields to submit your project proposal.")
 
-    # If user is looking for projects to collaborate on, show available categories
     st.subheader("Find a Project to Collaborate On")
     st.write("Explore collaborative projects in your chosen category:")
 
-    # List existing categories with a simple button to indicate interest
     if selected_category:
         st.write(f"Explore collaborative projects under **{selected_category}**.")
-        # In a real application, you'd load and display actual project listings for the category
         st.write(f"Currently, there are no projects listed under {selected_category}.")
-
-    st.write("---")
-    st.write("**Note**: If you'd like to suggest a project or collaborate with others, please use the above options.")
-
+        
+        # Sample project data (You can replace it with a list of actual projects from a database or data structure)
+        sample_projects = [
+            {"title": "History of Kurdistan", "location": "Erbil, Kurdistan", "description": "A deep dive into the history of Kurdistan.", "contact": "user1@example.com"},
+            {"title": "Political Science Research", "location": "Baghdad, Iraq", "description": "Analyzing political trends in Iraq.", "contact": "user2@example.com"}
+        ]
+        
+        # Display the sample projects
+        for project in sample_projects:
+            st.write(f"### {project['title']}")
+            st.write(f"**Location:** {project['location']}")
+            st.write(f"**Description:** {project['description']}")
+            st.write(f"**Contact:** {project['contact']}")
+            st.write("---")
