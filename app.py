@@ -11,7 +11,7 @@ def save_data(data):
 
 def main():
     st.set_page_config(page_title="Kurdistan Research Exchange", layout="wide")
-    st.sidebar.image("assets/logo.png", use_column_width=True)
+    
 
     # Load data
     data = load_data()
