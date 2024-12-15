@@ -1,5 +1,34 @@
-# institutional_partnership.py
 import streamlit as st
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+def send_email(subject, body, to_email):
+    # SMTP configuration (Replace with your email server details)
+    smtp_server = "smtp.gmail.com"  # Example for Gmail
+    smtp_port = 587  # Port for TLS
+    smtp_username = "your_email@gmail.com"  # Your email address
+    smtp_password = "your_password"  # Your email password or App-specific password (for Gmail)
+
+    msg = MIMEMultipart()
+    msg['From'] = smtp_username
+    msg['To'] = to_email
+    msg['Subject'] = subject
+
+    # Body of the email
+    msg.attach(MIMEText(body, 'plain'))
+
+    try:
+        # Connect to the SMTP server and send email
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()  # Use TLS for security
+        server.login(smtp_username, smtp_password)
+        text = msg.as_string()
+        server.sendmail(smtp_username, to_email, text)
+        server.quit()
+        st.success(f"Your proposal for '{subject}' has been submitted successfully. We will contact you soon!")
+    except Exception as e:
+        st.error(f"Error sending email: {str(e)}")
 
 def institutional_partnership_section():
     # Title and Introduction
@@ -24,7 +53,17 @@ def institutional_partnership_section():
         
         if submit_button:
             if institution_name and project_title and project_description and contact_email:
-                st.success(f"Thank you! Your proposal for '{project_title}' has been submitted successfully. We will contact you soon at {contact_email}.")
+                # Prepare email content
+                subject = f"Collaboration Proposal: {project_title}"
+                body = f"""
+                Institution Name: {institution_name}
+                Project Title: {project_title}
+                Contact Email: {contact_email}
+                Project Description:
+                {project_description}
+                """
+                # Send email to your email address
+                send_email(subject, body, "your_email@gmail.com")  # Replace with your email
             else:
                 st.error("Please fill in all fields to submit the proposal.")
 
@@ -44,3 +83,4 @@ def institutional_partnership_section():
     # Footer with contact information
     st.subheader("Contact Information")
     st.write("For more information or to inquire about institutional partnerships, please contact us at: info@kurdistanresearch.org")
+
