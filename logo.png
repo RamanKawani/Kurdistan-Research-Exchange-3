@@ -1,19 +1,12 @@
-from PIL import Image, ImageDraw, ImageFont
+import requests
+from PIL import Image
+from io import BytesIO
 
-# Create a blank white image
-width, height = 400, 200
-image = Image.new('RGB', (width, height), color=(255, 255, 255))
+# Fetch the image from a URL (if applicable)
+url = 'https://example.com/logo.png'  # Replace with your image URL
+response = requests.get(url)
+img = Image.open(BytesIO(response.content))
 
-# Initialize the drawing context
-draw = ImageDraw.Draw(image)
+# Display the image in Streamlit
+st.sidebar.image(img, use_container_width=True)
 
-# Add some text to the image
-font = ImageFont.load_default()
-text = "Kurdistan Research Exchange"
-text_width, text_height = draw.textsize(text, font=font)
-text_x = (width - text_width) / 2
-text_y = (height - text_height) / 2
-draw.text((text_x, text_y), text, fill=(0, 0, 0), font=font)
-
-# Save the image
-image.save("logo.png")
