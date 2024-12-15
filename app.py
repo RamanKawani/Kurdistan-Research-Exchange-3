@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from display import display_papers  # Import the display_papers function
+from display import display_papers
 from upload import upload_papers
 from user_profile import create_user_profile, view_and_update_profiles
 from guidelines import display_guidelines
@@ -36,7 +36,7 @@ def main():
     elif choice == "Upload Papers":
         upload_papers(df)
     elif choice == "View Papers":
-        display_papers(df)  # Updated to use the display_papers function
+        display_papers(df)
     elif choice == "User Profile":
         user_profile_section()
     elif choice == "Submission Guidelines":
