@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 
@@ -48,8 +49,16 @@ def upload_papers(df):
 
 # Helper function to save the uploaded PDF
 def save_pdf(pdf_file):
-    # Save the file to the server (or any other logic for storing files)
-    pdf_path = f"./uploads/{pdf_file.name}"
+    # Ensure the 'uploads' directory exists
+    uploads_dir = './uploads'
+    if not os.path.exists(uploads_dir):
+        os.makedirs(uploads_dir)
+
+    # Define the file path
+    pdf_path = os.path.join(uploads_dir, pdf_file.name)
+
+    # Save the file
     with open(pdf_path, "wb") as f:
         f.write(pdf_file.getbuffer())
+    
     return pdf_path
