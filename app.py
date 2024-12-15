@@ -22,12 +22,35 @@ def save_data(df):
     df.to_csv('research_papers.csv', index=False)
 
 # Function to display papers
+# Function to display papers
 def display_papers():
     global df
     st.title("Kurdistan Research Exchange")
     st.write("Welcome to the platform where you can publish and explore social science research papers related to the Kurdistan Region.")
     
     # Search functionality
+    st.subheader("Search Research Papers")
+    search_query = st.text_input("Search by title, author, or university:")
+    if search_query:
+        filtered_df = df[df.apply(lambda row: row.astype(str).str.contains(search_query, case=False).any(), axis=1)]
+        st.dataframe(filtered_df)
+    else:
+        st.dataframe(df)
+
+    # Display PDF download links for each paper
+    for index, row in df.iterrows():
+        if row['pdf_file']:  # Check if there's a PDF file
+            pdf_path = os.path.join(PDF_DIR, row['pdf_file'])
+            if os.path.exists(pdf_path):
+                with open(pdf_path, "rb") as pdf_file:
+                    st.download_button(
+                        label=f"Download PDF: {row['title']}",
+                        data=pdf_file,
+                        file_name=row['pdf_file'],
+                        mime="application/pdf",
+                        key=f"download_button_{index}"  # Unique key using the index
+                    )
+
     st.subheader("Search Research Papers")
     search_query = st.text_input("Search by title, author, or university:")
     if search_query:
