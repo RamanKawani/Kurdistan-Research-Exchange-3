@@ -1,19 +1,18 @@
 import streamlit as st
-from home import display_home
-from upload import display_upload
-from display import display_papers
+import pandas as pd
+from display import display_papers  # Import the function
+
+def load_data():
+    # Load your CSV or data here
+    df = pd.read_csv('data/research_papers.csv')
+    return df
 
 def main():
-    st.sidebar.title("Navigation")
-    selection = st.sidebar.radio("Go to", ["Home", "Upload Research Paper", "View Papers"])
+    # Load data
+    df = load_data()
 
-    if selection == "Home":
-        display_home()
-    elif selection == "Upload Research Paper":
-        display_upload()
-    elif selection == "View Papers":
-        display_papers()  # Show the papers to the user
+    # Display papers using the imported function
+    display_papers(df)
 
 if __name__ == "__main__":
     main()
-
