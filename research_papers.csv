@@ -1,52 +1,6 @@
-import os
-import pandas as pd
-
-# Create the 'data' directory if it doesn't exist
-if not os.path.exists('data'):
-    os.makedirs('data')
-
-# Define the data for the CSV
-data = {
-    'Title': [
-        'Understanding Kurdish Politics', 
-        'Globalization and its Impact on the Middle East',
-        'Women in the Kurdish Liberation Movement', 
-        'The Role of Technology in Modern Warfare', 
-        'Kurdish Identity and Cultural Preservation'
-    
-    'Author': [
-        'John Doe', 
-        'Jane Smith', 
-        'Ahmed Ali', 
-        'Sara Ahmed', 
-        'Rebaz Ameen'
-    ],
-    'University': [
-        'University of Erbil', 
-        'University of Kurdistan', 
-        'University of Erbil', 
-        'University of Kurdistan', 
-        'University of Erbil'
-    
-    'Year': [2023, 2022, 2021, 2024, 2020],
-    'Category': [
-        'Political Science', 
-        'International Relations', 
-        'Gender Studies', 
-        'Military Science', 
-        'Sociology'
-
-    'Link': [
-        'http://example.com/paper1', 
-        'http://example.com/paper2', 
-        'http://example.com/paper3', 
-        'http://example.com/paper4', 
-        'http://example.com/paper5'
-    
-# Convert the dictionary to a DataFrame
-df = pd.DataFrame(data)
-
-# Save the DataFrame to a CSV file inside the 'data' folder
-df.to_csv('data/research_papers.csv', index=False, quotechar='"', quoting=1)
-
-print("CSV file created successfully in the 'data' directory!")
+Title,Author,University,Year,Category,Link
+"Understanding Kurdish Politics","John Doe","University of Erbil",2023,"Political Science","http://example.com/paper1"
+"Globalization and its Impact on the Middle East","Jane Smith","University of Kurdistan",2022,"International Relations","http://example.com/paper2"
+"Women in the Kurdish Liberation Movement","Ahmed Ali","University of Erbil",2021,"Gender Studies","http://example.com/paper3"
+"The Role of Technology in Modern Warfare","Sara Ahmed","University of Kurdistan",2024,"Military Science","http://example.com/paper4"
+"Kurdish Identity and Cultural Preservation","Rebaz Ameen","University of Erbil",2020,"Sociology","http://example.com/paper5"
