@@ -1,4 +1,3 @@
-# guidelines.py
 import streamlit as st
 
 def display_guidelines():
@@ -43,6 +42,6 @@ def display_guidelines():
     st.subheader("5. Contact Information")
     st.write("""
         If you need assistance, feel free to reach out to us:
-        - Email: RamanKhalid888@gmail.com
-        - Phone: 07507427976
+        - Email: support@kurdistanresearch.com
+        - Phone: +1234567890
     """)
