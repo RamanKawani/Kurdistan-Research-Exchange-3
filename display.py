@@ -4,10 +4,17 @@ import streamlit as st
 def display_papers(df, creator_email="creator@example.com"):
     st.title("View Research Papers")
     
+    # Sidebar category filter
+    category_filter = st.sidebar.selectbox("Select Category to Filter", ["All", "History", "Political Science", "International Relations", "Law", "Sociology", "Psychology", "Gender Studies"])
+    
+    # Apply filter to DataFrame
+    if category_filter != "All":
+        df = df[df['Category'] == category_filter]
+    
     # Ask user to enter their email to manage papers
     user_email = st.text_input("Enter your email to manage papers (admin only)", "")
     
-    st.write("### Research Papers")
+    st.write(f"### Research Papers - {category_filter} Category")
     
     for index, row in df.iterrows():
         with st.expander(f"Paper: {row['Title']}"):
@@ -40,6 +47,7 @@ def display_papers(df, creator_email="creator@example.com"):
                 # Display action buttons and administrative options
                 st.markdown("#### **Admin Options**")
                 if user_email == creator_email:
+                    # Delete option
                     delete_button = st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}")
                     edit_button = st.button(f"Edit Paper: {row['Title']}", key=f"edit_{index}")
                     
@@ -80,3 +88,4 @@ def display_papers(df, creator_email="creator@example.com"):
     # Display the updated DataFrame after all actions
     st.write("### Updated Research Papers")
     st.dataframe(df)
+
