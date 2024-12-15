@@ -1,4 +1,5 @@
 import os
+import streamlit as st  # Import streamlit
 
 def display_papers():
     # Set the title for the page
