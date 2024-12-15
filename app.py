@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from display import display_papers  # Import the updated display_papers function
+from display import display_papers  # Import the display_papers function
 from upload import upload_papers
 from user_profile import create_user_profile, view_and_update_profiles
 from guidelines import display_guidelines
@@ -13,7 +13,7 @@ def load_sample_data():
         "Author": ["Author 1", "Author 2", "Author 3"],
         "University": ["University A", "University B", "University C"],
         "Year": [2020, 2021, 2022],
-        "Category": ["History", "Political Science", "Law"],
+        "Category": ["History", "Political Science", "International Relations"],
         "Link": ["http://example.com/paper1", "http://example.com/paper2", "http://example.com/paper3"],
         "PDF": ["http://example.com/paper1.pdf", "http://example.com/paper2.pdf", "http://example.com/paper3.pdf"]
     }
@@ -36,7 +36,7 @@ def main():
     elif choice == "Upload Papers":
         upload_papers(df)
     elif choice == "View Papers":
-        display_papers(df)
+        display_papers(df)  # Updated to use the display_papers function
     elif choice == "User Profile":
         user_profile_section()
     elif choice == "Submission Guidelines":
@@ -67,4 +67,3 @@ def user_profile_section():
 # Run the main function
 if __name__ == "__main__":
     main()
-
