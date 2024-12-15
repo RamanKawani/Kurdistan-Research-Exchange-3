@@ -1,33 +1,30 @@
+# navigation.py
 import streamlit as st
-from home import home_section
-from upload import upload_papers
-from display import display_papers
-from user_profile import create_user_profile, view_and_update_profiles
-from guidelines import display_guidelines
-from collaborative_project import collaborative_project_section
-from institutional_partnership import institutional_partnership_section  # Assuming you added this section
+from institutional_partnership import institutional_partnership_section  # Ensure correct import
 
-# Function to handle navigation between sections
 def app_navigation():
-    # Sidebar for navigation
     st.sidebar.title("Kurdistan Research Exchange")
-
+    
+    # Sidebar navigation options
     options = ["Home", "Upload Papers", "View Papers", "User Profile", "Submission Guidelines", "Collaborative Projects", "Institutional Partnerships"]
     choice = st.sidebar.selectbox("Select a section", options)
-
-    # Based on the user's selection, navigate to the appropriate section
+    
+    # Handling the navigation logic for each section
     if choice == "Home":
         home_section()
     elif choice == "Upload Papers":
-        upload_papers()
+        upload_papers()  # Ensure you have this function in your app
     elif choice == "View Papers":
-        display_papers()
+        display_papers()  # Ensure you have this function in your app
     elif choice == "User Profile":
-        user_profile_section()
+        user_profile_section()  # Ensure you have this function in your app
     elif choice == "Submission Guidelines":
-        display_guidelines()
+        display_guidelines()  # Ensure you have this function in your app
     elif choice == "Collaborative Projects":
-        collaborative_project_section(user_email="user@example.com")
+        collaborative_project_section()  # Ensure you have this function in your app
     elif choice == "Institutional Partnerships":
-        institutional_partnership_section()  # Added the institutional partnership section here
+        institutional_partnership_section()  # Navigate to the institutional partnership section
 
+def home_section():
+    st.title("Welcome to Kurdistan Research Exchange")
+    st.write("This platform allows users to upload, view, and share research papers related to the Kurdistan Region.")
