@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit import components
 
 def display_papers(df):
     st.title("View Research Papers")
@@ -16,12 +15,12 @@ def display_papers(df):
         st.write(f"Rating: {row['Rating']} / 5")
         st.write(f"Review: {row['Reviews']}")
 
-        # Create a star rating system
-        stars = st.slider(f"Rate this paper (out of 5)", 1, 5, 3, step=1)
+        # Create a star rating system with unique key
+        stars = st.slider(f"Rate this paper (out of 5)", 1, 5, 3, step=1, key=f"stars_{idx}")
         st.write("Your Rating:", "⭐" * stars)
 
         # Create a review box
-        review = st.text_area(f"Write a review for {row['Title']}")
+        review = st.text_area(f"Write a review for {row['Title']}", key=f"review_{idx}")
 
         # Add submit button
         if st.button(f"Submit Review for {row['Title']}", key=f"submit_{idx}"):
@@ -31,5 +30,3 @@ def display_papers(df):
 
     # Display updated DataFrame with ratings and reviews
     st.dataframe(df)
-
-
