@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import os
 from io import StringIO
-from shutil import move
 
 # Directory to save PDFs
 PDF_DIR = 'uploaded_pdfs/'
@@ -36,6 +35,19 @@ def display_papers():
         st.dataframe(filtered_df)
     else:
         st.dataframe(df)
+
+    # Display PDF download links for each paper
+    for index, row in df.iterrows():
+        if row['pdf_file']:  # Check if there's a PDF file
+            pdf_path = os.path.join(PDF_DIR, row['pdf_file'])
+            if os.path.exists(pdf_path):
+                with open(pdf_path, "rb") as pdf_file:
+                    st.download_button(
+                        label=f"Download PDF: {row['title']}",
+                        data=pdf_file,
+                        file_name=row['pdf_file'],
+                        mime="application/pdf"
+                    )
 
 # Function to allow users to add a new research paper using a form
 def add_paper_form():
@@ -93,3 +105,4 @@ if __name__ == '__main__':
     # Load the data
     df = load_data()  # This loads the global df
     main()
+
