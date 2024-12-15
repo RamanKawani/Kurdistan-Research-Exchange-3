@@ -1,14 +1,5 @@
-import os
-import pandas as pd
-import streamlit as st
+title,author,abstract,category,date
+"Research on Kurdish Culture","John Doe","An in-depth study on Kurdish cultural practices.","Culture","2024-01-01"
+"Economics in Kurdistan","Jane Smith","An analysis of economic policies in the Kurdistan region.","Economics","2023-12-15"
+"Political Movements in Kurdistan","Ali Khan","A review of political parties and movements in Kurdistan.","Politics","2023-11-10"
 
-def load_data():
-    """Load the research data from CSV."""
-    file_path = "research_data.csv"
-    if not os.path.exists(file_path):
-        st.error(f"File '{file_path}' not found. Please upload it.")
-        return pd.DataFrame()  # Return an empty DataFrame as a fallback
-    return pd.read_csv(file_path)
-Title,Author,Institution,Year
-"Sample Research Paper 1","John Doe","Kurdistan University",2020
-"Sample Research Paper 2","Jane Smith","KRG Institute",2022
