@@ -3,7 +3,7 @@ import pandas as pd
 from display import display_papers
 from upload import upload_papers
 from user_profile import create_user_profile, view_and_update_profiles
-from guidelines import display_guidelines
+from guidelines import display_guidelines  # Import the guidelines section
 
 # Function to load sample data (or you can replace with actual data loading code)
 def load_sample_data():
@@ -14,7 +14,9 @@ def load_sample_data():
         "Year": [2020, 2021, 2022],
         "Category": ["Category A", "Category B", "Category C"],
         "Link": ["http://example.com/paper1", "http://example.com/paper2", "http://example.com/paper3"],
-        "PDF": ["http://example.com/paper1.pdf", "http://example.com/paper2.pdf", "http://example.com/paper3.pdf"]
+        "PDF": ["http://example.com/paper1.pdf", "http://example.com/paper2.pdf", "http://example.com/paper3.pdf"],
+        "Rating": [0, 0, 0],  # Placeholder for ratings
+        "Reviews": ["", "", ""]  # Placeholder for reviews
     }
     return pd.DataFrame(data)
 
@@ -35,8 +37,7 @@ def main():
     elif choice == "Upload Papers":
         upload_papers(df)
     elif choice == "View Papers":
-        creator_email = "ramankhalid888@gmail.com"  # Change this to the actual creator email
-        display_papers(df, creator_email)  # Pass the creator email to display_papers function
+        display_papers(df)
     elif choice == "User Profile":
         user_profile_section()
     elif choice == "Submission Guidelines":
