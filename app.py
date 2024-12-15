@@ -3,7 +3,8 @@ import pandas as pd
 from display import display_papers
 from upload import upload_papers
 from user_profile import create_user_profile, view_and_update_profiles
-from guidelines import display_guidelines  # Import the guidelines section
+from guidelines import display_guidelines
+from collaborative_project import collaborative_project_section  # Import the collaborative section
 
 # Function to load sample data (or you can replace with actual data loading code)
 def load_sample_data():
@@ -14,9 +15,7 @@ def load_sample_data():
         "Year": [2020, 2021, 2022],
         "Category": ["Category A", "Category B", "Category C"],
         "Link": ["http://example.com/paper1", "http://example.com/paper2", "http://example.com/paper3"],
-        "PDF": ["http://example.com/paper1.pdf", "http://example.com/paper2.pdf", "http://example.com/paper3.pdf"],
-        "Rating": [0, 0, 0],  # Placeholder for ratings
-        "Reviews": ["", "", ""]  # Placeholder for reviews
+        "PDF": ["http://example.com/paper1.pdf", "http://example.com/paper2.pdf", "http://example.com/paper3.pdf"]
     }
     return pd.DataFrame(data)
 
@@ -25,7 +24,7 @@ def main():
     st.sidebar.title("Kurdistan Research Exchange")
     
     # Sidebar navigation options
-    options = ["Home", "Upload Papers", "View Papers", "User Profile", "Submission Guidelines"]
+    options = ["Home", "Upload Papers", "View Papers", "User Profile", "Submission Guidelines", "Collaborative Projects"]
     choice = st.sidebar.selectbox("Select a section", options)
 
     # Load sample data for papers
@@ -41,7 +40,9 @@ def main():
     elif choice == "User Profile":
         user_profile_section()
     elif choice == "Submission Guidelines":
-        display_guidelines()  # Display the guidelines section
+        display_guidelines()
+    elif choice == "Collaborative Projects":
+        collaborative_project_section(user_email="user@example.com")  # Pass the user email for interaction
 
 # Function for the Home section
 def home_section():
@@ -66,4 +67,3 @@ def user_profile_section():
 # Run the main function
 if __name__ == "__main__":
     main()
-
