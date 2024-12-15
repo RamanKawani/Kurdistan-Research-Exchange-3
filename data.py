@@ -1,73 +1,57 @@
 import os
 import pandas as pd
-import streamlit as st  # Import streamlit
 
-# Define a function to load paper data (mock example)
+# Path to the uploads directory where the PDF files are stored
+UPLOAD_FOLDER = 'uploads'
+
+# Data to simulate your research papers database
+paper_data = {
+    "Title": ["Paper 1", "Paper 2", "Paper 3"],
+    "Author": ["Author 1", "Author 2", "Author 3"],
+    "University": ["University A", "University B", "University C"],
+    "Year": [2020, 2021, 2022],
+    "Category": ["Category A", "Category B", "Category C"],
+    "Link": ["paper1", "paper2", "paper3"],  # Without 'http://example.com/'
+    "PDF": ["paper1.pdf", "paper2.pdf", "paper3.pdf"]  # Assuming PDF file names are stored in 'uploads' folder
+}
+
+# Convert the paper data dictionary to a DataFrame
+paper_df = pd.DataFrame(paper_data)
+
+# Function to load paper data (as a DataFrame)
 def load_paper_data():
-    # Sample data (replace with your actual data source, such as a CSV or database)
-    data = {
-        'Title': ['Research Paper 1', 'Research Paper 2', 'Research Paper 3'],
-        'Author': ['Author A', 'Author B', 'Author C'],
-        'Institution': ['Institution X', 'Institution Y', 'Institution Z'],
-        'Year': [2022, 2021, 2023],
-        'Abstract': ['Abstract of paper 1', 'Abstract of paper 2', 'Abstract of paper 3'],
-        'Link': ['link1.pdf', 'link2.pdf', 'link3.pdf']
-    }
-    return pd.DataFrame(data)
+    return paper_df
 
-def display_papers():
-    # Set the title for the page
-    st.title("View Research Papers")
-    st.markdown("""
-        Welcome to the **Research Papers View** section. You can explore the uploaded research papers by searching, filtering, and sorting the results.
-    """)
+# Function to check if a paper file exists in the uploads directory
+def check_paper_exists(paper_link):
+    return os.path.isfile(os.path.join(UPLOAD_FOLDER, paper_link))
 
-    # Load sample paper data (could be replaced with database or cloud storage retrieval)
+# Function to get the file path for a paper from the uploads directory
+def get_paper_file_path(paper_link):
+    return os.path.join(UPLOAD_FOLDER, paper_link)
+
+# Example function that could be used to display research papers
+def get_paper_details():
+    # Load the paper data
     paper_df = load_paper_data()
-
-    # Search bar for filtering papers by title or author
-    search_query = st.text_input("Search for a paper by title or author:")
-
-    if search_query:
-        paper_df = paper_df[paper_df['Title'].str.contains(search_query, case=False) |
-                            paper_df['Author'].str.contains(search_query, case=False)]
     
-    # Filter options
-    st.subheader("Filter Papers")
-    filter_by_year = st.selectbox("Filter by year of publication:", options=[None] + sorted(paper_df['Year'].unique().tolist()))
-
-    if filter_by_year:
-        paper_df = paper_df[paper_df['Year'] == filter_by_year]
-
-    # Sorting options
-    st.subheader("Sort Papers")
-    sort_by = st.selectbox("Sort by:", options=["Title", "Author", "Year"])
-
-    paper_df = paper_df.sort_values(by=[sort_by], ascending=True)
-
-    # Display the filtered and sorted research papers in a table
     if not paper_df.empty:
-        st.subheader("Available Research Papers")
-        st.write(paper_df[['Title', 'Author', 'Institution', 'Year', 'Abstract']])
-
-        # Show download links for papers
+        # Extract necessary details, assuming columns like 'Title', 'Link', etc.
         for _, row in paper_df.iterrows():
-            st.markdown(f"**{row['Title']}** by {row['Author']} ({row['Year']})")
-            st.write(f"**Institution**: {row['Institution']}")
-            st.write(f"**Abstract**: {row['Abstract']}")
-
-            # Ensure correct file path handling
-            file_path = os.path.join('uploads', row['Link'])
-            if os.path.isfile(file_path):  # Check if it's a valid file
-                st.download_button(
-                    label="Download Paper",
-                    data=open(file_path, 'rb').read(),
-                    file_name=row['Link'],
-                    mime="application/pdf"
-                )
-            else:
-                st.warning(f"File for '{row['Title']}' not found or is not a valid file.")
+            paper_title = row['Title']
+            paper_author = row['Author']
+            paper_university = row['University']
+            paper_year = row['Year']
+            paper_category = row['Category']
+            paper_link = row['Link']
+            paper_pdf = row['PDF']
             
-            st.markdown("---")
+            # Check if the paper exists in the uploads folder
+            if check_paper_exists(paper_pdf):
+                print(f"Title: {paper_title}\nAuthor: {paper_author}\nUniversity: {paper_university}\nYear: {paper_year}\nCategory: {paper_category}")
+                print(f"Link: {paper_link}\nPDF: {get_paper_file_path(paper_pdf)}\n")
+            else:
+                print(f"Warning: PDF for {paper_title} not found.\n")
     else:
-        st.warning("No papers found matching your criteria.")
+        print("No paper data found.")
+
