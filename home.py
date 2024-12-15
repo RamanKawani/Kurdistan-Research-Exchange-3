@@ -18,12 +18,4 @@ def home_section():
         - **User Profile**: Manage your personal information and research activities.
     """)
 
-    # Display some static content for now (e.g., welcome message or featured content)
-    st.write("This is the homepage of the Kurdistan Research Exchange. Feel free to explore the available sections!")
-    
-    # Optionally add buttons or navigation links for the user
-    if st.button("Go to Research Papers"):
-        st.write("Navigate to the research papers section here.")  # Update with actual navigation later
-
-    if st.button("Go to Collaborative Projects"):
-        st.write("Navigate to the collaborative projects section here.")  # Update with actual navigation later
+ 
