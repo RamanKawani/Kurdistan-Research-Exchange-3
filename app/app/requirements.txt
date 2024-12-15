@@ -1,3 +1,0 @@
-Flask
-Flask-SQLAlchemy
-SQLAlchemy==1.4.46
