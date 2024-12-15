@@ -7,27 +7,43 @@ from guidelines import display_guidelines  # Import the guidelines section
 from collaborative_projects import collaborative_project_section  # Import the collaborative projects section
 
 def app_navigation():
-    # Sidebar title and navigation options
-    st.sidebar.title("Kurdistan Research Exchange")
-
-    # Define the navigation menu options
-    menu = ["Home", "Upload Paper", "View Papers", "User Profile", "Guidelines", "Collaborative Projects"]
+    # Sidebar UI enhancements
+    st.sidebar.title("Kurdistan Research Exchange")  # Main title for sidebar
+    st.sidebar.markdown("Welcome to the **Kurdistan Research Exchange** platform!")
+    st.sidebar.markdown("Choose a section from the options below.")
     
-    # Add menu to sidebar
+    # Add an image to the sidebar (optional)
+    st.sidebar.image("https://example.com/logo.png", width=150)
+
+    # Define the navigation menu with icons (Streamlit's icon support)
+    menu = [
+        "🏠 Home",
+        "📤 Upload Paper",
+        "📚 View Papers",
+        "👤 User Profile",
+        "📄 Guidelines",
+        "🤝 Collaborative Projects"
+    ]
+
+    # Sidebar menu radio button
     choice = st.sidebar.radio("Select an Option", menu)
 
-    # Display the appropriate section based on user's choice
-    if choice == "Home":
-        home_section()
-    elif choice == "Upload Paper":
-        upload_papers()
-    elif choice == "View Papers":
-        display_papers()
-    elif choice == "User Profile":
-        user_profile_section()
-    elif choice == "Guidelines":
-        display_guidelines()
-    elif choice == "Collaborative Projects":
-        collaborative_project_section()
+    # Main content area
+    st.title("Kurdistan Research Exchange Platform")  # Main title for body content
+
+    if choice == "🏠 Home":
+        home_section()  # Display the home section
+    elif choice == "📤 Upload Paper":
+        upload_papers()  # Display the upload paper section
+    elif choice == "📚 View Papers":
+        display_papers()  # Display the papers viewing section
+    elif choice == "👤 User Profile":
+        user_profile_section()  # Display the user profile section
+    elif choice == "📄 Guidelines":
+        display_guidelines()  # Display the guidelines section
+    elif choice == "🤝 Collaborative Projects":
+        collaborative_project_section()  # Display collaborative projects section
+
+# Additional customization options can be added here (e.g., footer, info, etc.)
 
 
