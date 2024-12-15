@@ -1,60 +1,39 @@
 import streamlit as st
 
-def home():
-    st.title("Kurdistan Research Exchange")
-
+def display_papers(df):
+    st.title("View Research Papers")
+    
     st.markdown(
         """
-        Welcome to the Kurdistan Research Exchange platform! Here, you can explore a wide range of academic papers and research from various fields.
-
-        Our goal is to provide access to research papers and allow users to upload and share their work for the betterment of the academic community. 
-
-        Feel free to explore the papers, sorted by author, year, or title.
+        Here, you can explore all the research papers available in the Kurdistan Research Exchange platform. 
+        Use the filter options below to narrow down your search.
         """
     )
 
-    # Interactive buttons for navigation
-    st.subheader("Navigate to Sections")
+    # If you want to add more filters (but not categories)
+    author_filter = st.text_input("Filter by Author:")
+    year_filter = st.number_input("Filter by Year:", min_value=2000, max_value=2024, value=2024)
+    
+    # Apply filters
+    filtered_df = df
+    if author_filter:
+        filtered_df = filtered_df[filtered_df['Author'].str.contains(author_filter, case=False, na=False)]
+    if year_filter:
+        filtered_df = filtered_df[filtered_df['Year'] == year_filter]
 
-    col1, col2 = st.columns(2)
-
-    with col1:
-        if st.button("View Papers"):
-            st.session_state.page = "view_papers"
-            st.experimental_rerun()
-
-    with col2:
-        if st.button("Upload Papers"):
-            st.session_state.page = "upload_papers"
-            st.experimental_rerun()
-
-    st.markdown("---")
-    st.subheader("About the Platform")
-
-    st.markdown(
-        """
-        **Kurdistan Research Exchange** is a platform aimed at promoting research in various disciplines related to the Kurdistan region. We are committed to providing open access to academic work and fostering collaboration among researchers.
-
-        Explore our growing repository of research papers, and feel free to upload your own work to contribute to the community.
-
-        For any queries, contact us at: **kurdistanresearch@platform.com**
-        """
-    )
-
-# Initialize session state to keep track of the current page
-if "page" not in st.session_state:
-    st.session_state.page = "home"
-
-# Page routing logic
-if st.session_state.page == "home":
-    home()
-elif st.session_state.page == "view_papers":
-    # Replace this with the view papers display code
-    from display import display_papers
-    # Assuming you have a function to get the papers DataFrame, pass it here
-    df = pd.DataFrame()  # Replace with actual DataFrame for papers
-    display_papers(df)
-elif st.session_state.page == "upload_papers":
-    # Replace this with the upload papers section code
-    from upload import upload_papers
-    upload_papers()
+    # Show filtered papers
+    if not filtered_df.empty:
+        for idx, row in filtered_df.iterrows():
+            st.subheader(f"Title: {row['Title']}")
+            st.write(f"Author(s): {row['Author']}")
+            st.write(f"Year: {row['Year']}")
+            st.write(f"Abstract: {row['Abstract']}")
+            st.download_button(
+                label="Download PDF",
+                data=row['PDF'],
+                file_name=f"{row['Title']}.pdf",
+                mime="application/pdf"
+            )
+            st.markdown("---")
+    else:
+        st.write("No papers found based on the applied filters.")
