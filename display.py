@@ -72,3 +72,4 @@ def display_papers(df, creator_email="creator@example.com"):
     st.write("### Updated Research Papers")
     st.dataframe(df)
 
+
