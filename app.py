@@ -22,7 +22,6 @@ def save_data(df):
     df.to_csv('research_papers.csv', index=False)
 
 # Function to display papers
-# Function to display papers
 def display_papers():
     global df
     st.title("Kurdistan Research Exchange")
@@ -49,8 +48,7 @@ def display_papers():
                         file_name=row['pdf_file'],
                         mime="application/pdf",
                         key=f"download_button_{index}"  # Unique key using the index
-                    )
-
+                        
     st.subheader("Search Research Papers")
     search_query = st.text_input("Search by title, author, or university:")
     if search_query:
