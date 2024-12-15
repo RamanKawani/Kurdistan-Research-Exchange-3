@@ -23,6 +23,3 @@ def home_section():
         2. Upload your own research to contribute to the platform.
         3. Engage with other researchers and institutions to collaborate and share insights.
     """)
-
-    # Call to action
-    st.button("Start Exploring")
