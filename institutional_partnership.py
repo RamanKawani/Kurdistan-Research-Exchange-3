@@ -7,7 +7,7 @@ def send_email(subject, body, to_email):
     # SMTP configuration (Replace with your email server details)
     smtp_server = "smtp.gmail.com"  # Example for Gmail
     smtp_port = 587  # Port for TLS
-    smtp_username = "your_email@gmail.com"  # Your email address
+    smtp_username = "ramankhalid888@gmail.com"  # Your email address
     smtp_password = "your_password"  # Your email password or App-specific password (for Gmail)
 
     msg = MIMEMultipart()
