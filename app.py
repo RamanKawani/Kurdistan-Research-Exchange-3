@@ -1,9 +1,8 @@
 import streamlit as st
-from navigation import app_navigation  # Ensure this is the correct import
+from navigation import app_navigation  # Import the navigation function
 
 def main():
-    app_navigation()  # This is the main navigation handler
+    app_navigation()  # Call the navigation function that handles the app flow
 
-# Run the main function
 if __name__ == "__main__":
     main()
