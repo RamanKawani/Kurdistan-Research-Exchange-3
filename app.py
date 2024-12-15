@@ -1,58 +1,50 @@
-import pandas as pd
 import streamlit as st
+import pandas as pd
+from display import display_papers
+from upload import upload_papers
 
-# Function to load data
-def load_data():
-    try:
-        # Load the CSV file
-        df = pd.read_csv('data/research_papers.csv')
-        return df
-    except FileNotFoundError:
-        st.error("CSV file not found. Please check the file path.")
-        return None
-    except pd.errors.EmptyDataError:
-        st.error("CSV file is empty. Please check the file contents.")
-        return None
-    except Exception as e:
-        st.error(f"Error loading data: {e}")
-        return None
+# Function to load sample data (or you can replace with actual data loading code)
+def load_sample_data():
+    data = {
+        "Title": ["Paper 1", "Paper 2", "Paper 3"],
+        "Author": ["Author 1", "Author 2", "Author 3"],
+        "University": ["University A", "University B", "University C"],
+        "Year": [2020, 2021, 2022],
+        "Category": ["Category A", "Category B", "Category C"],
+        "Link": ["http://example.com/paper1", "http://example.com/paper2", "http://example.com/paper3"],
+        "PDF": ["http://example.com/paper1.pdf", "http://example.com/paper2.pdf", "http://example.com/paper3.pdf"]
+    }
+    return pd.DataFrame(data)
 
-# Function to display the research papers
-def display_papers(df):
-    if df is not None and 'PDF' in df.columns:
-        # Display the papers
-        st.title("Kurdistan Research Papers")
-        for idx, row in df.iterrows():
-            st.subheader(f"Title: {row['Title']}")
-            st.write(f"Author: {row['Author']}")
-            st.write(f"University: {row['University']}")
-            st.write(f"Year: {row['Year']}")
-            st.write(f"Category: {row['Category']}")
-            st.write(f"Link: {row['Link']}")
-
-            # Display the download button for PDF
-            pdf_link = row['PDF']
-            if pd.notna(pdf_link):  # Check if there's a PDF link
-                st.download_button(
-                    label="Download PDF",
-                    data=pdf_link,
-                    file_name=f"{row['Title']}.pdf",
-                    mime="application/pdf"
-                )
-            else:
-                st.write("No PDF available for this paper.")
-    else:
-        st.write("No data available or 'PDF' column is missing.")
-
-# Main function to run the app
+# Main function to handle app navigation and sections
 def main():
-    # Load data
-    df = load_data()
+    st.sidebar.title("Kurdistan Research Exchange")
     
-    if df is not None:
-        # Display papers
+    # Sidebar navigation options
+    options = ["Home", "Upload Papers", "View Papers"]
+    choice = st.sidebar.selectbox("Select a section", options)
+
+    # Load sample data for papers
+    df = load_sample_data()
+    
+    # Navigate based on user selection
+    if choice == "Home":
+        home_section()
+    elif choice == "Upload Papers":
+        upload_papers(df)
+    elif choice == "View Papers":
         display_papers(df)
 
-# Run the app
+# Function for the Home section
+def home_section():
+    st.title("Welcome to Kurdistan Research Exchange")
+    st.write("This platform allows users to upload, view, and share research papers related to the Kurdistan Region.")
+    st.write("You can upload your papers under the **'Upload Papers'** section, and view papers in the **'View Papers'** section.")
+    
+    # Add more sections or information here if necessary
+    st.subheader("About")
+    st.write("Kurdistan Research Exchange is an open platform to share and access academic research papers related to the Kurdistan Region.")
+
+# Run the main function
 if __name__ == "__main__":
     main()
