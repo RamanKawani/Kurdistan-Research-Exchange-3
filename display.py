@@ -5,7 +5,7 @@ def display_papers(df, creator_email="ramankhalid888@gmail.com"):
     st.title("View Research Papers")
     
     # Ask user to enter their email to manage papers
-    user_email = st.text_input("ramankhalid888@gmail.com (admin only)", "")
+    user_email = st.text_input("(admin only)", "")
     
     # Display the papers
     st.write("### Research Papers")
