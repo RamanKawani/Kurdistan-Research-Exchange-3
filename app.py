@@ -71,4 +71,4 @@ elif page == "Explore Research":
 
 # Footer
 st.markdown("---")
-st.markdown("Created with ❤️ by [Your Name]. Powered by Streamlit.")
+st.markdown("Created with ❤️ by [Raman]. Powered by Streamlit.")
