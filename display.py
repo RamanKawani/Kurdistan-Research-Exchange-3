@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Sample papers for demonstration (replace with your actual data)
-def display_papers(df, creator_email="creator@example.com"):
+def display_papers(df, creator_email="ramankhalid888@gmail.com"):
     st.title("View Research Papers")
     
     # Ask user to enter their email to manage papers
