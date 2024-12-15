@@ -1,24 +1,36 @@
 import streamlit as st
-import pandas as pd
-from display_papers import display_papers
 
-# Load the data (assuming you have data loaded as a pandas DataFrame)
-def load_data():
-    # Example: Load your data here
-    data = {
-        "title": ["Paper 1", "Paper 2", "Paper 3"],
-        "author": ["Author A", "Author B", "Author C"],
-        "university": ["University X", "University Y", "University Z"],
-        "pdf_file": ["pdf_data_1", "pdf_data_2", "pdf_data_3"]  # This should contain actual file data
-    }
-    return pd.DataFrame(data)
+def home():
+    st.title("Welcome to the Kurdistan Research Exchange")
+    st.write("""
+        This platform allows users to upload, share, and download research papers related to Kurdistan and the surrounding region.
+        Use the sections below to interact with the platform.
+    """)
+import streamlit as st
 
-def main():
-    # Load data
-    df = load_data()
+def upload(df):
+    # File upload section
+    uploaded_file = st.file_uploader("Upload a research paper (PDF only)", type="pdf")
+    if uploaded_file is not None:
+        pdf_data = uploaded_file.read()
+        st.write("File uploaded successfully!")
 
-    # Call display_papers function from display_papers.py
-    display_papers(df)
+        # Add the paper to the database (append to df)
+        title = st.text_input("Enter the title of the paper:", key="title_input")
+        author = st.text_input("Enter the author(s) of the paper:", key="author_input")
+        university = st.text_input("Enter the university associated with the paper:", key="university_input")
 
-if __name__ == "__main__":
-    main()
+        if st.button("Add Paper"):
+            if title and author and university:
+                # Assuming df is a global data storage (in-memory or database)
+                new_paper = {
+                    "title": title,
+                    "author": author,
+                    "university": university,
+                    "pdf_file": pdf_data
+                }
+                df = df.append(new_paper, ignore_index=True)
+                st.success(f"Paper '{title}' added successfully!")
+            else:
+                st.warning("Please fill in all fields.")
+    return df
