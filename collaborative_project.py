@@ -14,7 +14,15 @@ def collaborative_project_section(user_email="user@example.com"):
     # Display a message based on the selected category
     st.write(f"You have selected the category: **{selected_category}**")
 
-    # Let users propose a project
+    # Navigation between proposing a project and finding a project
+    section_choice = st.radio("Select a section:", ["Propose a Project", "Find a Project to Collaborate On"])
+
+    if section_choice == "Propose a Project":
+        propose_project_section()
+    elif section_choice == "Find a Project to Collaborate On":
+        find_project_section(selected_category)
+
+def propose_project_section():
     st.subheader("Propose a Collaborative Research Project")
 
     project_title = st.text_input("Enter Project Title")
@@ -32,23 +40,25 @@ def collaborative_project_section(user_email="user@example.com"):
         else:
             st.error("Please fill out all the fields to submit your project proposal.")
 
+def find_project_section(selected_category):
     st.subheader("Find a Project to Collaborate On")
-    st.write("Explore collaborative projects in your chosen category:")
+    st.write(f"Explore collaborative projects in your chosen category: **{selected_category}**")
 
-    if selected_category:
-        st.write(f"Explore collaborative projects under **{selected_category}**.")
-        st.write(f"Currently, there are no projects listed under {selected_category}.")
-        
-        # Sample project data (You can replace it with a list of actual projects from a database or data structure)
-        sample_projects = [
-            {"title": "History of Kurdistan", "location": "Erbil, Kurdistan", "description": "A deep dive into the history of Kurdistan.", "contact": "user1@example.com"},
-            {"title": "Political Science Research", "location": "Baghdad, Iraq", "description": "Analyzing political trends in Iraq.", "contact": "user2@example.com"}
-        ]
-        
-        # Display the sample projects
+    # Sample project data (You can replace it with a list of actual projects from a database or data structure)
+    sample_projects = [
+        {"title": "History of Kurdistan", "location": "Erbil, Kurdistan", "description": "A deep dive into the history of Kurdistan.", "contact": "user1@example.com"},
+        {"title": "Political Science Research", "location": "Baghdad, Iraq", "description": "Analyzing political trends in Iraq.", "contact": "user2@example.com"}
+    ]
+
+    # Display the sample projects
+    if sample_projects:
         for project in sample_projects:
             st.write(f"### {project['title']}")
             st.write(f"**Location:** {project['location']}")
             st.write(f"**Description:** {project['description']}")
             st.write(f"**Contact:** {project['contact']}")
             st.write("---")
+    else:
+        st.write("Currently, there are no projects listed under this category.")
+
+
