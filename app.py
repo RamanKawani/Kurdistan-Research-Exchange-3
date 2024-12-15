@@ -1,138 +1,71 @@
-import os
-import pandas as pd
 import streamlit as st
+import pandas as pd
 
-# App configuration
-st.set_page_config(
-    page_title="Kurdistan Research Exchange",
-    page_icon="📚",
-    layout="wide",
-)
+def load_data():
+    """Load the research data from CSV."""
+    return pd.read_csv("research_data.csv")
 
-# Database file path
-DATABASE_FILE = "database.csv"
+def save_data(data):
+    """Save the research data to CSV."""
+    data.to_csv("research_data.csv", index=False)
 
-# Ensure the database file exists
-if not os.path.exists(DATABASE_FILE):
-    pd.DataFrame(columns=["Title", "Author", "Institution", "Year"]).to_csv(DATABASE_FILE, index=False)
+def main():
+    st.set_page_config(page_title="Kurdistan Research Exchange", layout="wide")
+    st.sidebar.image("assets/logo.png", use_column_width=True)
 
-# Function to load the database
-def load_database():
-    return pd.read_csv(DATABASE_FILE)
+    # Load data
+    data = load_data()
 
-# Function to save to the database
-def save_to_database(data):
-    data.to_csv(DATABASE_FILE, index=False)
+    # Title and Description
+    st.title("Kurdistan Research Exchange")
+    st.write("A platform to share and discover academic research from universities in Kurdistan.")
 
-# Sidebar with logo handling
-logo_path = "assets/logo.png"
-if os.path.exists(logo_path):
-    st.sidebar.image(logo_path, use_container_width=True)
-else:
-    st.sidebar.title("🌍 Kurdistan Research Exchange")
+    # Categories
+    categories = ["All", "History", "Political Science", "Sociology", "Philosophy", "Economics"]
+    selected_category = st.sidebar.selectbox("Select a category", categories)
 
-# Sidebar navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to:", ["Home", "Upload Research", "Explore Research"])
-
-# Enhanced UI styling
-st.markdown(
-    """
-    <style>
-    .stTitle {
-        color: #2C3E50;
-        font-size: 2.5rem;
-    }
-    .stSidebar {
-        background-color: #F8F9FA;
-        padding: 15px;
-        border-right: 1px solid #E5E5E5;
-    }
-    .stButton > button {
-        background-color: #2ECC71;
-        color: white;
-        border-radius: 8px;
-    }
-    .stButton > button:hover {
-        background-color: #27AE60;
-    }
-    .stDataFrame {
-        border-radius: 8px;
-        overflow: hidden;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-# Main content
-if page == "Home":
-    st.title("📚 Welcome to the Kurdistan Research Exchange")
-    st.markdown(
-        """
-        This platform enables researchers and institutions in Kurdistan to share and access academic research. 
-        Upload your research or explore contributions by others to advance knowledge across various fields.
-        """
-    )
-    st.image("https://via.placeholder.com/800x400", use_container_width=True)
-
-elif page == "Upload Research":
-    st.title("📤 Upload Your Research Paper")
-    st.markdown("Share your academic research with the community.")
-
-    # File uploader
-    uploaded_file = st.file_uploader("Upload Your Research Paper (PDF)", type=["pdf"], help="Only PDF files are supported.")
-    if uploaded_file:
-        st.success("File uploaded successfully!")
-        st.write("File Name:", uploaded_file.name)
-
-    # Metadata form
-    with st.form("upload_form"):
-        title = st.text_input("Title of the Paper", placeholder="Enter the research title")
-        author = st.text_input("Author(s)", placeholder="Enter the author(s) name(s)")
-        institution = st.text_input("Institution", placeholder="Enter your institution")
-        year = st.number_input("Year of Publication", min_value=1900, max_value=2100, step=1)
-        submit_button = st.form_submit_button("Submit")
-
-        if submit_button:
-            st.success("Research metadata submitted!")
-            st.write("**Title:**", title)
-            st.write("**Author(s):**", author)
-            st.write("**Institution:**", institution)
-            st.write("**Year:**", int(year))
-
-            # Append new data to the database
-            new_entry = pd.DataFrame({
-                "Title": [title],
-                "Author": [author],
-                "Institution": [institution],
-                "Year": [int(year)],
-            })
-            database = load_database()
-            updated_database = pd.concat([database, new_entry], ignore_index=True)
-            save_to_database(updated_database)
-
-elif page == "Explore Research":
-    st.title("🔍 Explore Research Papers")
-    st.markdown("Browse the research papers uploaded by the community.")
-
-    # Display data from the database
-    database = load_database()
-    if not database.empty:
-        st.dataframe(database, use_container_width=True, height=600)
-
-        # Filter options
-        st.markdown("### Filter Research Papers")
-        filter_year = st.slider("Filter by Year", min_value=1900, max_value=2024, value=(2000, 2024))
-        filtered_data = database[
-            (database["Year"] >= filter_year[0]) & (database["Year"] <= filter_year[1])
-        ]
-        st.dataframe(filtered_data, use_container_width=True, height=400)
+    # Filter data by category
+    if selected_category != "All":
+        filtered_data = data[data['Category'] == selected_category]
     else:
-        st.warning("No research papers found. Please upload some!")
+        filtered_data = data
 
-# Footer
-st.markdown("---")
-st.markdown("Created with ❤️ by [Your Name]. Powered by Streamlit.")
+    # Display research
+    st.subheader("Research Papers")
+    for index, row in filtered_data.iterrows():
+        st.markdown(f"### {row['Title']}")
+        st.markdown(f"**Author(s):** {row['Author(s)']}")
+        st.markdown(f"**University:** {row['University']}")
+        st.markdown(f"**Category:** {row['Category']}")
+        st.markdown(f"**Abstract:** {row['Abstract']}")
+        st.markdown("---")
+
+    # Upload new research
+    st.sidebar.subheader("Upload New Research")
+    with st.sidebar.form("upload_form"):
+        title = st.text_input("Research Title")
+        authors = st.text_input("Author(s)")
+        university = st.text_input("University")
+        category = st.selectbox("Category", categories[1:])
+        abstract = st.text_area("Abstract")
+        uploaded = st.form_submit_button("Submit")
+
+        if uploaded:
+            if title and authors and university and abstract:
+                new_row = pd.DataFrame({
+                    "Title": [title],
+                    "Author(s)": [authors],
+                    "University": [university],
+                    "Category": [category],
+                    "Abstract": [abstract]
+                })
+                data = pd.concat([data, new_row], ignore_index=True)
+                save_data(data)
+                st.sidebar.success("Research uploaded successfully!")
+            else:
+                st.sidebar.error("Please fill in all fields.")
+
+if __name__ == "__main__":
+    main()
 
 
