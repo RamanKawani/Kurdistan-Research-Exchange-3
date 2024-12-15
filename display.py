@@ -4,53 +4,43 @@ import streamlit as st
 def display_papers(df, creator_email="creator@example.com"):
     st.title("View Research Papers")
     
-    # Sidebar category filter
-    category_filter = st.sidebar.selectbox("Select Category to Filter", ["All", "History", "Political Science", "International Relations", "Law", "Sociology", "Psychology", "Gender Studies"])
-    
-    # Apply filter to DataFrame
-    if category_filter != "All":
-        df = df[df['Category'] == category_filter]
-    
     # Ask user to enter their email to manage papers
     user_email = st.text_input("Enter your email to manage papers (admin only)", "")
     
-    st.write(f"### Research Papers - {category_filter} Category")
+    # Category filter
+    categories = ["History", "Political Science", "International Relations", "Law", "Sociology", "Psychology", "Gender Study"]
+    selected_category = st.sidebar.selectbox("Filter by Category", categories)
     
-    for index, row in df.iterrows():
+    # Filter papers by selected category
+    filtered_df = df[df['Category'] == selected_category]
+    
+    # Display the papers
+    st.write(f"### Research Papers in {selected_category} Category")
+    for index, row in filtered_df.iterrows():
+        # Create a styled card for each paper
         with st.expander(f"Paper: {row['Title']}"):
-            # Use columns to arrange elements nicely
-            col1, col2 = st.columns([2, 1])
+            # Display paper details
+            st.subheader(f"Title: {row['Title']}")
+            st.write(f"**Author**: {row['Author']}")
+            st.write(f"**University**: {row['University']}")
+            st.write(f"**Year**: {row['Year']}")
+            st.write(f"**Category**: {row['Category']}")
+            st.write(f"**Link**: [View Paper]({row['Link']})")
+            st.write(f"**PDF**: [Download PDF]({row['PDF']})")
             
-            with col1:
-                # Display paper details in a card-like style
-                st.markdown(f"#### **{row['Title']}**")
-                st.write(f"**Author**: {row['Author']}")
-                st.write(f"**University**: {row['University']}")
-                st.write(f"**Year**: {row['Year']}")
-                st.write(f"**Category**: {row['Category']}")
-                st.write(f"**Link**: [View Paper]({row['Link']})")
-                st.write(f"**PDF**: [Download PDF]({row['PDF']})")
-                
-                # Show abstract or more details if necessary
-                if 'Abstract' in row:
-                    st.write(f"**Abstract**: {row['Abstract']}")
-
-                st.markdown("___")  # Horizontal line for separation
-                
-                # Rating and review section
-                rating = st.slider(f"Rate this paper (out of 5)", 1, 5, 3, step=1, key=f"rate_{index}")
-                review = st.text_area(f"Write your review for '{row['Title']}'", key=f"review_{index}")
-                st.write(f"Your rating: {rating} stars")
-                st.write(f"Your review: {review}")
+            # Display rating and review functionality
+            rating = st.slider(f"Rate this paper (out of 5)", 1, 5, 3, step=1, key=f"rate_{index}")
+            review = st.text_area(f"Write your review for '{row['Title']}'", key=f"review_{index}")
+            st.write(f"Your rating: {rating} stars")
+            st.write(f"Your review: {review}")
             
-            with col2:
-                # Display action buttons and administrative options
-                st.markdown("#### **Admin Options**")
-                if user_email == creator_email:
-                    # Delete option
+            # Allow admin to delete or edit only if they provide the correct email
+            if user_email == creator_email:
+                # Confirm deletion before proceeding
+                with st.expander("Admin Options"):
                     delete_button = st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}")
                     edit_button = st.button(f"Edit Paper: {row['Title']}", key=f"edit_{index}")
-                    
+
                     if delete_button:
                         # Confirm the deletion action
                         confirm_deletion = st.selectbox(
@@ -88,4 +78,5 @@ def display_papers(df, creator_email="creator@example.com"):
     # Display the updated DataFrame after all actions
     st.write("### Updated Research Papers")
     st.dataframe(df)
+
 
