@@ -1,107 +1,70 @@
 import streamlit as st
+import subprocess
+import sys
 import os
-import pandas as pd
 
-# Page Configuration
-st.set_page_config(page_title="Kurdistan Research Exchange", layout="wide")
+# Function to check installed package version
+def get_installed_version(package_name):
+    try:
+        result = subprocess.run([sys.executable, "-m", "pip", "show", package_name], capture_output=True, text=True)
+        for line in result.stdout.splitlines():
+            if line.startswith("Version:"):
+                return line.split(" ")[1]
+        return None
+    except Exception as e:
+        return None
 
-# Home Page (Landing Page)
-def home_page():
-    st.title("Welcome to Kurdistan Research Exchange")
-    st.write("""
-        A platform to upload and access social science research papers from universities in Kurdistan.
-    """)
-    
-    # Search Bar
-    query = st.text_input("Search for research papers:")
-    if query:
-        st.write(f"Search results for: {query}")
-        # Implement search functionality here (example: search from a database or CSV)
+# Function to modify requirements.txt based on version conflict
+def resolve_conflict():
+    # Get current versions of Streamlit and pandas
+    streamlit_version = get_installed_version('streamlit')
+    pandas_version = get_installed_version('pandas')
+
+    # Display the current versions
+    st.write(f"Installed Streamlit version: {streamlit_version}")
+    st.write(f"Installed pandas version: {pandas_version}")
+
+    if streamlit_version and pandas_version:
+        # If Streamlit 1.21.0 and pandas 2.x
+        if streamlit_version == '1.21.0' and pandas_version.startswith('2'):
+            st.warning("Conflict detected: Streamlit 1.21.0 is incompatible with pandas 2.x.")
+            st.info("Downgrading pandas to 1.5.3 (compatible with Streamlit 1.21.0).")
+            
+            # Modify requirements.txt to downgrade pandas
+            with open('requirements.txt', 'w') as f:
+                f.write('streamlit==1.21.0\n')
+                f.write('pandas==1.5.3\n')
+            
+            st.success("requirements.txt has been updated. Run `pip install -r requirements.txt` to resolve the conflict.")
         
-    # Featured Papers (Can be fetched dynamically from a dataset)
-    st.header("Featured Papers")
-    st.write("Here are some of the featured research papers:")
-    # Example research listing
-    papers = [
-        {"title": "Research Paper 1", "author": "Author 1", "university": "University A"},
-        {"title": "Research Paper 2", "author": "Author 2", "university": "University B"}
-    ]
-    for paper in papers:
-        st.write(f"- **{paper['title']}** by {paper['author']} from {paper['university']}")
-
-# Upload Research Page
-def upload_page():
-    st.title("Upload Your Research")
-    st.write("""
-        Please fill out the form to upload your research paper.
-    """)
-    
-    # Research paper upload form
-    with st.form(key='upload_form'):
-        title = st.text_input("Title of Paper")
-        authors = st.text_input("Author(s)")
-        university = st.text_input("University")
-        department = st.text_input("Department")
-        keywords = st.text_input("Keywords (comma separated)")
-        abstract = st.text_area("Abstract")
-        paper_file = st.file_uploader("Upload your research paper", type=['pdf', 'docx'])
+        # If Streamlit is 2.x and pandas is compatible
+        elif streamlit_version.startswith('2') and pandas_version.startswith('2'):
+            st.success("Streamlit and pandas versions are compatible. No changes needed.")
         
-        submit_button = st.form_submit_button(label="Upload Paper")
+        # If Streamlit 1.21.0 and pandas < 2
+        elif streamlit_version == '1.21.0' and not pandas_version.startswith('2'):
+            st.success("Streamlit 1.21.0 is compatible with pandas < 2.x. No changes needed.")
         
-        if submit_button and paper_file is not None:
-            # Save the paper to a folder (this is a simple placeholder, modify with actual backend)
-            paper_path = os.path.join("uploaded_papers", paper_file.name)
-            with open(paper_path, "wb") as f:
-                f.write(paper_file.getbuffer())
-            st.success(f"Paper '{title}' uploaded successfully!")
+        # If Streamlit is 2.x and pandas < 2
+        elif streamlit_version.startswith('2') and not pandas_version.startswith('2'):
+            st.success("Streamlit version is compatible with pandas versions < 2 and >= 2.x. No changes needed.")
+        
+        else:
+            st.error("Could not detect appropriate versions. Please check manually.")
+    else:
+        st.error("Required packages (Streamlit or pandas) are not installed.")
 
-# Browse Research Page
-def browse_page():
-    st.title("Browse Research Papers")
-    
-    # Filters
-    university_filter = st.selectbox("Select University", ["University A", "University B", "All"])
-    department_filter = st.selectbox("Select Department", ["Political Science", "Sociology", "All"])
-    
-    st.write(f"Showing research from: {university_filter}, {department_filter}")
-    
-    # Display research papers (This could be dynamic from a database or CSV)
-    research_papers = pd.DataFrame({
-        "Title": ["Research Paper 1", "Research Paper 2"],
-        "Author": ["Author 1", "Author 2"],
-        "University": ["University A", "University B"],
-        "Department": ["Political Science", "Sociology"]
-    })
-    
-    # Filter papers based on selections
-    filtered_papers = research_papers[
-        (research_papers['University'].str.contains(university_filter) | (university_filter == "All")) &
-        (research_papers['Department'].str.contains(department_filter) | (department_filter == "All"))
-    ]
-    
-    for index, row in filtered_papers.iterrows():
-        st.write(f"**{row['Title']}** by {row['Author']} ({row['University']}, {row['Department']})")
+# Streamlit App Layout
+st.title('Streamlit Dependency Conflict Resolver')
+st.write(
+    """
+    This app helps resolve version conflicts between Streamlit and pandas.
+    It checks installed versions of Streamlit and pandas, and automatically updates 
+    the `requirements.txt` file if there is a conflict.
+    """
+)
 
-# User Profile Page
-def profile_page():
-    st.title("User Profile")
-    st.write("Manage your account and uploaded research here.")
-    # You can add functionality to manage user accounts, view uploaded papers, etc.
+# Button to resolve dependency issues
+if st.button('Check & Resolve Dependency Conflicts'):
+    resolve_conflict()
 
-# Main Function to Navigate Between Pages
-def main():
-    pages = {
-        "Home": home_page,
-        "Upload Research": upload_page,
-        "Browse Research": browse_page,
-        "Profile": profile_page
-    }
-
-    st.sidebar.title("Navigation")
-    selection = st.sidebar.radio("Go to", list(pages.keys()))
-    
-    # Call the function corresponding to the selected page
-    pages[selection]()
-
-if __name__ == "__main__":
-    main()
