@@ -17,7 +17,9 @@ def display_papers(df):
     
     # Display papers
     if not df.empty:
+        # Display the data in a more advanced layout (for example, with an editable table)
         for index, row in df.iterrows():
+            # Title and other details
             st.subheader(f"Title: {row['Title']}")
             st.write(f"Author: {row['Author']}")
             st.write(f"University: {row['University']}")
@@ -25,6 +27,9 @@ def display_papers(df):
             st.write(f"Category: {row['Category']}")
             st.write(f"Link: {row['Link']}")
             st.write(f"PDF Path: {row['PDF']}")
+            
+            # Display file as a link
+            st.markdown(f"[Download PDF]({row['PDF']})", unsafe_allow_html=True)
 
             # Add a delete button for each paper
             if st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}"):
@@ -42,4 +47,12 @@ def delete_paper(index, df):
     df.to_csv('papers.csv', index=False)
     st.success("Paper deleted successfully!")
 
+# You may want to reload or refresh the DataFrame each time after deletion
+# This function can be placed in the app.py file or elsewhere depending on the setup
+def load_papers():
+    try:
+        df = pd.read_csv('papers.csv')
+    except FileNotFoundError:
+        df = pd.DataFrame(columns=["Title", "Author", "University", "Year", "Category", "Link", "PDF"])
+    return df
 
