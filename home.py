@@ -58,4 +58,3 @@ elif st.session_state.page == "upload_papers":
     # Replace this with the upload papers section code
     from upload import upload_papers
     upload_papers()
-
