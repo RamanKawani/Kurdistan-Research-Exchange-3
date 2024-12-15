@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd  # Add this import statement
 from home import home_section
 from upload import upload_papers
 from display import display_papers
@@ -54,4 +55,3 @@ def user_profile_section():
 # Run the main function
 if __name__ == "__main__":
     main()
-
