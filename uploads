@@ -41,9 +41,9 @@ def display_papers():
             st.write(f"**Institution**: {row['Institution']}")
             st.write(f"**Abstract**: {row['Abstract']}")
 
-            # Check if the file exists before attempting to download
+            # Ensure correct file path handling
             file_path = os.path.join('uploads', row['Link'])
-            if os.path.exists(file_path):
+            if os.path.isfile(file_path):  # Check if it's a valid file
                 st.download_button(
                     label="Download Paper",
                     data=open(file_path, 'rb').read(),
@@ -51,8 +51,9 @@ def display_papers():
                     mime="application/pdf"
                 )
             else:
-                st.warning(f"File for '{row['Title']}' not found.")
+                st.warning(f"File for '{row['Title']}' not found or is not a valid file.")
             
             st.markdown("---")
     else:
         st.warning("No papers found matching your criteria.")
+
