@@ -13,7 +13,7 @@ data = {
         'Women in the Kurdish Liberation Movement', 
         'The Role of Technology in Modern Warfare', 
         'Kurdish Identity and Cultural Preservation'
-    ],
+    
     'Author': [
         'John Doe', 
         'Jane Smith', 
@@ -27,7 +27,7 @@ data = {
         'University of Erbil', 
         'University of Kurdistan', 
         'University of Erbil'
-    ],
+    
     'Year': [2023, 2022, 2021, 2024, 2020],
     'Category': [
         'Political Science', 
@@ -35,16 +35,14 @@ data = {
         'Gender Studies', 
         'Military Science', 
         'Sociology'
-    ],
+
     'Link': [
         'http://example.com/paper1', 
         'http://example.com/paper2', 
         'http://example.com/paper3', 
         'http://example.com/paper4', 
         'http://example.com/paper5'
-    ]
-}
-
+    
 # Convert the dictionary to a DataFrame
 df = pd.DataFrame(data)
 
