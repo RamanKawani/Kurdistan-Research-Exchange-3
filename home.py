@@ -1,25 +1,29 @@
 import streamlit as st
 
 def home_section():
-    # Title of the section
-    st.title("Welcome to Kurdistan Research Exchange")
+    # Display a title for the home section
+    st.title("Welcome to the Kurdistan Research Exchange")
 
-    # Brief description of the platform
-    st.write("Browse a collection of research papers from various institutions.")
-
-    # About the platform
-    st.subheader("What is Kurdistan Research Exchange?")
+    # Description or information about the app
     st.write("""
-        The Kurdistan Research Exchange is a platform that connects researchers and academic institutions from Kurdistan and beyond.
-        It aims to provide a central place to share research, collaborate, and promote academic exchange on various topics, including politics,
-        international relations, social sciences, and more. The platform allows users to upload research papers, explore existing studies,
-        and connect with other researchers.
+        This platform allows users to upload, view, and collaborate on research papers related to the Kurdistan Region.
+        It is a hub for researchers, institutions, and organizations to collaborate and share knowledge.
     """)
 
-    # How to use the platform
-    st.subheader("How to Use This Platform")
+    # Add more content to the homepage if needed (e.g., introducing sections or services)
+    st.subheader("Explore Our Features")
     st.write("""
-        1. Browse through research papers by category.
-        2. Upload your own research to contribute to the platform.
-        3. Engage with other researchers and institutions to collaborate and share insights.
+        - **Research Paper Upload**: Share your research papers with the community.
+        - **Collaborative Projects**: Join ongoing research initiatives.
+        - **User Profile**: Manage your personal information and research activities.
     """)
+
+    # Display some static content for now (e.g., welcome message or featured content)
+    st.write("This is the homepage of the Kurdistan Research Exchange. Feel free to explore the available sections!")
+    
+    # Optionally add buttons or navigation links for the user
+    if st.button("Go to Research Papers"):
+        st.write("Navigate to the research papers section here.")  # Update with actual navigation later
+
+    if st.button("Go to Collaborative Projects"):
+        st.write("Navigate to the collaborative projects section here.")  # Update with actual navigation later
