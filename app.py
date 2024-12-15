@@ -10,33 +10,53 @@ def display_papers():
     st.title("Kurdistan Research Exchange")
     st.write("Welcome to the platform where you can publish and explore social science research papers related to the Kurdistan Region.")
     
-    # Display the research papers
-    st.subheader("Published Research Papers")
-    st.dataframe(df)
+    # Search functionality
+    st.subheader("Search Research Papers")
+    search_query = st.text_input("Search by title, author, or university:")
+    if search_query:
+        filtered_df = df[df.apply(lambda row: row.astype(str).str.contains(search_query, case=False).any(), axis=1)]
+        st.dataframe(filtered_df)
+    else:
+        st.dataframe(df)
 
-# Function to allow users to upload research papers
-def upload_paper():
-    st.subheader("Upload Your Research Paper")
-    uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
-    
-    if uploaded_file is not None:
-        # Process the uploaded CSV and append to the DataFrame
-        new_data = pd.read_csv(uploaded_file)
-        global df
-        df = pd.concat([df, new_data], ignore_index=True)
-        save_data(df)  # Save the updated data to the CSV
-        st.success("Your research paper has been successfully uploaded.")
+# Function to allow users to add a new research paper using a form
+def add_paper_form():
+    st.subheader("Add a New Research Paper")
+
+    # Create form fields
+    with st.form(key='paper_form'):
+        title = st.text_input("Title")
+        author = st.text_input("Author")
+        university = st.text_input("University")
+        year = st.number_input("Year", min_value=1900, max_value=2024, step=1)
+        abstract = st.text_area("Abstract")
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            # Create a new DataFrame for the new paper
+            new_paper = pd.DataFrame({
+                'title': [title],
+                'author': [author],
+                'university': [university],
+                'year': [year],
+                'abstract': [abstract]
+            })
+
+            # Append the new paper to the existing dataframe and save it
+            global df
+            df = pd.concat([df, new_paper], ignore_index=True)
+            save_data(df)
+            st.success("Your research paper has been successfully added!")
 
 # Sidebar navigation
 def main():
     st.sidebar.title("Navigation")
-    selection = st.sidebar.radio("Go to", ["Home", "Upload Paper"])
-    
+    selection = st.sidebar.radio("Go to", ["Home", "Add Paper"])
+
     if selection == "Home":
         display_papers()
-    elif selection == "Upload Paper":
-        upload_paper()
+    elif selection == "Add Paper":
+        add_paper_form()
 
 if __name__ == '__main__':
     main()
-
