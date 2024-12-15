@@ -1,14 +1,13 @@
 import streamlit as st
 
 def home_section():
-    # Title
     st.title("Welcome to Kurdistan Research Exchange")
-
+    
     # Main Introduction
     st.write("Welcome to the **Kurdistan Research Exchange** platform! This is a space where academic researchers, institutions, and scholars come together to share, access, and collaborate on research related to the Kurdistan Region and beyond.")
     
     # Add an image or logo
-    st.image("path/to/logo_or_image.jpg", width=200)  # You can replace the path with your own logo or image
+    st.image("path/to/logo_or_image.jpg", width=200)  # Replace with your actual image path or URL
 
     # About the Platform
     st.subheader("What is Kurdistan Research Exchange?")
@@ -21,17 +20,17 @@ def home_section():
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.image("path/to/upload_icon.png", width=50)  # Replace with your icon for uploading papers
+        st.image("path/to/upload_icon.png", width=50)  # Replace with your icon path or URL
         st.write("**Upload Papers**")
         st.write("Easily upload your research papers for others to access.")
     
     with col2:
-        st.image("path/to/view_icon.png", width=50)  # Replace with your icon for viewing papers
+        st.image("path/to/view_icon.png", width=50)  # Replace with your icon path or URL
         st.write("**View Papers**")
         st.write("Browse a collection of research papers from various institutions.")
     
     with col3:
-        st.image("path/to/collaborate_icon.png", width=50)  # Replace with your icon for collaboration
+        st.image("path/to/collaborate_icon.png", width=50)  # Replace with your icon path or URL
         st.write("**Collaborate**")
         st.write("Engage in academic collaborations and propose joint projects.")
 
@@ -39,18 +38,17 @@ def home_section():
     st.subheader("Get Involved")
     st.write("Join us in the journey to advance research in the Kurdistan Region and beyond. Choose an action below to get started!")
     
-    # Create action buttons for navigation
     col1, col2 = st.columns(2)
     
     with col1:
         if st.button("Upload Your Paper"):
             st.write("Redirecting to the Upload Papers section...")
-            # Add the redirection or logic to upload papers here
-        
+            # Add the logic to redirect to the Upload Papers section
+    
     with col2:
         if st.button("View Research Papers"):
             st.write("Redirecting to the View Papers section...")
-            # Add the redirection or logic to view papers here
+            # Add the logic to redirect to the View Papers section
     
     # Recent Updates Section
     st.subheader("Recent Updates")
