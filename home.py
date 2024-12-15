@@ -6,8 +6,6 @@ def home_section():
     # Main Introduction
     st.write("Welcome to the **Kurdistan Research Exchange** platform! This is a space where academic researchers, institutions, and scholars come together to share, access, and collaborate on research related to the Kurdistan Region and beyond.")
     
-    # Add an image or logo
-    st.image("path/to/logo_or_image.jpg", width=200)  # Replace with your actual image path or URL
 
     # About the Platform
     st.subheader("What is Kurdistan Research Exchange?")
@@ -20,13 +18,11 @@ def home_section():
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.image("path/to/upload_icon.png", width=50)  # Replace with your icon path or URL
         st.write("**Upload Papers**")
         st.write("Easily upload your research papers for others to access.")
     
     with col2:
-        st.image("path/to/view_icon.png", width=50)  # Replace with your icon path or URL
-        st.write("**View Papers**")
+      st.write("**View Papers**")
         st.write("Browse a collection of research papers from various institutions.")
     
     with col3:
