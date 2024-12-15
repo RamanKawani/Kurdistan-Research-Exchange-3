@@ -1,8 +1,7 @@
 import os
 import streamlit as st
 import pandas as pd
-from data import load_paper_data
-
+from data import load_paper_data  # If you're using this function
 
 def display_papers():
     # Load paper data
