@@ -1,30 +1,31 @@
 import streamlit as st
-from home import home_section  # Ensure home_section is properly imported
-
-# Placeholder or actual implementations for undefined functions
+from home import home_section
+from user_profile import user_profile_section  # Importing from a separate module
+# Define placeholders for other sections if needed
 def upload_papers():
-    st.write("Upload your research papers here.")
+    st.title("Upload Papers")
+    st.write("Upload your research papers.")
 
 def display_papers():
+    st.title("View Papers")
     st.write("Browse through available research papers.")
 
-def user_profile_section():
-    st.write("User Profile page: Manage your account details and preferences.")
-
 def display_guidelines():
-    st.write("Submission Guidelines: Follow these steps to submit your research.")
+    st.title("Submission Guidelines")
+    st.write("Follow these steps to submit your research.")
 
 def collaborative_project_section():
-    st.write("Collaborative Projects: Join or create collaborative research initiatives.")
+    st.title("Collaborative Projects")
+    st.write("Join or create collaborative research initiatives.")
 
 def institutional_partnership_section():
-    st.write("Institutional Partnerships: Information about partnering institutions.")
+    st.title("Institutional Partnerships")
+    st.write("Learn about partnerships with institutions.")
 
-# Main navigation handler
+# Navigation handler
 def app_navigation():
     st.sidebar.title("Kurdistan Research Exchange")
     
-    # Sidebar navigation options
     options = [
         "Home",
         "Upload Papers",
@@ -35,10 +36,9 @@ def app_navigation():
         "Institutional Partnerships"
     ]
     choice = st.sidebar.selectbox("Select a section", options)
-    
-    # Navigate based on user selection
+
     if choice == "Home":
-        home_section()  # Make sure this is implemented in home.py
+        home_section()
     elif choice == "Upload Papers":
         upload_papers()
     elif choice == "View Papers":
@@ -52,6 +52,6 @@ def app_navigation():
     elif choice == "Institutional Partnerships":
         institutional_partnership_section()
 
-# Standalone execution support
 if __name__ == "__main__":
     app_navigation()
+
