@@ -1,70 +1,61 @@
-import pandas as pd
 import streamlit as st
 
-# Function to load data
-def load_data():
-    try:
-        # Attempt to load the CSV file containing research papers
-        df = pd.read_csv('data/research_papers.csv')
-        # Ensure the necessary columns are present in the dataframe
-        required_columns = ['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF']
-        for col in required_columns:
-            if col not in df.columns:
-                st.warning(f"Warning: Column '{col}' is missing in the dataset.")
-        return df
-    except FileNotFoundError:
-        st.error("Error: The data file could not be found. Please ensure the file is present in the correct path.")
-        return None
-    except pd.errors.EmptyDataError:
-        st.error("Error: The data file is empty. Please ensure the file contains data.")
-        return None
-    except Exception as e:
-        st.error(f"Error loading data: {e}")
-        return None
+def home():
+    st.title("Kurdistan Research Exchange")
 
-# Function to display the research papers
-def display_papers(df):
-    if df is not None:
-        # Display the title of the app
-        st.title("Kurdistan Research Papers")
+    st.markdown(
+        """
+        Welcome to the Kurdistan Research Exchange platform! Here, you can explore a wide range of academic papers and research from various fields such as History, Political Science, Sociology, and more.
 
-        # Iterate through the papers in the DataFrame
-        for idx, row in df.iterrows():
-            # Display paper details
-            st.subheader(f"**Title:** {row['Title']}")
-            st.write(f"**Author:** {row['Author']}")
-            st.write(f"**University:** {row['University']}")
-            st.write(f"**Year:** {row['Year']}")
-            st.write(f"**Category:** {row['Category']}")
-            st.write(f"**Link:** {row['Link']}")
+        Our goal is to provide access to research papers and allow users to upload and share their work for the betterment of the academic community. 
 
-            # Check if a PDF is available for download
-            pdf_link = row['PDF']
-            if pd.notna(pdf_link):  # If a valid PDF link exists
-                try:
-                    # Display the download button for PDF
-                    st.download_button(
-                        label="Download PDF",
-                        data=pdf_link,
-                        file_name=f"{row['Title']}.pdf",
-                        mime="application/pdf"
-                    )
-                except Exception as e:
-                    st.error(f"Error displaying PDF for '{row['Title']}': {e}")
-            else:
-                st.warning(f"No PDF available for **{row['Title']}**.")
-            st.markdown("---")  # Add a horizontal line for separation between papers
-    else:
-        st.write("No research papers available to display.")
+        Feel free to explore the papers in different categories and sort them by author, year, or title.
+        """
+    )
 
-# Main function to run the app
-def main():
-    # Load the data from the CSV file
-    df = load_data()
+    # Interactive buttons for navigation
+    st.subheader("Navigate to Sections")
 
-    # Display papers if data is successfully loaded
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("View Papers"):
+            st.session_state.page = "view_papers"
+            st.experimental_rerun()
+
+    with col2:
+        if st.button("Upload Papers"):
+            st.session_state.page = "upload_papers"
+            st.experimental_rerun()
+
+    st.markdown("---")
+    st.subheader("About the Platform")
+
+    st.markdown(
+        """
+        **Kurdistan Research Exchange** is a platform aimed at promoting research in various disciplines related to the Kurdistan region. We are committed to providing open access to academic work and fostering collaboration among researchers.
+
+        Explore our growing repository of research papers, and feel free to upload your own work to contribute to the community.
+
+        For any queries, contact us at: **kurdistanresearch@platform.com**
+        """
+    )
+
+# Initialize session state to keep track of the current page
+if "page" not in st.session_state:
+    st.session_state.page = "home"
+
+# Page routing logic
+if st.session_state.page == "home":
+    home()
+elif st.session_state.page == "view_papers":
+    # Replace this with the view papers display code
+    from display import display_papers
+    # Assuming you have a function to get the papers DataFrame, pass it here
+    df = pd.DataFrame()  # Replace with actual DataFrame for papers
     display_papers(df)
+elif st.session_state.page == "upload_papers":
+    # Replace this with the upload papers section code
+    from upload import upload_papers
+    upload_papers()
 
-# Run the Streamlit app
-if __name__ == "__main__":
-    main()
