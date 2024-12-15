@@ -20,8 +20,6 @@ def load_data():
 # Save data to CSV
 def save_data(df):
     df.to_csv('research_papers.csv', index=False)
-
-# Function to display papers
 def display_papers():
     global df
 
@@ -46,6 +44,7 @@ def display_papers():
 
     # Display filtered papers as a table
     st.write(df_filtered)
+
     # PDF download buttons for each paper
     for index, row in df_filtered.iterrows():
         paper_title = row["title"]
@@ -57,10 +56,10 @@ def display_papers():
             data=pdf_file,
             file_name=f"{paper_title}.pdf",
             mime="application/pdf",
-            key=f"download_button_{index}"  # Unique key for each button
+            key=f"download_button_{index}"  # Unique key for each button)
 
                         
-    st.subheader("Search Research Papers")
+   st.subheader("Search Research Papers")
     search_query = st.text_input("Search by title, author, or university:")
     if search_query:
         filtered_df = df[df.apply(lambda row: row.astype(str).str.contains(search_query, case=False).any(), axis=1)]
