@@ -1,31 +1,27 @@
+import os
 import streamlit as st
-from data import load_paper_data  # Import the function correctly
+import pandas as pd
+from data import load_paper_data
+
 
 def display_papers():
-    st.title("View Research Papers")
-    
-    # Load the paper data from data.py
+    # Load paper data
     paper_df = load_paper_data()
-    
-    if paper_df.empty:
-        st.write("No papers available.")
-        return
-    
-    for _, row in paper_df.iterrows():
-        paper_title = row['Title']
-        paper_author = row['Author']
-        paper_university = row['University']
-        paper_year = row['Year']
-        paper_category = row['Category']
+
+    # Display papers
+    st.title("View Research Papers")
+
+    for index, row in paper_df.iterrows():
         paper_pdf = row['PDF']
-        
-        if os.path.isfile(os.path.join('uploads', paper_pdf)):  # Check if the PDF exists
-            st.write(f"### {paper_title}")
-            st.write(f"**Author**: {paper_author}")
-            st.write(f"**University**: {paper_university}")
-            st.write(f"**Year**: {paper_year}")
-            st.write(f"**Category**: {paper_category}")
-            st.write(f"[Download PDF](uploads/{paper_pdf})")  # Provide link to the PDF
+        # Check if the PDF exists in the 'uploads' directory
+        if os.path.isfile(os.path.join('uploads', paper_pdf)):  
+            st.write(f"**{row['Title']}**")
+            st.write(f"Author: {row['Author']}")
+            st.write(f"University: {row['University']}")
+            st.write(f"Year: {row['Year']}")
+            st.write(f"Category: {row['Category']}")
+            st.write(f"Link: {row['Link']}")
+            st.download_button("Download PDF", data=open(os.path.join('uploads', paper_pdf), 'rb').read(), file_name=paper_pdf)
         else:
-            st.write(f"### {paper_title}")
-            st.write("**PDF not found**")
+            st.warning(f"PDF not found for {row['Title']}")
+
