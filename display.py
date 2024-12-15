@@ -1,39 +1,32 @@
-# Instead of importing at the top:
-# from display import display_papers
+import streamlit as st
 
-def load_sample_data():
-    data = {
-        "Title": ["Paper 1", "Paper 2", "Paper 3"],
-        "Author": ["Author 1", "Author 2", "Author 3"],
-        "University": ["University A", "University B", "University C"],
-        "Year": [2020, 2021, 2022],
-        "Category": ["Category A", "Category B", "Category C"],
-        "Link": ["http://example.com/paper1", "http://example.com/paper2", "http://example.com/paper3"],
-        "PDF": ["http://example.com/paper1.pdf", "http://example.com/paper2.pdf", "http://example.com/paper3.pdf"]
-    }
-    return pd.DataFrame(data)
-
-def main():
-    from display import display_papers  # Importing inside the function
-
-    st.sidebar.title("Kurdistan Research Exchange")
+# Sample papers for demonstration (replace with your actual data)
+def display_papers(df, creator_email="ramankhalid888@gmail.com"):
+    st.title("View Research Papers")
     
-    # Sidebar navigation options
-    options = ["Home", "Upload Papers", "View Papers", "User Profile", "Submission Guidelines"]
-    choice = st.sidebar.selectbox("Select a section", options)
-
-    # Load sample data for papers
-    df = load_sample_data()
+    # Ask user to enter their email to manage papers
+    user_email = st.text_input("ramankhalid888@gmail.com (admin only)", "")
     
-    # Navigate based on user selection
-    if choice == "Home":
-        home_section()
-    elif choice == "Upload Papers":
-        upload_papers(df)
-    elif choice == "View Papers":
-        creator_email = "ramankhalid888@gmail.com"  # Change this to the actual creator email
-        display_papers(df, creator_email)  # Pass the creator email to display_papers function
-    elif choice == "User Profile":
-        user_profile_section()
-    elif choice == "Submission Guidelines":
-        display_guidelines()  # Display the guidelines section
+    # Display the papers
+    st.write("### Research Papers")
+    for index, row in df.iterrows():
+        st.subheader(f"Title: {row['Title']}")
+        st.write(f"Author: {row['Author']}")
+        st.write(f"University: {row['University']}")
+        st.write(f"Year: {row['Year']}")
+        st.write(f"Category: {row['Category']}")
+        st.write(f"Link: {row['Link']}")
+        st.write(f"PDF: {row['PDF']}")
+        
+        # Only allow delete for the creator (admin) and when the correct email is entered
+        if user_email == creator_email:
+            delete_button = st.button(f"Delete {row['Title']}", key=f"delete_{index}")
+            if delete_button:
+                # Delete the paper from the DataFrame
+                df.drop(index, inplace=True)
+                st.success(f"Paper '{row['Title']}' has been deleted.")
+                break  # to avoid modifying the DataFrame while iterating
+
+    # Display the updated DataFrame
+    st.dataframe(df)
+
