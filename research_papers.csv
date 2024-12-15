@@ -1,3 +1,12 @@
-title,author,university,year,abstract
-"Sample Paper 1","Author A","University X",2023,"This is an abstract."
-"Sample Paper 2","Author B","University Y",2022,"Another abstract."
+import os
+import pandas as pd
+
+# Load CSV file containing research papers
+def load_data():
+    # Check if the file exists, if not, create an empty DataFrame and save it
+    if not os.path.exists('data/research_papers.csv'):
+        columns = ['title', 'author', 'university', 'year', 'abstract']
+        df = pd.DataFrame(columns=columns)
+        df.to_csv('data/research_papers.csv', index=False)
+    
+    return pd.read_csv('data/research_papers.csv')
