@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from display import display_papers
 from upload import upload_papers
+from user_profile import create_user_profile, view_and_update_profiles
 
 # Function to load sample data (or you can replace with actual data loading code)
 def load_sample_data():
@@ -21,7 +22,7 @@ def main():
     st.sidebar.title("Kurdistan Research Exchange")
     
     # Sidebar navigation options
-    options = ["Home", "Upload Papers", "View Papers"]
+    options = ["Home", "Upload Papers", "View Papers", "User Profile"]
     choice = st.sidebar.selectbox("Select a section", options)
 
     # Load sample data for papers
@@ -34,6 +35,8 @@ def main():
         upload_papers(df)
     elif choice == "View Papers":
         display_papers(df)
+    elif choice == "User Profile":
+        user_profile_section()
 
 # Function for the Home section
 def home_section():
@@ -45,6 +48,17 @@ def home_section():
     st.subheader("About")
     st.write("Kurdistan Research Exchange is an open platform to share and access academic research papers related to the Kurdistan Region.")
 
+# Function for User Profile section
+def user_profile_section():
+    st.sidebar.title("User Profile")
+    profile_option = st.sidebar.radio("Select Profile Option", ("Create Profile", "View/Update Profile"))
+
+    if profile_option == "Create Profile":
+        create_user_profile()
+    elif profile_option == "View/Update Profile":
+        view_and_update_profiles()
+
 # Run the main function
 if __name__ == "__main__":
     main()
+
