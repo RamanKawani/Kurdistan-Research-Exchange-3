@@ -52,7 +52,7 @@ def display_papers():
         
         # Add a unique key to avoid duplicate element IDs
         st.download_button
-            (label=f"Download {paper_title}",
+            label=f"Download {paper_title}",
             data=pdf_file,
             file_name=f"{paper_title}.pdf",
             mime="application/pdf",
