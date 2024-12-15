@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 import streamlit as st
-from utils.data_utils import load_sample_data
 
 # App configuration
 st.set_page_config(
@@ -9,6 +8,22 @@ st.set_page_config(
     page_icon="📚",
     layout="wide",
 )
+
+# Database file path
+DATABASE_FILE = "database.csv"
+
+# Ensure the database file exists
+if not os.path.exists(DATABASE_FILE):
+    # Create the database file if it doesn't exist
+    pd.DataFrame(columns=["Title", "Author", "Institution", "Year"]).to_csv(DATABASE_FILE, index=False)
+
+# Function to load the database
+def load_database():
+    return pd.read_csv(DATABASE_FILE)
+
+# Function to save to the database
+def save_to_database(data):
+    data.to_csv(DATABASE_FILE, index=False)
 
 # Sidebar with logo handling
 logo_path = "assets/logo.png"
@@ -55,19 +70,35 @@ elif page == "Upload Research":
             st.write("**Institution:**", institution)
             st.write("**Year:**", int(year))
 
+            # Append new data to the database
+            new_entry = pd.DataFrame({
+                "Title": [title],
+                "Author": [author],
+                "Institution": [institution],
+                "Year": [int(year)],
+            })
+            database = load_database()
+            updated_database = pd.concat([database, new_entry], ignore_index=True)
+            save_to_database(updated_database)
+
 elif page == "Explore Research":
     st.title("🔍 Explore Research Papers")
     st.markdown("Browse the research papers uploaded by the community.")
     
-    # Display sample data
-    sample_data = load_sample_data()
-    st.dataframe(sample_data)
-    st.markdown("### Filter Research Papers")
-    filter_year = st.slider("Filter by Year", min_value=2000, max_value=2024, value=(2010, 2024))
-    filtered_data = sample_data[
-        (sample_data["Year"] >= filter_year[0]) & (sample_data["Year"] <= filter_year[1])
-    ]
-    st.dataframe(filtered_data)
+    # Display data from the database
+    database = load_database()
+    if not database.empty:
+        st.dataframe(database)
+        
+        # Filter options
+        st.markdown("### Filter Research Papers")
+        filter_year = st.slider("Filter by Year", min_value=2000, max_value=2024, value=(2010, 2024))
+        filtered_data = database[
+            (database["Year"] >= filter_year[0]) & (database["Year"] <= filter_year[1])
+        ]
+        st.dataframe(filtered_data)
+    else:
+        st.warning("No research papers found. Please upload some!")
 
 # Footer
 st.markdown("---")
