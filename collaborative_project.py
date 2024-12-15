@@ -3,6 +3,7 @@ import streamlit as st
 def collaborative_project_section():
     st.title("Collaborative Projects")
     st.write("This section will feature collaborative research projects.")
+    
     # Ask user to select a category for the project
     categories = [
         "History", "Political Science", "International Relations", 
