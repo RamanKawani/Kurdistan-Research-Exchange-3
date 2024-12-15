@@ -1,40 +1,29 @@
 import streamlit as st
-from home import home_section  # Ensure home_section is imported here
-from upload import upload_papers  # Ensure upload_papers is imported
-from view_papers import display_papers  # Ensure display_papers is imported
-from user_profile import user_profile_section  # Ensure user_profile_section is imported
-from guidelines import display_guidelines  # Ensure display_guidelines is imported
-from collaborative_projects import collaborative_project_section  # Ensure collaborative_project_section is imported
-from institutional_partnerships import institutional_partnership_section  # Ensure institutional_partnership_section is imported
+from home import home_section  # Import the home section
+from upload import upload_papers  # Import the upload papers section
+from view_papers import display_papers  # Import the view papers section
+from user_profile import user_profile_section  # Import the user profile section
+from guidelines import display_guidelines  # Import the guidelines section
+from collaborative_projects import collaborative_project_section  # Import the collaborative projects section
 
 def app_navigation():
+    # Sidebar title and navigation options
     st.sidebar.title("Kurdistan Research Exchange")
     
-    # Sidebar navigation options
-    options = [
-        "Home", 
-        "Upload Papers", 
-        "View Papers", 
-        "User Profile", 
-        "Submission Guidelines", 
-        "Collaborative Projects", 
-        "Institutional Partnerships"
-    ]
-    choice = st.sidebar.selectbox("Select a section", options)
+    # Sidebar menu options
+    menu = ["Home", "Upload Papers", "View Papers", "User Profile", "Guidelines", "Collaborative Projects"]
+    choice = st.sidebar.radio("Select a Section", menu)
     
-    # Navigate based on user selection
+    # Render the corresponding section based on the selected menu
     if choice == "Home":
-        home_section()  # Ensure home_section is being called
+        home_section()  # Display home section content
     elif choice == "Upload Papers":
-        upload_papers()
+        upload_papers()  # Display upload papers section content
     elif choice == "View Papers":
-        display_papers()
+        display_papers()  # Display view papers section content
     elif choice == "User Profile":
-        user_profile_section()
-    elif choice == "Submission Guidelines":
-        display_guidelines()
+        user_profile_section()  # Display user profile section content
+    elif choice == "Guidelines":
+        display_guidelines()  # Display guidelines section content
     elif choice == "Collaborative Projects":
-        collaborative_project_section()
-    elif choice == "Institutional Partnerships":
-        institutional_partnership_section()
-
+        collaborative_project_section()  # Display collaborative projects section content
