@@ -1,7 +1,7 @@
 import streamlit as st
-from home import home_section  # Ensure home_section is imported here
-from user_profile import user_profile_section  # Importing from a separate module
-# Import other sections as needed
+from home import home_section
+from user_profile import user_profile_section
+from collaborative_projects import collaborative_project_section  # Correct import
 
 def app_navigation():
     st.sidebar.title("Kurdistan Research Exchange")
@@ -22,6 +22,7 @@ def app_navigation():
     elif choice == "Submission Guidelines":
         display_guidelines()
     elif choice == "Collaborative Projects":
-        collaborative_project_section()
+        collaborative_project_section()  # Correct function call
     elif choice == "Institutional Partnerships":
         institutional_partnership_section()
+
