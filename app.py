@@ -1,22 +1,34 @@
 import streamlit as st
-from home import display_home
-from upload import display_upload
+import pandas as pd
+from home import home
+from upload import upload
 from display_papers import display_papers
 
-# Set the title of the app
-st.set_page_config(page_title="Kurdistan Research Exchange", layout="wide")
-
-# Sidebar Navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ("Home", "Upload Paper", "Research Papers"))
+# Load the data (assuming you have data loaded as a pandas DataFrame)
+def load_data():
+    # Example: Load your data here
+    data = {
+        "title": ["Paper 1", "Paper 2", "Paper 3"],
+        "author": ["Author A", "Author B", "Author C"],
+        "university": ["University X", "University Y", "University Z"],
+        "pdf_file": [b"pdf_data_1", b"pdf_data_2", b"pdf_data_3"]  # Simulated PDF binary data
+    }
+    return pd.DataFrame(data)
 
 def main():
+    # Load data
+    df = load_data()
+
+    # Sidebar for navigation
+    st.sidebar.title("Navigation")
+    page = st.sidebar.radio("Select a page:", ["Home", "Research Papers", "Upload Paper"])
+
     if page == "Home":
-        display_home()
-    elif page == "Upload Paper":
-        display_upload()
+        home()
     elif page == "Research Papers":
-        display_papers()
+        display_papers(df)
+    elif page == "Upload Paper":
+        df = upload(df)
 
 if __name__ == "__main__":
     main()
