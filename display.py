@@ -7,33 +7,42 @@ def display_papers(df, creator_email="creator@example.com"):
     # Ask user to enter their email to manage papers
     user_email = st.text_input("Enter your email to manage papers (admin only)", "")
     
-    # Display the papers
     st.write("### Research Papers")
+    
     for index, row in df.iterrows():
-        # Create a styled card for each paper
         with st.expander(f"Paper: {row['Title']}"):
-            # Display paper details
-            st.subheader(f"Title: {row['Title']}")
-            st.write(f"**Author**: {row['Author']}")
-            st.write(f"**University**: {row['University']}")
-            st.write(f"**Year**: {row['Year']}")
-            st.write(f"**Category**: {row['Category']}")
-            st.write(f"**Link**: [View Paper]({row['Link']})")
-            st.write(f"**PDF**: [Download PDF]({row['PDF']})")
+            # Use columns to arrange elements nicely
+            col1, col2 = st.columns([2, 1])
             
-            # Display rating and review functionality
-            rating = st.slider(f"Rate this paper (out of 5)", 1, 5, 3, step=1, key=f"rate_{index}")
-            review = st.text_area(f"Write your review for '{row['Title']}'", key=f"review_{index}")
-            st.write(f"Your rating: {rating} stars")
-            st.write(f"Your review: {review}")
+            with col1:
+                # Display paper details in a card-like style
+                st.markdown(f"#### **{row['Title']}**")
+                st.write(f"**Author**: {row['Author']}")
+                st.write(f"**University**: {row['University']}")
+                st.write(f"**Year**: {row['Year']}")
+                st.write(f"**Category**: {row['Category']}")
+                st.write(f"**Link**: [View Paper]({row['Link']})")
+                st.write(f"**PDF**: [Download PDF]({row['PDF']})")
+                
+                # Show abstract or more details if necessary
+                if 'Abstract' in row:
+                    st.write(f"**Abstract**: {row['Abstract']}")
+
+                st.markdown("___")  # Horizontal line for separation
+                
+                # Rating and review section
+                rating = st.slider(f"Rate this paper (out of 5)", 1, 5, 3, step=1, key=f"rate_{index}")
+                review = st.text_area(f"Write your review for '{row['Title']}'", key=f"review_{index}")
+                st.write(f"Your rating: {rating} stars")
+                st.write(f"Your review: {review}")
             
-            # Allow admin to delete or edit only if they provide the correct email
-            if user_email == creator_email:
-                # Confirm deletion before proceeding
-                with st.expander("Admin Options"):
+            with col2:
+                # Display action buttons and administrative options
+                st.markdown("#### **Admin Options**")
+                if user_email == creator_email:
                     delete_button = st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}")
                     edit_button = st.button(f"Edit Paper: {row['Title']}", key=f"edit_{index}")
-
+                    
                     if delete_button:
                         # Confirm the deletion action
                         confirm_deletion = st.selectbox(
@@ -71,5 +80,3 @@ def display_papers(df, creator_email="creator@example.com"):
     # Display the updated DataFrame after all actions
     st.write("### Updated Research Papers")
     st.dataframe(df)
-
-
