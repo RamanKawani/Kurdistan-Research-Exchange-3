@@ -6,49 +6,62 @@ def upload_papers():
     st.title("Upload Research Paper")
     st.markdown("""
         Welcome to the **Research Paper Upload** section. Please follow the steps below to upload your academic paper to the Kurdistan Research Exchange platform.
-        """)
-    
+    """)
+
     # Instructions section
     st.subheader("Upload Instructions")
     st.markdown("""
-        1. **Paper Format**: Please upload your research paper in PDF or DOCX format.
-        2. **Paper Title**: Ensure your paper has a clear title that reflects the content.
-        3. **Author Information**: Ensure your name, institution, and contact information are included in the paper or metadata.
-        4. **Abstract**: Provide a brief abstract of your research (optional, but recommended).
+        1. **File Format**: Upload your research paper in **PDF** format only.
+        2. **File Size**: Ensure the file size does not exceed 10MB.
+        3. **Paper Title**: Provide a clear and concise title.
+        4. **Author Details**: Include your name, institution, and email.
+        5. **Abstract**: (Optional) Add a brief abstract summarizing your research.
         
-        After uploading your paper, it will be reviewed for compliance with our guidelines before being published on the platform.
-        """)
+        After submission, your paper will be reviewed for compliance with our guidelines.
+    """)
 
     # File upload section
-    st.subheader("Select a Paper to Upload")
-    uploaded_file = st.file_uploader("Choose a PDF or DOCX file", type=["pdf", "docx"])
+    st.subheader("Upload Your Paper")
+    uploaded_file = st.file_uploader("Select a PDF file", type=["pdf"])
 
-    # Paper title input field
-    paper_title = st.text_input("Enter the title of your paper:")
+    # Additional metadata input
+    paper_title = st.text_input("Paper Title:")
+    author_name = st.text_input("Author Name:")
+    author_institution = st.text_input("Institution:")
+    author_email = st.text_input("Email:")
+    abstract = st.text_area("Abstract (Optional):", height=150)
 
-    # Author information input
-    author_name = st.text_input("Enter your name:")
-    author_institution = st.text_input("Enter your institution:")
-    author_email = st.text_input("Enter your email:")
-
-    # Abstract input
-    abstract = st.text_area("Provide a brief abstract of your paper (optional):", height=150)
-
-    # Submit button
-    if uploaded_file and paper_title and author_name and author_institution and author_email:
+    # Validation: Check if all required fields are filled
+    if uploaded_file and paper_title.strip() and author_name.strip() and author_institution.strip() and author_email.strip():
+        # Submit button
         if st.button("Submit Paper"):
-            # Save the uploaded file in a folder (temporary or permanent based on your needs)
+            # Ensure the "uploads" directory exists
+            os.makedirs("uploads", exist_ok=True)
+
+            # Save the uploaded file in the "uploads" directory
             save_path = os.path.join("uploads", uploaded_file.name)
             with open(save_path, "wb") as f:
                 f.write(uploaded_file.getbuffer())
 
-            # Provide feedback to the user
+            # Feedback to the user
             st.success(f"Your paper titled '{paper_title}' has been successfully uploaded!")
-            st.markdown("""
-                Your submission will be reviewed by our team, and we will notify you once your paper is published on the platform.
-                Thank you for your contribution to the Kurdistan Research Exchange.
-                """)
+            st.info("Your submission will be reviewed and published after approval. Thank you for contributing to the Kurdistan Research Exchange!")
+            
+            # Display uploaded metadata for user confirmation
+            st.subheader("Submission Details")
+            st.write(f"**Title**: {paper_title}")
+            st.write(f"**Author**: {author_name}")
+            st.write(f"**Institution**: {author_institution}")
+            st.write(f"**Email**: {author_email}")
+            if abstract.strip():
+                st.write(f"**Abstract**: {abstract}")
+            st.write(f"**File Name**: {uploaded_file.name}")
     else:
-        # Inform the user to complete all fields before submission
-        st.warning("Please fill in all the required fields and upload your paper before submitting.")
+        # Warning for incomplete form
+        st.warning("Please complete all required fields and upload your paper in PDF format before submitting.")
+
+# Run the function if this file is executed directly (optional for testing)
+if __name__ == "__main__":
+    upload_papers()
+
 
