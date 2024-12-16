@@ -5,7 +5,6 @@ from view_papers import display_papers  # Import the view papers section
 from user_profile import user_profile_section  # Import the user profile section
 from guidelines import display_guidelines  # Import the guidelines section
 from collaborative_projects import collaborative_project_section  # Import the collaborative projects section
-from institutional_partnership import institutional_partnership_section  # Import the institutional partnership section
 
 def app_navigation():
     # Sidebar UI - formal and academic style
@@ -43,6 +42,7 @@ def app_navigation():
     elif choice == "Collaborative Projects":
         collaborative_project_section()  # Display collaborative projects section
     elif choice == "Institutional Partnership":
+        from institutional_partnership import institutional_partnership_section  # Import here to avoid circular import
         institutional_partnership_section()  # Display the institutional partnership section
 
     # Footer Section - Academic and Formal
