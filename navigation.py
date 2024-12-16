@@ -1,7 +1,7 @@
 import streamlit as st
 from home import home_section  # Import the home section
 from upload import upload_papers  # Import the upload papers section
-from display_papers import display_papers  # Import the updated view papers section with pagination
+from display_papers import display_papers # Import the updated view papers section with pagination
 from user_profile import user_profile_section  # Import the user profile section
 from guidelines import display_guidelines  # Import the guidelines section
 from collaborative_projects import collaborative_project_section  # Import the collaborative projects section
