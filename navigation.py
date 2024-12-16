@@ -36,13 +36,11 @@ def app_navigation():
     elif choice == "Upload Research Paper":
         upload_papers()  # Display the upload papers section
     elif choice == "View Research Papers":
-        display_papers()  # Display the papers viewing section
+        display_papers()  # Display the papers viewing section with advanced features
     elif choice == "User Profile":
         user_profile_section()  # Display the user profile section
     elif choice == "Guidelines":
         display_guidelines()  # Display the guidelines section
     elif choice == "Collaborative Projects":
         collaborative_project_section()  # Display collaborative projects section
-
-# Further customization such as footer can be added if needed
 
