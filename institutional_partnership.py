@@ -1,67 +1,66 @@
 import streamlit as st
-from home import home_section  # Import the home section
-from upload import upload_papers  # Import the upload papers section
-from view_papers import display_papers  # Import the view papers section
-from user_profile import user_profile_section  # Import the user profile section
-from guidelines import display_guidelines  # Import the guidelines section
-from collaborative_projects import collaborative_project_section  # Import the collaborative projects section
-from institutional_partnership import institutional_partnership_section  # Import the institutional partnership section
 
-def app_navigation():
-    # Sidebar UI - formal and academic style
-    st.sidebar.title("Kurdistan Research Exchange")
-    st.sidebar.markdown("Welcome to the **Kurdistan Research Exchange** platform.")
-    st.sidebar.markdown("This platform is dedicated to sharing and accessing academic research related to the Kurdistan Region.")
-    
-    # Optional logo or image in the sidebar
-    # st.sidebar.image("https://example.com/logo.png", width=150)
+def institutional_partnership_section():
+    # Title for the section
+    st.title("Institutional Partnership")
 
-    # Sidebar navigation menu
-    menu = [
-        "Home",
-        "Upload Research Paper",
-        "View Research Papers",
-        "User Profile",
-        "Guidelines",
-        "Collaborative Projects",
-        "Institutional Partnership"  # Added the Institutional Partnership option
-    ]
+    # Introduction about institutional partnerships
+    st.markdown("""
+        The **Institutional Partnership** section is dedicated to fostering collaborations 
+        between academic institutions, research organizations, and the Kurdistan Region. 
+        These partnerships are vital for promoting research, academic exchange, and the 
+        development of new ideas that benefit both local and international communities.
+    """)
 
-    choice = st.sidebar.radio("Select an option from the menu", menu)
+    # Key areas of institutional partnerships
+    st.subheader("Key Areas of Partnership")
+    st.markdown("""
+        Institutional partnerships can focus on various fields, including but not limited to:
+        - Research collaboration
+        - Student and faculty exchange programs
+        - Joint workshops and conferences
+        - Development of new academic programs
+        - Knowledge sharing and capacity building
+    """)
 
-    # Main content area - formal and academic tone
-    st.title("Kurdistan Research Exchange Platform")
-    st.markdown("Please select one of the following sections to proceed.")
+    # Types of Partners
+    st.subheader("Types of Partners")
+    st.markdown("""
+        Institutional partnerships may involve a variety of partners:
+        - **Universities and Colleges**: Higher education institutions seeking collaboration on research or student exchange programs.
+        - **Research Institutes**: Organizations focused on scientific or social research in various fields.
+        - **Government and NGOs**: Bodies involved in public policy or development initiatives.
+        - **Private Sector**: Businesses that support research through funding or collaboration.
+    """)
 
-    if choice == "Home":
-        home_section()  # Display the home section
-    elif choice == "Upload Research Paper":
-        upload_papers()  # Display the upload papers section
-    elif choice == "View Research Papers":
-        display_papers()  # Display the papers viewing section
-    elif choice == "User Profile":
-        user_profile_section()  # Display the user profile section
-    elif choice == "Guidelines":
-        display_guidelines()  # Display the guidelines section
-    elif choice == "Collaborative Projects":
-        collaborative_project_section()  # Display collaborative projects section
-    elif choice == "Institutional Partnership":
-        institutional_partnership_section()  # Display the institutional partnership section
+    # Benefits of Partnerships
+    st.subheader("Benefits of Institutional Partnerships")
+    st.markdown("""
+        The benefits of building institutional partnerships include:
+        - Enhanced academic and research opportunities
+        - Increased access to funding and resources
+        - Collaboration on solving regional and global challenges
+        - Opportunities for students to engage in international research projects
+        - Strengthened ties between the Kurdistan Region and global academic communities
+    """)
 
-    # Footer Section - Academic and Formal
-    st.markdown("---")
-    st.markdown("## About the Platform")
-    st.markdown("The **Kurdistan Research Exchange** is an open platform aimed at promoting academic research related to the Kurdistan Region. It serves as a space for researchers, students, and academics to share their work and collaborate with others.")
-    
-    st.markdown("### Contact Us")
-    st.markdown("For more information, please contact us at: [info@kurdistan-research.org](mailto:info@kurdistan-research.org)")
+    # Call to Action - Encouraging partnerships
+    st.subheader("Become a Partner")
+    st.markdown("""
+        If your institution is interested in partnering with organizations in the Kurdistan 
+        Region, please reach out to us to discuss potential collaborations.
+    """)
 
-    st.markdown("### Acknowledgments")
-    st.markdown("We acknowledge the efforts of the Kurdistan Regional Government (KRG) and academic institutions in facilitating research and collaboration.")
+    # Contact form or information
+    st.markdown("For more information on institutional partnerships, please contact us:")
+    st.markdown("[info@kurdistan-research.org](mailto:info@kurdistan-research.org)")
 
-    # Optional footer logo/image can be added here
-    # st.markdown("![Footer Logo](https://example.com/footer_logo.png)")
-
-    # Add more footer customization if necessary
-
-
+    # Optional: You can add a contact form or button for users to get in touch
+    with st.form(key='partnership_form'):
+        st.text_input("Your Name")
+        st.text_input("Your Institution")
+        st.text_area("Your Message")
+        submit_button = st.form_submit_button("Submit")
+        
+        if submit_button:
+            st.success("Thank you for your interest! We will get back to you shortly.")
