@@ -36,11 +36,10 @@ def display_papers():
         st.write(f"Absolute file path: {os.path.abspath(file_path)}")
 
         if os.path.isfile(file_path):
-            # Display paper information
+            # Display paper information without the Year field
             st.write(f"**{row['Title']}**")
             st.write(f"Author: {row['Author']}")
             st.write(f"University: {row['University']}")
-            st.write(f"Year: {row['Year']}")
             st.write(f"Category: {row['Category']}")
             st.write(f"Link: [Visit Link]({row['Link']})")
 
@@ -60,3 +59,4 @@ def display_papers():
         st.markdown(f"""
             **You are viewing papers in the '{selected_category}' category.**
         """)
+
