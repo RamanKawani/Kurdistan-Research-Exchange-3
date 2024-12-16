@@ -59,4 +59,3 @@ def display_papers():
         st.markdown(f"""
             **You are viewing papers in the '{selected_category}' category.**
         """)
-
