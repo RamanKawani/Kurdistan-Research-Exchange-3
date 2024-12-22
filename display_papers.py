@@ -1,7 +1,8 @@
 import streamlit as st
 import os
 from math import ceil
-from data import load_paper_data  # Import the load_paper_data function
+from data import load_paper_data
+from database import add_record, update_record, delete_record  # Import database functions
 
 # Function to display papers with pagination
 def display_papers():
@@ -65,6 +66,22 @@ def display_papers():
             if st.button("Next Page"):
                 st.experimental_set_query_params(page=page_number + 1)
 
+    # Add new paper (example)
+    st.sidebar.header("Add New Paper")
+    if st.sidebar.button("Add New Paper"):
+        new_paper = {
+            "Title": "New Research Paper",
+            "Author": "New Author",
+            "University": "New University",
+            "Year": 2025,
+            "Category": "New Category",
+            "Link": "http://example.com/newpaper",
+            "PDF": "newpaper.pdf",
+        }
+        add_record(new_paper)
+        st.sidebar.success("New paper added successfully.")
+
 # Run this function in the main code
 if __name__ == "__main__":
     display_papers()
+
