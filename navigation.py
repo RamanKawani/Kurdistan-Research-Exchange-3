@@ -9,7 +9,7 @@ from collaborative_projects import collaborative_project_section  # Import the c
 def app_navigation():
     # Access GitHub token and repository URL from Streamlit's secrets
     github_token = st.secrets["GITHUB_TOKEN"]
-    github_repo = st.secrets["GITHUB_REPO"]
+   
 
     # You can use the token and repo for any necessary API requests or display it
     # For example, show the repo URL (but be careful not to expose the token publicly)
