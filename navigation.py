@@ -1,5 +1,3 @@
-# navigation.py
-
 import streamlit as st
 from home import home_section  # Import the home section
 from upload import upload_papers  # Import the upload papers section
@@ -12,9 +10,8 @@ def app_navigation():
     # Access GitHub token from Streamlit's secrets
     github_token = st.secrets["GITHUB_TOKEN"]
 
-    # You can use the token for any necessary API requests
-    # For example, show part of the token in the sidebar (but never the full token)
-    st.sidebar.write(f"GitHub Token (hidden part): {github_token[:5]}...")  # Display a part of the token for security
+    # You can use the token for any necessary API requests or show it in the sidebar (never expose the full token for security)
+    st.sidebar.write(f"GitHub Token (hidden part): {github_token[:5]}...")  # Display part of the token
 
     # Sidebar UI - formal and academic style
     st.sidebar.title("Kurdistan Research Exchange")
@@ -29,7 +26,7 @@ def app_navigation():
         "User Profile",
         "Guidelines",
         "Collaborative Projects",
-        "Institutional Partnership"  # Added the Institutional Partnership option
+        "Institutional Partnership"
     ]
 
     choice = st.sidebar.radio("Select an option from the menu", menu)
