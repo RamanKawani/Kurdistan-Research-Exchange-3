@@ -8,6 +8,10 @@ def display_papers():
     # Load paper data from the CSV
     paper_df = load_paper_data()
 
+    if paper_df.empty:
+        st.warning("No papers available to display.")
+        return
+
     # Display papers header
     st.title("View Research Papers")
 
@@ -58,4 +62,3 @@ def display_papers():
 # Run this function in the main code
 if __name__ == "__main__":
     display_papers()
-
