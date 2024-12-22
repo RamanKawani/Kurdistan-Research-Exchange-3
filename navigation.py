@@ -10,8 +10,6 @@ def app_navigation():
     # Access GitHub token from Streamlit's secrets
     github_token = st.secrets["GITHUB_TOKEN"]
 
-    # You can use the token for any necessary API requests or show it in the sidebar (never expose the full token for security)
-    st.sidebar.write(f"GitHub Token (hidden part): {github_token[:5]}...")  # Display part of the token
 
     # Sidebar UI - formal and academic style
     st.sidebar.title("Kurdistan Research Exchange")
