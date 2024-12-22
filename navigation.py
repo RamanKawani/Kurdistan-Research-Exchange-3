@@ -5,11 +5,11 @@ from view_papers import display_papers  # Import the view papers section
 from user_profile import user_profile_section  # Import the user profile section
 from guidelines import display_guidelines  # Import the guidelines section
 from collaborative_projects import collaborative_project_section  # Import the collaborative projects section
+from database_data import add_record, update_record, delete_record  # Import database functions
 
 def app_navigation():
     # Access GitHub token from Streamlit's secrets
     github_token = st.secrets["GITHUB_TOKEN"]
-
 
     # Sidebar UI - formal and academic style
     st.sidebar.title("Kurdistan Research Exchange")
@@ -59,3 +59,4 @@ def app_navigation():
 
     st.markdown("### Acknowledgments")
     st.markdown("We acknowledge the efforts of the Kurdistan Regional Government (KRG) and academic institutions in facilitating research and collaboration.")
+
