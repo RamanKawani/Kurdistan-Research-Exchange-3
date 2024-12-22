@@ -1,6 +1,13 @@
 import streamlit as st
 import os
 
+# Retrieve the GitHub token from Streamlit secrets
+github_token = st.secrets.get("GITHUB", {}).get("GITHUB_TOKEN", None)
+
+# Ensure the GitHub token is available for use
+if not github_token:
+    st.sidebar.error("GitHub Token is not available.")
+
 def upload_papers():
     # Set the title for the page
     st.title("Upload Research Paper")
@@ -59,9 +66,3 @@ def upload_papers():
     else:
         # Warning for incomplete form
         st.warning("Please complete all required fields and upload your paper in PDF format before submitting.")
-
-# Run the function if this file is executed directly (optional for testing)
-if __name__ == "__main__":
-    upload_papers()
-
-
