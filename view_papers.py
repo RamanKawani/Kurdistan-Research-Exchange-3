@@ -1,10 +1,12 @@
-# Import the correct function from database_data.py
-from database_data import load_data  # Update this line
+import streamlit as st  # Ensure Streamlit is imported
+import os
+from math import ceil
+from database_data import load_data  # Ensure you're importing the correct function
 
 # Function to display papers with pagination
 def display_papers():
     # Load paper data from the database (CSV)
-    paper_df = load_data()  # Use the updated function name here
+    paper_df = load_data()  # Use the correct function name here
 
     if paper_df.empty:
         st.warning("No papers available to display.")
@@ -56,3 +58,4 @@ def display_papers():
             prev_page = st.sidebar.button("Previous Page")
             if prev_page:
                 page_number -= 1
+
