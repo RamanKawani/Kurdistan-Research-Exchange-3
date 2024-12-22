@@ -1,29 +1,58 @@
-import streamlit as st
-import os
-from data import load_paper_data  # Ensure the load_paper_data function is correctly imported
+# Import the correct function from database_data.py
+from database_data import load_data  # Update this line
 
-# Function to display papers
+# Function to display papers with pagination
 def display_papers():
-    # Load the paper data using the load_paper_data function from data.py
-    paper_df = load_paper_data()
+    # Load paper data from the database (CSV)
+    paper_df = load_data()  # Use the updated function name here
 
+    if paper_df.empty:
+        st.warning("No papers available to display.")
+        return
+
+    # Display papers header
     st.title("View Research Papers")
 
-    # Display the data as a table
-    st.dataframe(paper_df)
+    # Pagination logic
+    papers_per_page = 5  # Number of papers per page
+    total_papers = len(paper_df)
+    total_pages = ceil(total_papers / papers_per_page)
 
-    # Loop through the DataFrame and display each paper
-    for index, row in paper_df.iterrows():
-        st.subheader(f"Title: {row['Title']}")
+    # Sidebar pagination controls
+    page_number = st.sidebar.number_input("Select Page", min_value=1, max_value=total_pages, value=1)
+
+    # Calculate the start and end index for the current page
+    start_idx = (page_number - 1) * papers_per_page
+    end_idx = min(start_idx + papers_per_page, total_papers)
+
+    # Display papers for the current page
+    for index, row in paper_df.iloc[start_idx:end_idx].iterrows():
+        paper_pdf = row['PDF']
+        file_path = os.path.join('uploads', paper_pdf)
+
+        # Display paper details
+        st.write(f"**{row['Title']}**")
         st.write(f"Author: {row['Author']}")
         st.write(f"University: {row['University']}")
         st.write(f"Year: {row['Year']}")
         st.write(f"Category: {row['Category']}")
+        st.write(f"Link: {row['Link']}")
 
-        # Check if the PDF file exists in the 'uploads' folder
-        paper_pdf = row['PDF']
-        if os.path.isfile(os.path.join('uploads', paper_pdf)):  # Ensure that this check is correct
-            with open(os.path.join('uploads', paper_pdf), 'rb') as file:
-                st.download_button(label=f"Download {row['Title']} PDF", data=file, file_name=paper_pdf, mime='application/pdf')
+        # Check if the PDF file exists
+        if os.path.isfile(file_path):
+            with open(file_path, 'rb') as file:
+                st.download_button("Download PDF", data=file.read(), file_name=paper_pdf)
         else:
             st.warning(f"PDF not found for {row['Title']}")
+
+    # Display pagination controls at the bottom
+    st.sidebar.write(f"Page {page_number} of {total_pages}")
+    if total_pages > 1:
+        if page_number < total_pages:
+            next_page = st.sidebar.button("Next Page")
+            if next_page:
+                page_number += 1
+        if page_number > 1:
+            prev_page = st.sidebar.button("Previous Page")
+            if prev_page:
+                page_number -= 1
