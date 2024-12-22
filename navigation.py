@@ -7,6 +7,15 @@ from guidelines import display_guidelines  # Import the guidelines section
 from collaborative_projects import collaborative_project_section  # Import the collaborative projects section
 
 def app_navigation():
+    # Access GitHub token and repository URL from Streamlit's secrets
+    github_token = st.secrets["GITHUB_TOKEN"]
+    github_repo = st.secrets["GITHUB_REPO"]
+
+    # You can use the token and repo for any necessary API requests or display it
+    # For example, show the repo URL (but be careful not to expose the token publicly)
+    st.sidebar.write(f"GitHub Repo: {github_repo}")
+    st.sidebar.write(f"GitHub Token (hidden part): {github_token[:5]}...")  # Display a part of the token for security
+
     # Sidebar UI - formal and academic style
     st.sidebar.title("Kurdistan Research Exchange")
     st.sidebar.markdown("Welcome to the **Kurdistan Research Exchange** platform.")
