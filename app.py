@@ -4,7 +4,7 @@ from navigation import app_navigation  # Import the updated navigation handler
 def main():
     # Access GitHub token and repository URL from Streamlit's secrets
     github_token = st.secrets["GITHUB_TOKEN"]
-    github_repo = st.secrets["GITHUB_REPO"]
+   
 
     # Example of using the GitHub token and repository
     st.write(f"GitHub Repository: {github_repo}")
