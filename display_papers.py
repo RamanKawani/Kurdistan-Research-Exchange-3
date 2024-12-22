@@ -1,14 +1,14 @@
-# display_papers.py
-
 import streamlit as st
 import os
 import pandas as pd
 from math import ceil
 
-# Load your paper data (this function assumes your data is in a CSV or similar format)
+# Access the GitHub token securely from Streamlit's secrets
+github_token = st.secrets.get("GITHUB_TOKEN")
+
+# Function to load your paper data (this function assumes your data is in a CSV or similar format)
 def load_paper_data():
-    # This is just a placeholder. Replace it with your actual method of loading paper data.
-    # Here, we simulate loading a DataFrame.
+    # Placeholder data. Replace it with your actual method of loading paper data.
     data = {
         "Title": ["Paper 1", "Paper 2", "Paper 3"],
         "Author": ["Author 1", "Author 2", "Author 3"],
@@ -53,6 +53,14 @@ def display_papers():
         st.write(f"Category: {row['Category']}")
         st.write(f"Link: {row['Link']}")
 
+        # If GitHub token exists, use it for API requests or other purposes
+        if github_token:
+            # You can use the token here for GitHub API calls (e.g., to fetch repo data, commit history, etc.)
+            # Example (replace with actual GitHub API logic):
+            st.sidebar.write(f"GitHub Token is available. Token preview: {github_token[:5]}...")
+        else:
+            st.sidebar.error("GitHub Token not found.")
+
         # Check if the PDF file exists
         if os.path.isfile(file_path):
             with open(file_path, 'rb') as file:
@@ -73,16 +81,12 @@ def display_papers():
                 page_number -= 1
 
 # Optionally, add a responsive layout for mobile
-# You can use columns or adjust the size of the cards based on screen width.
-# Streamlit automatically adjusts for mobile, but here’s how you can manually adjust it.
 def responsive_layout():
     screen_width = st.slider("Select screen width for testing", min_value=300, max_value=1200, value=600)
     
     if screen_width < 500:
-        # Apply mobile optimizations, such as smaller fonts and more compact layouts
         st.markdown("<style>body { font-size: 12px; }</style>", unsafe_allow_html=True)
     else:
-        # Apply desktop view styles
         st.markdown("<style>body { font-size: 16px; }</style>", unsafe_allow_html=True)
 
 # Run this function in the main code
