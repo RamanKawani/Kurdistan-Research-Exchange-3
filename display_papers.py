@@ -6,19 +6,13 @@ from math import ceil
 # Access the GitHub token securely from Streamlit's secrets
 github_token = st.secrets.get("GITHUB_TOKEN")
 
-# Function to load your paper data (this function assumes your data is in a CSV or similar format)
+# Function to load paper data from CSV
 def load_paper_data():
-    # Placeholder data. Replace it with your actual method of loading paper data.
-    data = {
-        "Title": ["Paper 1", "Paper 2", "Paper 3"],
-        "Author": ["Author 1", "Author 2", "Author 3"],
-        "University": ["University A", "University B", "University C"],
-        "Year": [2020, 2021, 2022],
-        "Category": ["Category A", "Category B", "Category C"],
-        "PDF": ["paper1.pdf", "paper2.pdf", "paper3.pdf"],
-        "Link": ["#link1", "#link2", "#link3"]
-    }
-    return pd.DataFrame(data)
+    # Load the paper data from CSV file
+    file_path = "research_papers.csv"  # Make sure to update the path if needed
+    paper_df = pd.read_csv(file_path)
+
+    return paper_df
 
 # Function to display papers with pagination
 def display_papers():
