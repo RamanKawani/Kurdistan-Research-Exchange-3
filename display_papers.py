@@ -1,30 +1,12 @@
 import streamlit as st
 import os
-import pandas as pd
 from math import ceil
-
-# Access the GitHub token securely from Streamlit's secrets
-github_token = st.secrets.get("GITHUB_TOKEN")
-
-# Function to load your paper data (this function assumes your data is in a CSV or similar format)
-def load_paper_data():
-    file_path = "research_papers.csv"
-    
-    # Check if the file exists
-    if not os.path.isfile(file_path):
-        st.error(f"CSV file not found at {file_path}. Please upload the file or check the path.")
-        return pd.DataFrame()  # Return an empty DataFrame if file is not found
-    
-    return pd.read_csv(file_path)
+from data import load_paper_data  # Import the load_paper_data function
 
 # Function to display papers with pagination
 def display_papers():
-    # Load paper data
+    # Load paper data from the CSV
     paper_df = load_paper_data()
-
-    # If the DataFrame is empty, exit early
-    if paper_df.empty:
-        return
 
     # Display papers header
     st.title("View Research Papers")
@@ -54,14 +36,6 @@ def display_papers():
         st.write(f"Category: {row['Category']}")
         st.write(f"Link: {row['Link']}")
 
-        # If GitHub token exists, use it for API requests or other purposes
-        if github_token:
-            # You can use the token here for GitHub API calls (e.g., to fetch repo data, commit history, etc.)
-            # Example (replace with actual GitHub API logic):
-            st.sidebar.write(f"GitHub Token is available. Token preview: {github_token[:5]}...")
-        else:
-            st.sidebar.error("GitHub Token not found.")
-
         # Check if the PDF file exists
         if os.path.isfile(file_path):
             with open(file_path, 'rb') as file:
@@ -81,15 +55,7 @@ def display_papers():
             if prev_page:
                 page_number -= 1
 
-# Optionally, add a responsive layout for mobile
-def responsive_layout():
-    screen_width = st.slider("Select screen width for testing", min_value=300, max_value=1200, value=600)
-    
-    if screen_width < 500:
-        st.markdown("<style>body { font-size: 12px; }</style>", unsafe_allow_html=True)
-    else:
-        st.markdown("<style>body { font-size: 16px; }</style>", unsafe_allow_html=True)
-
 # Run this function in the main code
 if __name__ == "__main__":
     display_papers()
+
