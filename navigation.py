@@ -1,4 +1,4 @@
-file import streamlit as st
+import streamlit as st
 from home import home_section  # Import the home section
 from upload import upload_papers  # Import the upload papers section
 from view_papers import display_papers  # Import the view papers section
