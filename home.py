@@ -15,7 +15,19 @@ def home_section():
     st.write("""
         - **Research Paper Upload**: Share your research papers with the community.
         - **Collaborative Projects**: Join ongoing research initiatives.
-       
-  
+        - **Discover Research**: Browse through a wide collection of research papers from various fields.
+        - **Access Resources**: Gain access to valuable resources for academic and professional growth.
+    """)
 
- 
+    # Additional instructions or call to actions
+    st.subheader("Get Started")
+    st.write("""
+        To contribute, simply upload your research paper using the 'Upload Research Paper' section. 
+        You can also explore research papers from other scholars in the 'View Research Papers' section. 
+        Together, we can build a strong knowledge base for the Kurdistan Region.
+    """)
+
+    st.subheader("Contact Us")
+    st.write("""
+        Have questions or suggestions? Feel free to reach out to us via our contact page.
+    """)
