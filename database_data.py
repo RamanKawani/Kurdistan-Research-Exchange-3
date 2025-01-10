@@ -3,6 +3,7 @@ import os
 
 # File path for the CSV where the research papers will be saved
 DATA_FILE = 'research_papers.csv'
+UPLOAD_DIR = 'uploads/'
 
 # Ensure the CSV file exists or create one with proper columns
 if not os.path.isfile(DATA_FILE):
@@ -39,12 +40,31 @@ def update_record(title, updated_record):
     else:
         print(f"Record with title '{title}' not found.")
 
-# Function to delete a paper record by title
-def delete_record(title):
+# Function to delete a paper record by index and remove the corresponding PDF
+def delete_record(index):
     df = load_data()
-    index = df[df['Title'] == title].index
-    if not index.empty:
+    
+    if index >= 0 and index < len(df):
+        # Get the paper to delete
+        paper_to_delete = df.iloc[index]
+        
+        # Get the PDF filename
+        pdf_filename = paper_to_delete['PDF']
+        pdf_path = os.path.join(UPLOAD_DIR, pdf_filename)
+        
+        # Remove the paper from the DataFrame
         df = df.drop(index)
         save_data(df)
+        
+        # If the PDF exists, delete it from the uploads directory
+        if os.path.isfile(pdf_path):
+            os.remove(pdf_path)
+            print(f"PDF file '{pdf_filename}' removed from {UPLOAD_DIR}")
+        
+        print(f"Record '{paper_to_delete['Title']}' deleted successfully.")
+        return True, paper_to_delete['Title']
+    
     else:
-        print(f"Record with title '{title}' not found.")
+        print(f"Record with index {index} not found.")
+        return False, None
+
