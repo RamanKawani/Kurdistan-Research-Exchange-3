@@ -60,7 +60,7 @@ def display_papers(user_email="user@example.com"):
 
         # Admin functionality to delete papers
         st.write(f"User Email: {user_email}")  # Debugging statement
-        if user_email == "RamanKhalid888@gmail.com":  # Check if the user is an admin
+        if user_email == "ramankhalid888@gmail.com":  # Check if the user is an admin
             st.write(f"Admin detected, showing delete button for paper: {row['Title']}")  # Debugging statement
             if st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}"):
                 delete_paper(index, paper_df)
