@@ -60,14 +60,15 @@ def display_papers(user_email="user@example.com"):
             st.warning(f"PDF not found for {row['Title']}")
 
         # Admin functionality to delete papers (only for admin)
-        if user_email == "ramankhalid888@gmail.com":  # Admin email is added here
+        if user_email == "your_actual_email@gmail.com":  # Replace with your actual admin email
+            st.write(f"Admin Email: {user_email} - This should match to show delete button")
             delete_button = st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}")
             
             if delete_button:
                 confirm_delete = st.radio(f"Are you sure you want to delete '{row['Title']}'?", ('No', 'Yes'))
                 
                 if confirm_delete == 'Yes':
-                    success, deleted_title = delete_record(row['Title'])  # Use the title to delete the paper
+                    success, deleted_title = delete_record(index)  # Call the function to delete the paper
                     if success:
                         st.success(f"Paper '{deleted_title}' deleted successfully!")
                         st.experimental_rerun()  # Refresh the page after deletion
