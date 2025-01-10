@@ -15,7 +15,7 @@ def load_data():
         return pd.DataFrame(columns=['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF'])
 
 # Function to display papers with pagination
-def display_papers(user_email="RamanKhalid888@gmail"):
+def display_papers(user_email="user@example.com"):
     # Load paper data from the database (CSV)
     paper_df = load_data()
 
@@ -60,7 +60,7 @@ def display_papers(user_email="RamanKhalid888@gmail"):
 
         # Admin functionality to delete papers
         st.write(f"User Email: {user_email}")  # Debugging statement
-        if user_email == "RamanKhalid888@gmail.com":  # Check if the user is an admin
+        if user_email == "admin@example.com":  # Check if the user is an admin
             st.write(f"Admin detected, showing delete button for paper: {row['Title']}")  # Debugging statement
             if st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}"):
                 delete_paper(index, paper_df)
@@ -84,3 +84,4 @@ def delete_paper(index, df):
         display_papers(user_email)  # Ensure the papers list is refreshed
     else:
         st.info(f"Paper '{paper_to_delete['Title']}' was not deleted.")
+
