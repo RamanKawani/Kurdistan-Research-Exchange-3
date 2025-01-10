@@ -1,15 +1,6 @@
-import pandas as pd
-
-# File path for the CSV where the research papers will be saved
-DATA_FILE = 'research_papers.csv'  # Adjust if needed
-
-# Function to load data from the CSV file
-def load_data():
-    try:
-        df = pd.read_csv(DATA_FILE)
-        print("Data loaded successfully")
-        print(df.head())  # Display the first few rows for inspection
-        return df
-    except FileNotFoundError:
-        print("No file found, returning empty DataFrame.")
-        return pd.DataFrame(columns=['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF'])
+Title,Author,University,Year,Category,Link,PDF
+"Understanding Kurdish Politics","John Doe","University of Erbil",2023,"Political Science","http://example.com/paper1","paper1.pdf"
+"Globalization and its Impact on the Middle East","Jane Smith","University of Kurdistan",2022,"International Relations","http://example.com/paper2","paper2.pdf"
+"Women in the Kurdish Liberation Movement","Ahmed Ali","University of Erbil",2021,"Gender Studies","http://example.com/paper3","paper3.pdf"
+"The Role of Technology in Modern Warfare","Sara Ahmed","University of Kurdistan",2024,"Military Science","http://example.com/paper4","paper4.pdf"
+"Kurdish Identity and Cultural Preservation","Rebaz Ameen","University of Erbil",2020,"Sociology","http://example.com/paper5","paper5.pdf"
