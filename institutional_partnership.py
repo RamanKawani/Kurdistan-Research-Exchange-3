@@ -1,5 +1,37 @@
 import streamlit as st
 import pandas as pd
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# Function to send the email
+def send_email(name, institution, message):
+    # Sender and receiver details
+    sender_email = "your_email@example.com"  # Your email address
+    receiver_email = "RamanKhalid888@gmail.com"  # Your email address where you want to receive the message
+    password = "your_email_password"  # Your email password (consider using app password or environment variable for security)
+
+    # Create the email content
+    subject = "Institutional Partnership Inquiry"
+    body = f"Name: {name}\nInstitution: {institution}\nMessage: {message}"
+
+    # Create the email message
+    msg = MIMEMultipart()
+    msg["From"] = sender_email
+    msg["To"] = receiver_email
+    msg["Subject"] = subject
+
+    msg.attach(MIMEText(body, "plain"))
+
+    # Connect to the SMTP server and send the email
+    try:
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()  # Upgrade to a secure connection
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, msg.as_string())
+            st.success("Your message has been sent successfully!")
+    except Exception as e:
+        st.error(f"An error occurred while sending the email: {e}")
 
 # Function to save partnership inquiry to CSV
 def save_institutional_partnership(inquiry_details):
@@ -90,6 +122,7 @@ def institutional_partnership_section():
                 }
                 # Save the inquiry to CSV
                 save_institutional_partnership(inquiry_details)
-                st.success("Thank you for your interest! We will get back to you shortly.")
+                # Send the email with the partnership details
+                send_email(name, institution, message)
             else:
                 st.error("Please fill out all fields before submitting.")
