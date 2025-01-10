@@ -15,7 +15,7 @@ def load_data():
         return pd.DataFrame(columns=['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF'])
 
 # Function to display papers with pagination
-def display_papers():
+def display_papers(user_email="user@example.com"):
     # Load paper data from the database (CSV)
     paper_df = load_data()
 
@@ -58,5 +58,18 @@ def display_papers():
         else:
             st.warning(f"PDF not found for {row['Title']}")
 
+        # Admin functionality to delete papers
+        if user_email == "admin@example.com":  # Check if the user is an admin
+            if st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}"):
+                delete_paper(index, paper_df)
+
     # Display pagination controls at the bottom
     st.sidebar.write(f"Page {page_number} of {total_pages}")
+
+# Function to delete paper
+def delete_paper(index, df):
+    # Delete the paper and update the CSV file
+    df = df.drop(index)
+    df.to_csv(DATA_FILE, index=False)
+    st.success("Paper deleted successfully!")
+    display_papers()  # Reload papers after deletion
