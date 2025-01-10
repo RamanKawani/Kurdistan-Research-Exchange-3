@@ -79,4 +79,3 @@ def display_papers(user_email="user@example.com"):
 
     # Display pagination controls at the bottom
     st.sidebar.write(f"Page {page_number} of {total_pages}")
-
