@@ -26,7 +26,7 @@ def app_navigation():
         "User Profile",
         "Guidelines",
         "Collaborative Projects",
-        "Institutional Partnership"
+    
     ]
 
     choice = st.sidebar.radio("Select an option from the menu", menu)
