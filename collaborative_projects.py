@@ -1,5 +1,23 @@
 import streamlit as st
+import pandas as pd
 
+# Function to save a collaborative project to CSV
+def save_collaborative_project(project_details):
+    try:
+        # Load the existing CSV file, or create one if it doesn't exist
+        df = pd.read_csv('collaborative_projects.csv')
+    except FileNotFoundError:
+        # Create a new DataFrame if the file doesn't exist
+        df = pd.DataFrame(columns=['Title', 'Description', 'Contact', 'Location', 'Category'])
+    
+    # Convert the project details to a DataFrame format and append
+    project_details_df = pd.DataFrame([project_details])
+    df = pd.concat([df, project_details_df], ignore_index=True)
+    
+    # Save the updated DataFrame back to CSV
+    df.to_csv('collaborative_projects.csv', index=False)
+
+# Main function for the Collaborative Research Projects Section
 def collaborative_project_section(user_email="user@example.com"):
     st.title("Collaborative Research Projects")
 
@@ -18,11 +36,12 @@ def collaborative_project_section(user_email="user@example.com"):
     section_choice = st.radio("Select a section:", ["Propose a Project", "Find a Project to Collaborate On"])
 
     if section_choice == "Propose a Project":
-        propose_project_section()
+        propose_project_section(selected_category)
     elif section_choice == "Find a Project to Collaborate On":
         find_project_section(selected_category)
 
-def propose_project_section():
+# Function to propose a new collaborative project
+def propose_project_section(selected_category):
     st.subheader("Propose a Collaborative Research Project")
 
     project_title = st.text_input("Enter Project Title")
@@ -32,31 +51,42 @@ def propose_project_section():
 
     if st.button("Submit Project Proposal"):
         if project_title and project_description and project_contact and project_location:
+            # Create a dictionary for the project details
+            project_details = {
+                "Title": project_title,
+                "Description": project_description,
+                "Contact": project_contact,
+                "Location": project_location,
+                "Category": selected_category
+            }
+            # Save the project to CSV
+            save_collaborative_project(project_details)
             st.success("Your project proposal has been submitted!")
             st.write(f"Project Title: {project_title}")
             st.write(f"Description: {project_description}")
             st.write(f"Contact Info: {project_contact}")
-            st.write(f"Location: {project_location}")  # Display location of the project
+            st.write(f"Location: {project_location}")
+            st.write(f"Category: {selected_category}")
         else:
             st.error("Please fill out all the fields to submit your project proposal.")
 
+# Function to find a collaborative project to join
 def find_project_section(selected_category):
     st.subheader("Find a Project to Collaborate On")
     st.write(f"Explore collaborative projects in your chosen category: {selected_category}")
 
-    # Sample project data (You can replace it with a list of actual projects from a database or data structure)
-    sample_projects = [
-        {"title": "History of Kurdistan", "location": "Erbil, Kurdistan", "description": "A deep dive into the history of Kurdistan.", "contact": "user1@example.com"},
-        {"title": "Political Science Research", "location": "Baghdad, Iraq", "description": "Analyzing political trends in Iraq.", "contact": "user2@example.com"}
-    ]
+    try:
+        df = pd.read_csv('collaborative_projects.csv')
+        filtered_projects = df[df['Category'] == selected_category]
 
-    # Display the sample projects
-    if sample_projects:
-        for project in sample_projects:
-            st.write(f"### {project['title']}")
-            st.write(f"Location: {project['location']}")
-            st.write(f"Description: {project['description']}")
-            st.write(f"Contact: {project['contact']}")
-            st.write("---")
-    else:
-        st.write("Currently, there are no projects listed under this category.")
+        if not filtered_projects.empty:
+            for _, project in filtered_projects.iterrows():
+                st.write(f"### {project['Title']}")
+                st.write(f"Location: {project['Location']}")
+                st.write(f"Description: {project['Description']}")
+                st.write(f"Contact: {project['Contact']}")
+                st.write("---")
+        else:
+            st.write("Currently, there are no projects listed under this category.")
+    except FileNotFoundError:
+        st.write("No collaborative projects available.")
