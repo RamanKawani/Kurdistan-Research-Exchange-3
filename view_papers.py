@@ -68,8 +68,17 @@ def display_papers(user_email="user@example.com"):
 
 # Function to delete paper
 def delete_paper(index, df):
-    # Delete the paper and update the CSV file
-    df = df.drop(index)
-    df.to_csv(DATA_FILE, index=False)
-    st.success("Paper deleted successfully!")
-    display_papers()  # Reload papers after deletion
+    # Delete the paper from the DataFrame
+    paper_to_delete = df.iloc[index]
+    # Confirm the delete action
+    confirm_delete = st.radio(f"Are you sure you want to delete '{paper_to_delete['Title']}'?", ('No', 'Yes'))
+    
+    if confirm_delete == 'Yes':
+        # Drop the paper from the DataFrame and save the updated DataFrame
+        df = df.drop(index)
+        df.to_csv(DATA_FILE, index=False)
+        st.success(f"Paper '{paper_to_delete['Title']}' deleted successfully!")
+        # Reload the papers after deletion
+        display_papers()  # Ensure the papers list is refreshed
+    else:
+        st.info(f"Paper '{paper_to_delete['Title']}' was not deleted.")
