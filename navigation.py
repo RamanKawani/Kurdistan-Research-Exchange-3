@@ -8,16 +8,16 @@ from collaborative_projects import collaborative_project_section  # Import the c
 
 def app_navigation():
     # Access GitHub token from Streamlit's secrets
-    github_token = st.secrets["GITHUB_TOKEN"]
-
-    # You can use the token for any necessary API requests or show it in the sidebar (never expose the full token for security)
+    github_token = st.secrets.get("GITHUB_TOKEN", "Token not found")
+    
+    # Display part of the token for security reasons (Never expose the full token)
     st.sidebar.write(f"GitHub Token (hidden part): {github_token[:5]}...")  # Display part of the token
 
     # Sidebar UI - formal and academic style
     st.sidebar.title("Kurdistan Research Exchange")
     st.sidebar.markdown("Welcome to the **Kurdistan Research Exchange** platform.")
     st.sidebar.markdown("This platform is dedicated to sharing and accessing academic research related to the Kurdistan Region.")
-    
+
     # Sidebar navigation menu
     menu = [
         "Home",
@@ -35,6 +35,7 @@ def app_navigation():
     st.title("Kurdistan Research Exchange Platform")
     st.markdown("Please select one of the following sections to proceed.")
 
+    # Conditional display of content based on selected menu option
     if choice == "Home":
         home_section()  # Display the home section
     elif choice == "Upload Research Paper":
