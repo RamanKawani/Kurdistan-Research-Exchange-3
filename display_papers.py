@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 from math import ceil
+from database import delete_record  # Import the delete function from database.py
 
 # Define file path for the CSV where research papers are stored
 DATA_FILE = 'research_papers.csv'
@@ -15,7 +16,7 @@ def load_data():
         return pd.DataFrame(columns=['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF'])
 
 # Function to display papers with pagination
-def display_papers(user_email="ramankhalid888@gmail.com"):
+def display_papers(user_email="user@example.com"):
     # Load paper data from the database (CSV)
     paper_df = load_data()
 
@@ -58,30 +59,22 @@ def display_papers(user_email="ramankhalid888@gmail.com"):
         else:
             st.warning(f"PDF not found for {row['Title']}")
 
-        # Admin functionality to delete papers
-        st.write(f"User Email: {user_email}")  # Debugging statement
-        if user_email == "ramankhalid888@gmail.com":  # Check if the user is an admin
-            st.write(f"Admin detected, showing delete button for paper: {row['Title']}")  # Debugging statement
-            if st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}"):
-                delete_paper(index, paper_df)
+        # Admin functionality to delete papers (only for admin)
+        if user_email == "ramankhalid888@gmail.com":  # Admin email is added here
+            delete_button = st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}")
+            
+            if delete_button:
+                confirm_delete = st.radio(f"Are you sure you want to delete '{row['Title']}'?", ('No', 'Yes'))
+                
+                if confirm_delete == 'Yes':
+                    success, deleted_title = delete_record(row['Title'])  # Use the title to delete the paper
+                    if success:
+                        st.success(f"Paper '{deleted_title}' deleted successfully!")
+                        st.experimental_rerun()  # Refresh the page after deletion
+                    else:
+                        st.error("Error deleting the paper.")
+                else:
+                    st.info(f"Paper '{row['Title']}' was not deleted.")
 
     # Display pagination controls at the bottom
     st.sidebar.write(f"Page {page_number} of {total_pages}")
-
-# Function to delete paper
-def delete_paper(index, df):
-    # Delete the paper from the DataFrame
-    paper_to_delete = df.iloc[index]
-    # Confirm the delete action
-    confirm_delete = st.radio(f"Are you sure you want to delete '{paper_to_delete['Title']}'?", ('No', 'Yes'))
-    
-    if confirm_delete == 'Yes':
-        # Drop the paper from the DataFrame and save the updated DataFrame
-        df = df.drop(index)
-        df.to_csv(DATA_FILE, index=False)
-        st.success(f"Paper '{paper_to_delete['Title']}' deleted successfully!")
-        # Reload the papers after deletion
-        display_papers(user_email)  # Ensure the papers list is refreshed
-    else:
-        st.info(f"Paper '{paper_to_delete['Title']}' was not deleted.")
-
