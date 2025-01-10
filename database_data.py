@@ -43,27 +43,27 @@ def update_record(title, updated_record):
 # Function to delete a paper record by index and remove the corresponding PDF
 def delete_record(index):
     df = load_data()
-    
+
     if index >= 0 and index < len(df):
         # Get the paper to delete
         paper_to_delete = df.iloc[index]
-        
+
         # Get the PDF filename
         pdf_filename = paper_to_delete['PDF']
         pdf_path = os.path.join(UPLOAD_DIR, pdf_filename)
-        
+
         # Remove the paper from the DataFrame
         df = df.drop(index)
         save_data(df)
-        
+
         # If the PDF exists, delete it from the uploads directory
         if os.path.isfile(pdf_path):
             os.remove(pdf_path)
             print(f"PDF file '{pdf_filename}' removed from {UPLOAD_DIR}")
-        
+
         print(f"Record '{paper_to_delete['Title']}' deleted successfully.")
         return True, paper_to_delete['Title']
-    
+
     else:
         print(f"Record with index {index} not found.")
         return False, None
