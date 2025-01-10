@@ -6,7 +6,9 @@ DATA_FILE = 'research_papers.csv'
 # Function to load data from the CSV file
 def load_data():
     try:
-        return pd.read_csv(DATA_FILE)
+        df = pd.read_csv(DATA_FILE)
+        print("Loaded Data:", df)  # Debugging line to check data loading
+        return df
     except FileNotFoundError:
         # If the file doesn't exist, return an empty DataFrame with the correct columns
         return pd.DataFrame(columns=['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF'])
@@ -27,6 +29,7 @@ def update_record(title, updated_record):
     # Find the row where the title matches
     index = df[df['Title'] == title].index
     if not index.empty:
+        # Update the row with the new data
         df.loc[index] = updated_record
         save_data(df)
     else:
@@ -65,11 +68,12 @@ def get_paper_by_title(title):
 
 # Function to get all papers
 def get_all_papers():
-    return load_data()
+    df = load_data()
+    return df
 
 # Example of how to use these functions
 if __name__ == "__main__":
-    # Add a new paper
+    # Add a new paper (example)
     new_paper = {
         "Title": "New Research Paper",
         "Author": "John Doe",
@@ -81,17 +85,25 @@ if __name__ == "__main__":
     }
     add_record(new_paper)
 
-    # Update an existing paper
-    updated_paper = ["Updated Research Paper", "John Doe", "University of Kurdistan", 2025, "International Relations", "http://example.com/updatedpaper", "updatedpaper.pdf"]
+    # Update an existing paper (example)
+    updated_paper = {
+        "Title": "Updated Research Paper",
+        "Author": "John Doe",
+        "University": "University of Kurdistan",
+        "Year": 2025,
+        "Category": "International Relations",
+        "Link": "http://example.com/updatedpaper",
+        "PDF": "updatedpaper.pdf"
+    }
     update_record("New Research Paper", updated_paper)
 
-    # Search papers by category
+    # Search papers by category (example)
     category_papers = search_by_category("Political Science")
-    print(category_papers)
+    print("Papers in Political Science:", category_papers)
 
-    # Delete a paper
+    # Delete a paper (example)
     delete_record("New Research Paper")
 
-    # Get all papers
+    # Get all papers (example)
     papers = get_all_papers()
-    print(papers)
+    print("All Papers:", papers)
