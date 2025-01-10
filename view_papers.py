@@ -15,7 +15,7 @@ def load_data():
         return pd.DataFrame(columns=['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF'])
 
 # Function to display papers with pagination
-def display_papers(user_email="RamanKhalid888@gmail"):
+def display_papers(user_email="user@example.com"):
     # Load paper data from the database (CSV)
     paper_df = load_data()
 
@@ -58,27 +58,27 @@ def display_papers(user_email="RamanKhalid888@gmail"):
         else:
             st.warning(f"PDF not found for {row['Title']}")
 
-        # Admin functionality to delete papers (only for admin)
-        if user_email == "admin@example.com":  # Ensure only admin can delete
-            delete_button = st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}")
-            if delete_button:
-                confirm_delete = st.radio(f"Are you sure you want to delete '{row['Title']}'?", ('No', 'Yes'))
-                
-                if confirm_delete == 'Yes':
-                    delete_paper(index, paper_df)
-                    st.experimental_rerun()  # Refresh the page after deletion
-                else:
-                    st.info(f"Paper '{row['Title']}' was not deleted.")
+        # Admin functionality to delete papers
+        if user_email == "RamanKhalid888@gmail.com":  # Check if the user is an admin
+            if st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}"):
+                delete_paper(index, paper_df)
 
     # Display pagination controls at the bottom
     st.sidebar.write(f"Page {page_number} of {total_pages}")
 
 # Function to delete paper
 def delete_paper(index, df):
-    # Delete the paper from the DataFrame
+    # Get paper details to be deleted
     paper_to_delete = df.iloc[index]
-    
-    # Drop the paper from the DataFrame and save the updated DataFrame
-    df = df.drop(index)
-    df.to_csv(DATA_FILE, index=False)
-    st.success(f"Paper '{paper_to_delete['Title']}' deleted successfully!")
+
+    # Ask for confirmation before deletion
+    confirm_delete = st.radio(f"Are you sure you want to delete '{paper_to_delete['Title']}'?", ('No', 'Yes'))
+
+    if confirm_delete == 'Yes':
+        # Drop the paper from the DataFrame and save the updated DataFrame
+        df = df.drop(index)
+        df.to_csv(DATA_FILE, index=False)
+        st.success(f"Paper '{paper_to_delete['Title']}' deleted successfully!")
+        display_papers(user_email)  # Refresh the papers list after deletion
+    else:
+        st.info(f"Paper '{paper_to_delete['Title']}' was not deleted.")
