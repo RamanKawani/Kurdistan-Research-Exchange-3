@@ -24,7 +24,6 @@ def app_navigation():
         "View Research Papers",
         "Guidelines",
         "Collaborative Projects",
-    
     ]
 
     choice = st.sidebar.radio("Select an option from the menu", menu)
@@ -43,7 +42,8 @@ def app_navigation():
     elif choice == "Guidelines":
         display_guidelines()  # Display the guidelines section
     elif choice == "Collaborative Projects":
-        collaborative_project_section()  # Display collaborative projects section
+        # Update this section to pass the user email (admin or regular) for proper access
+        collaborative_project_section(user_email="admin@example.com")  # Replace with actual user email
 
     # Footer Section - Academic and Formal
     st.markdown("---")
