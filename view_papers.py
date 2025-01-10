@@ -15,7 +15,7 @@ def load_data():
         return pd.DataFrame(columns=['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF'])
 
 # Function to display papers with pagination
-def display_papers(user_email="user@example.com"):
+def display_papers(user_email="RamanKhalid888@gmail"):
     # Load paper data from the database (CSV)
     paper_df = load_data()
 
