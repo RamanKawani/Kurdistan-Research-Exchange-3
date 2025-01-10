@@ -1,15 +1,13 @@
 import streamlit as st
 import os
-import pandas as pd
 from math import ceil
-from database_data import load_data  # Ensure the correct import for loading data
+from database_data import load_data  # Ensure you're importing the correct function
 
 # Function to display papers with pagination
 def display_papers():
     # Load paper data from the database (CSV)
     paper_df = load_data()
 
-    # Check if paper data is empty
     if paper_df.empty:
         st.warning("No papers available to display.")
         return
@@ -32,7 +30,7 @@ def display_papers():
     # Display papers for the current page
     for index, row in paper_df.iloc[start_idx:end_idx].iterrows():
         paper_pdf = row['PDF']
-        file_path = os.path.join('uploads', paper_pdf)  # Adjust this path if needed
+        file_path = os.path.join('uploads', paper_pdf)
 
         # Display paper details
         st.write(f"**{row['Title']}**")
@@ -40,9 +38,9 @@ def display_papers():
         st.write(f"University: {row['University']}")
         st.write(f"Year: {row['Year']}")
         st.write(f"Category: {row['Category']}")
-        st.write(f"Link: [Link]({row['Link']})")
+        st.write(f"Link: {row['Link']}")
 
-        # Check if the PDF file exists and display download button
+        # Check if the PDF file exists
         if os.path.isfile(file_path):
             with open(file_path, 'rb') as file:
                 st.download_button("Download PDF", data=file.read(), file_name=paper_pdf)
@@ -56,12 +54,9 @@ def display_papers():
             next_page = st.sidebar.button("Next Page")
             if next_page:
                 page_number += 1
+                st.experimental_rerun()  # Refresh to next page
         if page_number > 1:
             prev_page = st.sidebar.button("Previous Page")
             if prev_page:
                 page_number -= 1
-
-# Run the function to display papers in the app
-if __name__ == "__main__":
-    display_papers()
-
+                st.experimental_rerun()  # Refresh to previous page
