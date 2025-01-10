@@ -89,7 +89,8 @@ def find_project_section(selected_category, user_email):
                 
                 # Admin functionality to delete projects
                 if user_email == "admin@example.com":  # Replace with the actual admin email
-                    if st.button(f"Delete Project: {project['Title']}", key=f"delete_{index}"):
+                    delete_button = st.button(f"Delete Project: {project['Title']}", key=f"delete_{index}")
+                    if delete_button:
                         delete_project(index, df)
         else:
             st.write("Currently, there are no projects listed under this category.")
@@ -107,3 +108,4 @@ def delete_project(index, df):
 # Run the main function
 if __name__ == "__main__":
     collaborative_project_section(user_email="admin@example.com")  # Replace with the actual admin email
+
