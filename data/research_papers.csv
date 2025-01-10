@@ -1,6 +1,21 @@
-Title,Author,University,Year,Category,Link,PDF
-"Understanding Kurdish Politics","John Doe","University of Erbil",2023,"Political Science","http://example.com/paper1","paper1.pdf"
-"Globalization and its Impact on the Middle East","Jane Smith","University of Kurdistan",2022,"International Relations","http://example.com/paper2","paper2.pdf"
-"Women in the Kurdish Liberation Movement","Ahmed Ali","University of Erbil",2021,"Gender Studies","http://example.com/paper3","paper3.pdf"
-"The Role of Technology in Modern Warfare","Sara Ahmed","University of Kurdistan",2024,"Military Science","http://example.com/paper4","paper4.pdf"
-"Kurdish Identity and Cultural Preservation","Rebaz Ameen","University of Erbil",2020,"Sociology","http://example.com/paper5","paper5.pdf"
+import pandas as pd
+
+# Function to save paper details to CSV
+def save_to_csv(paper_details):
+    # Load the existing CSV file into a DataFrame
+    try:
+        # Load the existing CSV
+        df = pd.read_csv('research_papers.csv')  
+    except FileNotFoundError:
+        # If the file doesn't exist, create a new DataFrame with column headers
+        df = pd.DataFrame(columns=['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF'])
+    
+    # Ensure paper_details is a DataFrame, for compatibility with append
+    paper_details_df = pd.DataFrame([paper_details])
+    
+    # Append the new paper details
+    df = df.append(paper_details_df, ignore_index=True)
+    
+    # Save the updated DataFrame back to the CSV file
+    df.to_csv('research_papers.csv', index=False)
+
