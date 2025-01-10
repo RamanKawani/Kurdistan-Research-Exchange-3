@@ -9,10 +9,6 @@ def display_papers():
     # Debugging: Check if paper_df has data
     st.write("Loaded Data:", paper_df)  # Display the entire loaded dataframe
 
-    if paper_df.empty:
-        st.warning("No papers available to display.")
-        return
-
     # Display papers header
     st.title("View Research Papers")
 
