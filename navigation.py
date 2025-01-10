@@ -48,9 +48,6 @@ def app_navigation():
         display_guidelines()  # Display the guidelines section
     elif choice == "Collaborative Projects":
         collaborative_project_section()  # Display collaborative projects section
-    elif choice == "Institutional Partnership":
-        from institutional_partnership import institutional_partnership_section  # Import here to avoid circular import
-        institutional_partnership_section()  # Display the institutional partnership section
 
     # Footer Section - Academic and Formal
     st.markdown("---")
