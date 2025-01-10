@@ -16,6 +16,9 @@ def load_data():
 
 # Function to display papers with pagination
 def display_papers(user_email="user@example.com"):
+    # Debugging: Check if the user_email is being passed correctly
+    st.write(f"Current user email: {user_email}")  # This will show in the Streamlit app
+    
     # Load paper data from the database (CSV)
     paper_df = load_data()
 
@@ -59,7 +62,8 @@ def display_papers(user_email="user@example.com"):
             st.warning(f"PDF not found for {row['Title']}")
 
         # Admin functionality to delete papers (only for admin)
-        if user_email == "ramankhalid888@gmail.com":  # Ensure only admin can delete
+        if user_email == "your_actual_email@gmail.com":  # Replace with your actual admin email
+            st.write(f"Admin Email: {user_email} - This should match to show delete button")
             delete_button = st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}")
             if delete_button:
                 confirm_delete = st.radio(f"Are you sure you want to delete '{row['Title']}'?", ('No', 'Yes'))
@@ -82,4 +86,3 @@ def delete_paper(index, df):
     df = df.drop(index)
     df.to_csv(DATA_FILE, index=False)
     st.success(f"Paper '{paper_to_delete['Title']}' deleted successfully!")
-
