@@ -1,12 +1,12 @@
 import streamlit as st
 import os
 from math import ceil
-from data import load_paper_data
+from data import load_paper_data  # Function to load paper data
 from database import add_record, update_record, delete_record  # Import database functions
 
 # Function to display papers with pagination
-def display_papers():
-    # Load paper data from the CSV
+def display_papers(user_email="user@example.com"):
+    # Load paper data from the database (CSV or database)
     paper_df = load_paper_data()
 
     if paper_df.empty:
@@ -54,6 +54,11 @@ def display_papers():
         else:
             st.warning(f"PDF not found for {row['Title']}")
 
+        # Admin functionality to delete papers
+        if user_email == "admin@example.com":  # Check if the user is an admin
+            if st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}"):
+                delete_paper(index, paper_df)
+
     # Display page navigation buttons
     col1, col2, col3 = st.sidebar.columns([1, 2, 1])
     with col1:
@@ -81,7 +86,14 @@ def display_papers():
         add_record(new_paper)
         st.sidebar.success("New paper added successfully.")
 
+# Function to delete paper
+def delete_paper(index, df):
+    # Delete the paper and update the database (or CSV file)
+    df = df.drop(index)
+    df.to_csv("research_papers.csv", index=False)
+    st.success("Paper deleted successfully!")
+    display_papers()  # Reload papers after deletion
+
 # Run this function in the main code
 if __name__ == "__main__":
     display_papers()
-
