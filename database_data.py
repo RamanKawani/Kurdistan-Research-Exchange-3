@@ -68,3 +68,4 @@ def delete_record(index):
         print(f"Record with index {index} not found.")
         return False, None
 
+
