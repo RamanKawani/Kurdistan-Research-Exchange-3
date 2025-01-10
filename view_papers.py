@@ -1,7 +1,18 @@
 import streamlit as st
+import pandas as pd
 import os
 from math import ceil
-from database_data import load_data  # Ensure you're importing the correct function
+
+# Define file path for the CSV where research papers are stored
+DATA_FILE = 'research_papers.csv'
+UPLOAD_DIR = 'uploads/'
+
+# Function to load data from the CSV file
+def load_data():
+    try:
+        return pd.read_csv(DATA_FILE)
+    except FileNotFoundError:
+        return pd.DataFrame(columns=['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF'])
 
 # Function to display papers with pagination
 def display_papers():
@@ -16,7 +27,7 @@ def display_papers():
     st.title("View Research Papers")
 
     # Pagination logic
-    papers_per_page = 5  # Number of papers per page
+    papers_per_page = 5
     total_papers = len(paper_df)
     total_pages = ceil(total_papers / papers_per_page)
 
@@ -30,7 +41,7 @@ def display_papers():
     # Display papers for the current page
     for index, row in paper_df.iloc[start_idx:end_idx].iterrows():
         paper_pdf = row['PDF']
-        file_path = os.path.join('uploads', paper_pdf)
+        file_path = os.path.join(UPLOAD_DIR, paper_pdf)
 
         # Display paper details
         st.write(f"**{row['Title']}**")
@@ -49,14 +60,3 @@ def display_papers():
 
     # Display pagination controls at the bottom
     st.sidebar.write(f"Page {page_number} of {total_pages}")
-    if total_pages > 1:
-        if page_number < total_pages:
-            next_page = st.sidebar.button("Next Page")
-            if next_page:
-                page_number += 1
-                st.experimental_rerun()  # Refresh to next page
-        if page_number > 1:
-            prev_page = st.sidebar.button("Previous Page")
-            if prev_page:
-                page_number -= 1
-                st.experimental_rerun()  # Refresh to previous page
