@@ -21,7 +21,16 @@ def display_papers():
     total_pages = ceil(total_papers / papers_per_page)
 
     # Sidebar pagination controls
-    page_number = st.sidebar.number_input("Select Page", min_value=1, max_value=total_pages, value=1)
+    if "page_number" not in st.session_state:
+        st.session_state.page_number = 1
+
+    # Select page number from the sidebar
+    page_number = st.sidebar.number_input(
+        "Select Page", min_value=1, max_value=total_pages, value=st.session_state.page_number
+    )
+
+    # Update session state when the page number is changed
+    st.session_state.page_number = page_number
 
     # Calculate the start and end index for the current page
     start_idx = (page_number - 1) * papers_per_page
@@ -51,11 +60,11 @@ def display_papers():
     st.sidebar.write(f"Page {page_number} of {total_pages}")
     if total_pages > 1:
         if page_number < total_pages:
-            next_page = st.sidebar.button("Next Page")
-            if next_page:
-                page_number += 1
+            if st.sidebar.button("Next Page"):
+                st.session_state.page_number += 1  # Go to next page
+                st.experimental_rerun()  # Trigger re-run for updated page number
         if page_number > 1:
-            prev_page = st.sidebar.button("Previous Page")
-            if prev_page:
-                page_number -= 1
+            if st.sidebar.button("Previous Page"):
+                st.session_state.page_number -= 1  # Go to previous page
+                st.experimental_rerun()  # Trigger re-run for updated page number
 
