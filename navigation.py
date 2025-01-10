@@ -2,7 +2,6 @@ import streamlit as st
 from home import home_section  # Import the home section
 from upload import upload_papers  # Import the upload papers section
 from view_papers import display_papers  # Import the view papers section
-from user_profile import user_profile_section  # Import the user profile section
 from guidelines import display_guidelines  # Import the guidelines section
 from collaborative_projects import collaborative_project_section  # Import the collaborative projects section
 
@@ -42,8 +41,6 @@ def app_navigation():
         upload_papers()  # Display the upload papers section
     elif choice == "View Research Papers":
         display_papers()  # Display the papers viewing section
-    elif choice == "User Profile":
-        user_profile_section()  # Display the user profile section
     elif choice == "Guidelines":
         display_guidelines()  # Display the guidelines section
     elif choice == "Collaborative Projects":
