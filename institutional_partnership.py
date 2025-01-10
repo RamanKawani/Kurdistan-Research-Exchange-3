@@ -1,5 +1,23 @@
 import streamlit as st
+import pandas as pd
 
+# Function to save partnership inquiry to CSV
+def save_institutional_partnership(inquiry_details):
+    try:
+        # Load the existing CSV file, or create one if it doesn't exist
+        df = pd.read_csv('institutional_partnerships.csv')
+    except FileNotFoundError:
+        # Create a new DataFrame if the file doesn't exist
+        df = pd.DataFrame(columns=['Name', 'Institution', 'Message'])
+    
+    # Convert the inquiry details to a DataFrame format and append
+    inquiry_details_df = pd.DataFrame([inquiry_details])
+    df = pd.concat([df, inquiry_details_df], ignore_index=True)
+    
+    # Save the updated DataFrame back to CSV
+    df.to_csv('institutional_partnerships.csv', index=False)
+
+# Main function for the Institutional Partnership Section
 def institutional_partnership_section():
     # Title for the section
     st.title("Institutional Partnership")
@@ -55,12 +73,23 @@ def institutional_partnership_section():
     st.markdown("For more information on institutional partnerships, please contact us:")
     st.markdown("[info@kurdistan-research.org](mailto:info@kurdistan-research.org)")
 
-    # Optional: You can add a contact form or button for users to get in touch
+    # Optional: You can add a contact form for users to get in touch
     with st.form(key='partnership_form'):
-        st.text_input("Your Name")
-        st.text_input("Your Institution")
-        st.text_area("Your Message")
+        name = st.text_input("Your Name")
+        institution = st.text_input("Your Institution")
+        message = st.text_area("Your Message")
         submit_button = st.form_submit_button("Submit")
         
         if submit_button:
-            st.success("Thank you for your interest! We will get back to you shortly.")
+            if name and institution and message:
+                # Create a dictionary for the inquiry details
+                inquiry_details = {
+                    "Name": name,
+                    "Institution": institution,
+                    "Message": message
+                }
+                # Save the inquiry to CSV
+                save_institutional_partnership(inquiry_details)
+                st.success("Thank you for your interest! We will get back to you shortly.")
+            else:
+                st.error("Please fill out all fields before submitting.")
