@@ -9,7 +9,7 @@ def send_email(name, institution, message):
     # Sender and receiver details
     sender_email = "your_email@example.com"  # Your email address
     receiver_email = "RamanKhalid888@gmail.com"  # Your email address where you want to receive the message
-    password = "your_email_password"  # Your email password (consider using app password or environment variable for security)
+    password = "KA4323CKK4082"  # Your email password (consider using app password or environment variable for security)
 
     # Create the email content
     subject = "Institutional Partnership Inquiry"
