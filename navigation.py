@@ -22,7 +22,6 @@ def app_navigation():
         "Home",
         "Upload Research Paper",
         "View Research Papers",
-        "User Profile",
         "Guidelines",
         "Collaborative Projects",
     
