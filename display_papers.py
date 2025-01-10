@@ -90,7 +90,7 @@ def display_papers(user_email="user@example.com"):
 def delete_paper(index, df):
     # Delete the paper and update the database (or CSV file)
     df = df.drop(index)
-    df.to_csv("research_papers.csv", index=False)
+    df.to_csv("research_papers.csv", index=False)  # Save changes to the CSV file
     st.success("Paper deleted successfully!")
     display_papers()  # Reload papers after deletion
 
