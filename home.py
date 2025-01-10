@@ -16,6 +16,6 @@ def home_section():
         - **Research Paper Upload**: Share your research papers with the community.
         - **Collaborative Projects**: Join ongoing research initiatives.
        
-    """)
+  
 
  
