@@ -38,7 +38,7 @@ def collaborative_project_section(user_email="user@example.com"):
     if section_choice == "Propose a Project":
         propose_project_section(selected_category)
     elif section_choice == "Find a Project to Collaborate On":
-        find_project_section(selected_category)
+        find_project_section(selected_category, user_email)
 
 # Function to propose a new collaborative project
 def propose_project_section(selected_category):
@@ -70,8 +70,8 @@ def propose_project_section(selected_category):
         else:
             st.error("Please fill out all the fields to submit your project proposal.")
 
-# Function to find a collaborative project to join
-def find_project_section(selected_category):
+# Function to find a collaborative project to join and delete if admin
+def find_project_section(selected_category, user_email):
     st.subheader("Find a Project to Collaborate On")
     st.write(f"Explore collaborative projects in your chosen category: {selected_category}")
 
@@ -80,13 +80,30 @@ def find_project_section(selected_category):
         filtered_projects = df[df['Category'] == selected_category]
 
         if not filtered_projects.empty:
-            for _, project in filtered_projects.iterrows():
+            for index, project in filtered_projects.iterrows():
                 st.write(f"### {project['Title']}")
                 st.write(f"Location: {project['Location']}")
                 st.write(f"Description: {project['Description']}")
                 st.write(f"Contact: {project['Contact']}")
                 st.write("---")
+                
+                # Admin functionality to delete projects
+                if user_email == "admin@example.com":  # Replace with the actual admin email
+                    if st.button(f"Delete Project: {project['Title']}", key=f"delete_{index}"):
+                        delete_project(index, df)
         else:
             st.write("Currently, there are no projects listed under this category.")
     except FileNotFoundError:
         st.write("No collaborative projects available.")
+
+# Function to delete a project
+def delete_project(index, df):
+    # Remove the project from the DataFrame
+    df = df.drop(index)
+    # Save the updated DataFrame back to CSV
+    df.to_csv('collaborative_projects.csv', index=False)
+    st.success("Project deleted successfully!")
+
+# Run the main function
+if __name__ == "__main__":
+    collaborative_project_section(user_email="admin@example.com")  # Replace with the actual admin email
