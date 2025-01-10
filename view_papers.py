@@ -58,10 +58,17 @@ def display_papers(user_email="user@example.com"):
         else:
             st.warning(f"PDF not found for {row['Title']}")
 
-        # Admin functionality to delete papers
-        if user_email == "admin@example.com":  # Check if the user is an admin
-            if st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}"):
-                delete_paper(index, paper_df)
+        # Admin functionality to delete papers (only for admin)
+        if user_email == "admin@example.com":  # Ensure only admin can delete
+            delete_button = st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}")
+            if delete_button:
+                confirm_delete = st.radio(f"Are you sure you want to delete '{row['Title']}'?", ('No', 'Yes'))
+                
+                if confirm_delete == 'Yes':
+                    delete_paper(index, paper_df)
+                    st.experimental_rerun()  # Refresh the page after deletion
+                else:
+                    st.info(f"Paper '{row['Title']}' was not deleted.")
 
     # Display pagination controls at the bottom
     st.sidebar.write(f"Page {page_number} of {total_pages}")
@@ -70,15 +77,8 @@ def display_papers(user_email="user@example.com"):
 def delete_paper(index, df):
     # Delete the paper from the DataFrame
     paper_to_delete = df.iloc[index]
-    # Confirm the delete action
-    confirm_delete = st.radio(f"Are you sure you want to delete '{paper_to_delete['Title']}'?", ('No', 'Yes'))
     
-    if confirm_delete == 'Yes':
-        # Drop the paper from the DataFrame and save the updated DataFrame
-        df = df.drop(index)
-        df.to_csv(DATA_FILE, index=False)
-        st.success(f"Paper '{paper_to_delete['Title']}' deleted successfully!")
-        # Reload the papers after deletion
-        display_papers()  # Ensure the papers list is refreshed
-    else:
-        st.info(f"Paper '{paper_to_delete['Title']}' was not deleted.")
+    # Drop the paper from the DataFrame and save the updated DataFrame
+    df = df.drop(index)
+    df.to_csv(DATA_FILE, index=False)
+    st.success(f"Paper '{paper_to_delete['Title']}' deleted successfully!")
