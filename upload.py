@@ -1,68 +1,67 @@
 import streamlit as st
 import os
+import pandas as pd
 
-# Retrieve the GitHub token from Streamlit secrets
-github_token = st.secrets.get("GITHUB", {}).get("GITHUB_TOKEN", None)
+# Define file path for CSV where research papers are stored
+DATA_FILE = 'research_papers.csv'
+UPLOAD_DIR = 'uploads/'
 
-# Ensure the GitHub token is available for use
-if not github_token:
-    st.sidebar.error("GitHub Token is not available.")
+# Ensure the upload directory exists
+if not os.path.exists(UPLOAD_DIR):
+    os.makedirs(UPLOAD_DIR)
 
+# Function to save the paper metadata to CSV
+def save_to_csv(paper_details):
+    # Load the existing data from the CSV file
+    try:
+        df = pd.read_csv(DATA_FILE)
+    except FileNotFoundError:
+        df = pd.DataFrame(columns=['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF'])
+
+    # Append the new paper details to the DataFrame
+    df = df.append(paper_details, ignore_index=True)
+
+    # Save the updated DataFrame to the CSV file
+    df.to_csv(DATA_FILE, index=False)
+
+# Function to handle file upload
 def upload_papers():
-    # Set the title for the page
     st.title("Upload Research Paper")
-    st.markdown("""
-        Welcome to the **Research Paper Upload** section. Please follow the steps below to upload your academic paper to the Kurdistan Research Exchange platform.
-    """)
+    
+    # Form to upload paper details
+    with st.form(key='upload_form'):
+        title = st.text_input("Title")
+        author = st.text_input("Author")
+        university = st.text_input("University")
+        year = st.number_input("Year", min_value=1900, max_value=2025, step=1)
+        category = st.text_input("Category")
+        link = st.text_input("Link")
+        uploaded_file = st.file_uploader("Upload PDF", type=["pdf"])
 
-    # Instructions section
-    st.subheader("Upload Instructions")
-    st.markdown("""
-        1. **File Format**: Upload your research paper in **PDF** format only.
-        2. **File Size**: Ensure the file size does not exceed 10MB.
-        3. **Paper Title**: Provide a clear and concise title.
-        4. **Author Details**: Include your name, institution, and email.
-        5. **Abstract**: (Optional) Add a brief abstract summarizing your research.
-        
-        After submission, your paper will be reviewed for compliance with our guidelines.
-    """)
-
-    # File upload section
-    st.subheader("Upload Your Paper")
-    uploaded_file = st.file_uploader("Select a PDF file", type=["pdf"])
-
-    # Additional metadata input
-    paper_title = st.text_input("Paper Title:")
-    author_name = st.text_input("Author Name:")
-    author_institution = st.text_input("Institution:")
-    author_email = st.text_input("Email:")
-    abstract = st.text_area("Abstract (Optional):", height=150)
-
-    # Validation: Check if all required fields are filled
-    if uploaded_file and paper_title.strip() and author_name.strip() and author_institution.strip() and author_email.strip():
         # Submit button
-        if st.button("Submit Paper"):
-            # Ensure the "uploads" directory exists
-            os.makedirs("uploads", exist_ok=True)
+        submit_button = st.form_submit_button(label="Upload Paper")
 
-            # Save the uploaded file in the "uploads" directory
-            save_path = os.path.join("uploads", uploaded_file.name)
-            with open(save_path, "wb") as f:
-                f.write(uploaded_file.getbuffer())
+        if submit_button:
+            if uploaded_file is not None:
+                # Save the uploaded PDF to the directory
+                file_path = os.path.join(UPLOAD_DIR, uploaded_file.name)
+                with open(file_path, "wb") as f:
+                    f.write(uploaded_file.getbuffer())
+                
+                # Prepare the paper metadata
+                paper_details = {
+                    "Title": title,
+                    "Author": author,
+                    "University": university,
+                    "Year": year,
+                    "Category": category,
+                    "Link": link,
+                    "PDF": uploaded_file.name
+                }
 
-            # Feedback to the user
-            st.success(f"Your paper titled '{paper_title}' has been successfully uploaded!")
-            st.info("Your submission will be reviewed and published after approval. Thank you for contributing to the Kurdistan Research Exchange!")
-            
-            # Display uploaded metadata for user confirmation
-            st.subheader("Submission Details")
-            st.write(f"**Title**: {paper_title}")
-            st.write(f"**Author**: {author_name}")
-            st.write(f"**Institution**: {author_institution}")
-            st.write(f"**Email**: {author_email}")
-            if abstract.strip():
-                st.write(f"**Abstract**: {abstract}")
-            st.write(f"**File Name**: {uploaded_file.name}")
-    else:
-        # Warning for incomplete form
-        st.warning("Please complete all required fields and upload your paper in PDF format before submitting.")
+                # Save metadata to CSV
+                save_to_csv(paper_details)
+
+                st.success("Research paper uploaded successfully!")
+            else:
+                st.warning("Please upload a PDF file.")
