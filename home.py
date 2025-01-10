@@ -15,7 +15,7 @@ def home_section():
     st.write("""
         - **Research Paper Upload**: Share your research papers with the community.
         - **Collaborative Projects**: Join ongoing research initiatives.
-        - **User Profile**: Manage your personal information and research activities.
+       
     """)
 
  
