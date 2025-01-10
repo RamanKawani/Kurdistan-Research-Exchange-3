@@ -60,7 +60,7 @@ def display_papers(user_email="user@example.com"):
             st.warning(f"PDF not found for {row['Title']}")
 
         # Admin functionality to delete papers (only for admin)
-        if user_email == "ramankhalid888@gmail.com":  # Admin email is added here
+        if user_email == "your_actual_email@gmail.com":  # Replace with your actual admin email
             delete_button = st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}")
             
             if delete_button:
