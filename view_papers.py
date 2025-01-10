@@ -1,13 +1,18 @@
 import streamlit as st
+import os
 import pandas as pd
-from database_data import load_data  # Ensure you're importing the correct function
+from math import ceil
+from database_data import load_data  # Ensure the correct import for loading data
 
+# Function to display papers with pagination
 def display_papers():
     # Load paper data from the database (CSV)
-    paper_df = load_data()  # Use the correct function name here
+    paper_df = load_data()
 
-    # Debugging: Check if paper_df has data
-    st.write("Loaded Data:", paper_df)  # Display the entire loaded dataframe
+    # Check if paper data is empty
+    if paper_df.empty:
+        st.warning("No papers available to display.")
+        return
 
     # Display papers header
     st.title("View Research Papers")
@@ -27,12 +32,36 @@ def display_papers():
     # Display papers for the current page
     for index, row in paper_df.iloc[start_idx:end_idx].iterrows():
         paper_pdf = row['PDF']
+        file_path = os.path.join('uploads', paper_pdf)  # Adjust this path if needed
+
+        # Display paper details
         st.write(f"**{row['Title']}**")
         st.write(f"Author: {row['Author']}")
         st.write(f"University: {row['University']}")
         st.write(f"Year: {row['Year']}")
         st.write(f"Category: {row['Category']}")
-        st.write(f"Link: {row['Link']}")
+        st.write(f"Link: [Link]({row['Link']})")
 
-        # Check if the PDF file exists (you can modify this logic based on actual file structure)
-        st.write(f"PDF: {row['PDF']}")  # Display the PDF link or use it for further action
+        # Check if the PDF file exists and display download button
+        if os.path.isfile(file_path):
+            with open(file_path, 'rb') as file:
+                st.download_button("Download PDF", data=file.read(), file_name=paper_pdf)
+        else:
+            st.warning(f"PDF not found for {row['Title']}")
+
+    # Display pagination controls at the bottom
+    st.sidebar.write(f"Page {page_number} of {total_pages}")
+    if total_pages > 1:
+        if page_number < total_pages:
+            next_page = st.sidebar.button("Next Page")
+            if next_page:
+                page_number += 1
+        if page_number > 1:
+            prev_page = st.sidebar.button("Previous Page")
+            if prev_page:
+                page_number -= 1
+
+# Run the function to display papers in the app
+if __name__ == "__main__":
+    display_papers()
+
