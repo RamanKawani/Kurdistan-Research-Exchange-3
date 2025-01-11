@@ -4,15 +4,17 @@ import os
 from math import ceil
 from database import delete_record  # Import the delete function from database.py
 
-# Define file path for the CSV where research papers are stored
+# Define constants
 DATA_FILE = 'research_papers.csv'
 UPLOAD_DIR = 'uploads/'
+ADMIN_EMAIL = "your_actual_email@gmail.com"  # Replace with your actual admin email
 
 # Function to load data from the CSV file
 def load_data():
     try:
         return pd.read_csv(DATA_FILE)
     except FileNotFoundError:
+        st.error(f"Data file '{DATA_FILE}' not found. Please upload it to continue.")
         return pd.DataFrame(columns=['Title', 'Author', 'University', 'Year', 'Category', 'Link', 'PDF'])
 
 # Function to display papers with pagination
@@ -45,37 +47,38 @@ def display_papers(user_email="user@example.com"):
         file_path = os.path.join(UPLOAD_DIR, paper_pdf)
 
         # Display paper details
-        st.write(f"**{row['Title']}**")
-        st.write(f"Author: {row['Author']}")
-        st.write(f"University: {row['University']}")
-        st.write(f"Year: {row['Year']}")
-        st.write(f"Category: {row['Category']}")
-        st.write(f"Link: {row['Link']}")
+        st.write(f"### {row['Title']}")
+        st.write(f"**Author:** {row['Author']}")
+        st.write(f"**University:** {row['University']}")
+        st.write(f"**Year:** {row['Year']}")
+        st.write(f"**Category:** {row['Category']}")
+        st.write(f"[External Link]({row['Link']})")
 
         # Check if the PDF file exists
         if os.path.isfile(file_path):
             with open(file_path, 'rb') as file:
                 st.download_button("Download PDF", data=file.read(), file_name=paper_pdf)
         else:
-            st.warning(f"PDF not found for {row['Title']}")
+            st.warning(f"PDF not found for '{row['Title']}'")
 
-        # Admin functionality to delete papers (only for admin)
-        if user_email == "your_actual_email@gmail.com":  # Replace with your actual admin email
-            st.write(f"Admin Email: {user_email} - This should match to show delete button")
+        # Admin functionality to delete papers
+        if user_email == ADMIN_EMAIL:
+            st.write(f"Admin Email Verified: {user_email}")
             delete_button = st.button(f"Delete Paper: {row['Title']}", key=f"delete_{index}")
-            
+
             if delete_button:
-                confirm_delete = st.radio(f"Are you sure you want to delete '{row['Title']}'?", ('No', 'Yes'))
-                
+                confirm_delete = st.radio(
+                    f"Are you sure you want to delete '{row['Title']}'?", 
+                    options=['No', 'Yes'], 
+                    key=f"confirm_delete_{index}"
+                )
+
                 if confirm_delete == 'Yes':
                     success, deleted_title = delete_record(index)  # Call the function to delete the paper
                     if success:
                         st.success(f"Paper '{deleted_title}' deleted successfully!")
                         st.experimental_rerun()  # Refresh the page after deletion
                     else:
-                        st.error("Error deleting the paper.")
+                        st.error(f"Error deleting the paper: '{row['Title']}'")
                 else:
-                    st.info(f"Paper '{row['Title']}' was not deleted.")
-
-    # Display pagination controls at the bottom
-    st.sidebar.write(f"Page {page_number} of {total_pages}")
+                    st.info(f"Paper '{row['Title']}' w
